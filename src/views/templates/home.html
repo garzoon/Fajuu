@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">        
+{% endblock %}
+
+{% block main %}
+<main class="main">
+    <section class="section-home">
+        <h2>Welcome To</h2>
+        <h1 id="titulo">Fajuu</h1>
+    </section>
+</main>
+{% endblock %}

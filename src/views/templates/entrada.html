@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block customCss %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/entrada.css') }}">         -->
+{% endblock %}
+
+{% block main %}
+<main class="main">
+    <section class="section-entradas">
+
+        <form action="{{ url_for('entrada') }}" method="POST">
+            <div class="factura_entradas">
+                <h1>Factura</h1>
+                <label for="lbl-idFactura">ID factura</label>
+                <input class="inp-idFactura" name="inp-idFactura" id="inp-idFactura" type="text">
+            </div>
+
+            <div class="productos_entradas">
+                <h1>Productos</h1>
+                <label for="lbl-idProducto">ID producto</label>
+                <input class="inp-idProducto" name="inp-idProducto" id="inp-idProducto" type="text">    
+                                
+                <label for="lbl-cantidad_producto">Cantidad</label>
+                <input class="inp-cantidad_producto" name="inp-cantidad_producto" id="inp-cantidad_producto" type="text">
+                <button class="btn proveedor-buttons_cargar" type="submit">Cargar</button>
+            </div>
+        </form>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Id producto</th>
+                    <th>Descripcion</th>
+                    <th>Categoria</th>
+                    <th>Acciones</th>
+                </tr> 
+            </thead>
+            <tbody>
+                <tr>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="footer">
+        <button class="btn btn-primary">Enviar</button>
+    </section>
+</main>
+
+{% endblock %}

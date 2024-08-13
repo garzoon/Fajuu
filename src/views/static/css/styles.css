@@ -1,0 +1,82 @@
+/* Fuente Logo fajuu */
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
+/* Fuente Textos */
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+:root{
+    /* colores */
+    --color-white: #FFFFFF;
+    --color-gray-light: #EEEEEE;
+    --color-gray-dark: #D9D9D9;
+    --color-green-dark: #3C9684;
+    --color-green-light: #46B39D;
+    --color-orange-dark: #E37A40;
+    --color-orange-light: #EBA782;
+    --color-blue-dark: #324C5C;
+    --color-blue-light: #475E6C;
+}
+
+*{
+    font-family: 'Rubik', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    
+    text-decoration: none;
+    list-style: none;
+}
+body{
+    background-color: var(--color-gray-light);
+    width: 100%;
+    height: 100vh;
+    font-family: 'Rubik', sans-serif;
+}
+
+.header{
+    width: 100%;
+    height: 10%;
+}
+
+.main{
+    width: 100%;
+    height: 80%;
+    padding: 1rem;
+}
+.footer{
+    height: 8%;
+    padding: 0 2rem;
+}
+
+/* BUTTON STYLES */
+
+.btn{
+    cursor: pointer;
+}
+.btn:active{
+    transform: scale(1.1);
+}
+
+/* ESTILOS DE TABLA */
+.table{
+    width: 100%;
+    display: flex;
+}
+.table table{
+    width: 100%;
+}
+.table thead{
+    background-color: var(--color-blue-light);
+    color: var(--color-white);
+    height: 1.5rem;
+}
+.table tbody tr:nth-child(odd){
+    background-color: var(--color-gray-light);
+}
+.table tbody tr:hover{
+    background-color: var(--color-orange-dark);
+}
+.table td, th{
+    font-weight: 100;
+    height: 1.5rem;
+}
