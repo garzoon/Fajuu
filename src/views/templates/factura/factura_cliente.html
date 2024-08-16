@@ -1,0 +1,81 @@
+{% extends './layout.html' %}
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
+{% endblock %}
+
+{% block main %}
+
+<main class="main">
+    <section class="section-misFacturas">
+        <h1>Buscar facturas</h1>
+        <form class="frm-misFacturas">
+            <div class="section-froms">
+
+                <label  class="lbl-IDfactura_cliente" for="inp-IDfactura_cliente">Numero Factura</label>
+                <input class="inp-IDfactura_cliente" id="inp-IDfactura_cliente" type="text">
+
+                <label  class="lbl-IDcliente_cliente" for="inp-IDcliente_cliente">ID cliente</label>
+                <input class="inp-IDcliente_cliente" id="inp-IDcliente_cliente" type="text">  
+
+                <label class="lbl-fechaIngreso_cliente" for="inp-fechaIngreso_cliente">Fecha de ingreso</label>
+                <input class="inp-fechaIngreso_cliente" id="inp-fechaIngreso_cliente" type="date" name="">
+
+                <label class="lbl-fechaIngreso_cliente" for="inp-fechaIngreso_cliente">Fecha de vencimiento</label>
+                <input class="inp-fechaIngreso_cliente" id="inp-fechaIngreso_cliente" type="date" name="">
+
+                <label class="lbl-estado_cliente" for="slc-estado_cliente">Estado</label>
+                <select name="" class="slc-estado_cliente" id="slc-estado_cliente">
+                    <option value="">Pendiente</option>
+                    <option value="proveedor">Pago</option>
+                    <option value="cliente">Cancelado</option>
+                </select>
+            </div>
+            <div class="section-buttons">
+                <button class="btn btn-cliente btn-cliente_filtra">Filtra</button>
+            </div>
+        </form>
+
+        <h1>Relacion de facturas</h1>
+        <div class="table">
+            <table>
+                <thead>
+                    <th>Numero factura</th>
+                    <th>Id Cliente</th>
+                    <th>Cliente</th>
+                    <th>Fecha de entrada</th>
+                    <th>Fecha de vencimiento</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                    {% for factura in data %}
+                        <tr>
+                            <td> {{ factura.0 }}</td>
+                            <td> {{ factura.1 }}</td>
+                            <td> {{ factura.2 }}</td>
+                            <td> {{ factura.3 }}</td>
+                            <td> {{ factura.4 }}</td>
+                            <td> {{ factura.5 }}</td>
+                            <td>
+                                <a href="">ver</a>
+                                <a href="">eliminar</a>
+                                <a href="">editar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<!-- Footer - buttons action -->
+<footer class="footer">
+    <form action="{{ url_for('factura.factura_volver') }}" method="POST">
+        <button type="submit" class="btn btn-primary">Volver</button>
+    </form>
+</footer>
+
+
+{% endblock %}

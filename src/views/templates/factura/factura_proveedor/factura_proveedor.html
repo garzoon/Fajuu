@@ -1,0 +1,79 @@
+{% extends './layout.html' %}
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
+{% endblock %}
+
+{% block main %}
+<main class="main">
+    <section class="section-misFacturas">
+        <h1>Buscar facturas</h1>
+        <form class="frm-misFacturas" method="post">
+            <div class="section-froms">
+                <label  class="lbl-IDfactura_proveedor" for="inp-IDfactura_proveedor">Numero factura</label>
+                <input class="inp-IDfactura_proveedor" id="inp-IDfactura_proveedor" type="text">
+
+                <label  class="lbl-IDcliente_proveedor" for="inp-IDcliente_proveedor">ID proveedor</label>
+                <input class="inp-IDcliente_proveedor" id="inp-IDcliente_proveedor" type="text">
+                
+                <label class="lbl-fechaIngreso_proveedor" for="inp-fechaIngreso_proveedor">Fecha de ingreso</label>
+                <input class="inp-fechaIngreso_proveedor" id="inp-fechaIngreso_proveedor" type="date" name="">
+            </div>
+            <div class="section-buttons">
+                <button class="btn btn-proveedor btn-proveedor_filtra">Filtra</button>
+            </div>
+        </form>
+
+        <h1>Relacion de facturas</h1>
+        <div class="table">
+            <table>
+                <thead>
+                    <th>Numero factura</th>
+                    <th>Id proveedor</th>
+                    <th>Proveedor</th>
+                    <th>Fecha de entrada</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                    {% for factura in data %}
+                        <tr>
+                            <td> {{ factura.0 }}</td>
+                            <td> {{ factura.1 }}</td>
+                            <td> {{ factura.2 }}</td>
+                            <td> {{ factura.3 }}</td>
+                            <td>
+                                <button onclick="openModal('Factura de entrada: {{ factura.0}}', 'facturas/factura_proveedor_view', '{{ factura.0 }}')">Ver</button>
+                                <button onclick="deleteElement('{{ factura.0 }}');">Eliminar</button>
+                                <button>Editar</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% include 'includes/modal_view.html' %}
+    </section>
+</main>
+<footer class="footer">
+    <form action="{{ url_for('factura_scope.factura_volver') }}" method="POST">
+        <button type="submit" class="btn btn-primary">Volver</button>
+    </form>
+</footer>
+
+{% block customScript %}
+<script>
+    function deleteElement(id) {
+        if (confirm("¿Estas seguro que deseas eliminar la factura?")){
+            let url = `factura_proveedor_delete/${id}`;
+            if (url) {
+                window.location.href = url
+            } 
+        }
+    }
+</script>    
+
+<script src="{{ url_for('static', filename='js/modals.js') }}"></script>
+{% endblock %}
+
+{% endblock %}

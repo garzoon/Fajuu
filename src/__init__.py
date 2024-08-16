@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
-from config import Config
+from config import DevelopmentConfig
 
-app = Flask(__name__, static_folder=Config.STATIC_FOLDER, template_folder=Config.TEMPLATE_FOLDER)
+from .routes import entrada_scope, factura_scope
+
+app = Flask(__name__, static_folder=DevelopmentConfig.STATIC_FOLDER, template_folder=DevelopmentConfig.TEMPLATE_FOLDER)
+app.config.from_object(DevelopmentConfig)
 
 @app.route('/')
 def index(): # El index va a redireccionar a login
@@ -21,16 +24,8 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/entrada', methods = ['POST'])
-def entrada():
-    return render_template('entrada.html')
+app.register_blueprint(entrada_scope, url_prefix="/entrada")
+app.register_blueprint(factura_scope, url_prefix="/facturas")
 
-
-
-
-
-
-if __name__ == '__main__':
-    app.config.from_object(Config)
-    app.run(debug=True, port=5000)
-
+if __name__ == "__main__":
+    app.run()

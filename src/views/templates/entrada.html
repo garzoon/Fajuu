@@ -8,22 +8,28 @@
 <main class="main">
     <section class="section-entradas">
 
-        <form action="{{ url_for('entrada') }}" method="POST">
+        <form action="{{ url_for('entrada.cargar') }}" method="POST">
+            <div class="factura_entradas">
+                <h1>Provedor</h1>
+                <label for="lbl-idProveedor">Id proveedor</label>
+                <input class="inp-idProveedor" name="inp-idProveedor" id="inp-idProveedor" type="text">
+            </div>
+
             <div class="factura_entradas">
                 <h1>Factura</h1>
-                <label for="lbl-idFactura">ID factura</label>
+                <label for="lbl-idFactura">Id factura</label>
                 <input class="inp-idFactura" name="inp-idFactura" id="inp-idFactura" type="text">
             </div>
 
             <div class="productos_entradas">
                 <h1>Productos</h1>
-                <label for="lbl-idProducto">ID producto</label>
-                <input class="inp-idProducto" name="inp-idProducto" id="inp-idProducto" type="text">    
-                                
+                <label for="lbl-idProducto">Id producto</label>
+                <input class="inp-idProducto" name="inp-idProducto" id="inp-idProducto" type="text">                 
                 <label for="lbl-cantidad_producto">Cantidad</label>
                 <input class="inp-cantidad_producto" name="inp-cantidad_producto" id="inp-cantidad_producto" type="text">
-                <button class="btn proveedor-buttons_cargar" type="submit">Cargar</button>
             </div>
+
+            <button class="btn proveedor-buttons_cargar" type="submit">Cargar</button>
         </form>
         
         <table class="table">
@@ -37,14 +43,25 @@
                 </tr> 
             </thead>
             <tbody>
+                {% for product in list_products %}
                 <tr>
-                    
+                    <td></td>
+                    <td>{{ product[0] }}</td>
+                    <td>{{ product[1] }}</td>
+                    <td>{{ product[2] }}</td>
+                    <td>
+                        <a href="">Edit</a>
+                        <a href="/delete_contact/{{ contact.0 }}">Delete</a>
+                    </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </section>
     <section class="footer">
-        <button class="btn btn-primary">Enviar</button>
+        <form action="">
+            <button class="btn btn-primary">Enviar</button>
+        </form>
     </section>
 </main>
 

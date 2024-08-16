@@ -1,0 +1,63 @@
+/* El modal ocupará toda la pantalla cuando esté visible */
+.modal {
+    display: none; /* Por defecto, el modal está oculto */
+    position: fixed; /* Fijo en la pantalla */
+    z-index: 1; /* Sobre otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilita el scroll si el contenido es demasiado alto */
+    background-color: rgba(0,0,0,0.4); /* Fondo negro semi-transparente */
+}
+
+/* El contenido del modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% desde la parte superior y centrado horizontalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ancho del modal */
+    max-width: 600px; /* Ancho máximo para que no sea demasiado grande */
+    border-radius: 10px; /* Esquinas redondeadas */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Sombra del modal */
+}
+
+/* El botón de cierre (X) */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilo para el título del modal */
+#modal-title {
+    margin-top: 0;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Estilo para el cuerpo del modal */
+#modal-body ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#modal-body li {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+#modal-body li strong {
+    font-weight: bold;
+    margin-right: 10px;
+}
