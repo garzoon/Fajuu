@@ -1,0 +1,5 @@
+Para subir un producto, este se subiera en fromato .json y debe segir el siguiente template:
+{"id": numero id, "name": "nombre", "quantity": cantidad, "unit": "unidad de medida"}
+
+en caso de ser mas de un prodcuto estos se deben almacenar en una lista:
+[{"id": numero id, "name": "nombre", "quantity": cantidad, "unit": "unidad de medida"}, ...]

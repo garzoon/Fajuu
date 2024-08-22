@@ -1,48 +1,56 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for
+import json
 
 # Controllers
-from ..controller.factura_controller import factura_list, factura_create, factura_delete, factura_update
-from ..controller.entrada_controller import entrada_list, entrada_delete, entrada_update, entrada_select
-from ..controller.proveedor_controller import proveedor_select
-from ..controller.cliente_controller import cliente_select, fullname
-
+from ..controller import *
+# Models
 from ..models import Proveedor, Cliente
 
+
+# Registro del blueprint
 factura_scope = Blueprint("factura_scope", __name__)
 
 @factura_scope.route('/')
 def factura():
     return render_template('factura/factura.html')
 
-
-
-
-
 # FACTURAS DE PROVEEDOR
+PATH_URL_PROVEEDOR = "/factura/factura_proveedor" # Acortador de url
 
-@factura_scope.route('/factura_proveedor', methods=['POST', 'GET'])
+@factura_scope.route('/factura_proveedor', methods=['GET'])
 def factura_proveedor():
-    # busqueda de factura de un proveedor
     list_entradas = []
 
-    for i in entrada_list():
-        proveedor = (proveedor_select(i[1]))
-        proveedor = Proveedor(*proveedor[0]) # El operador * separa cada elemento de una tupla
-        item_entrada = (i[0], i[1], proveedor.prov_razonsocial, i[3])
+    for entrada in entrada_list():
+        entrada = Entrada(*entrada)
+        proveedor = Proveedor(*proveedor_select(entrada.prov_copiaid)[0])
+        item_entrada = (
+                        entrada.ent_id, 
+                        entrada.prov_copiaid, 
+                        proveedor.prov_razonsocial, 
+                        entrada.ent_fecha_entrada)
         list_entradas.append(item_entrada)
-    return render_template('/factura/factura_proveedor/factura_proveedor.html', data = list_entradas)
 
-@factura_scope.route('/factura_proveedor_delete/<int:id>', methods=['POST', 'GET'])
+    return render_template(f'{PATH_URL_PROVEEDOR}/factura_proveedor.html', list_entradas = list_entradas)
+
+
+@factura_scope.route('/factura_proveedor_delete/<int:id>', methods=['GET'])
 def factura_proveedor_delete(id):
-    entrada_delete(id)
+    entrada = Entrada(*entrada_select(id)[0])
+    entrada_delete(entrada)
     return redirect(url_for('factura_scope.factura_proveedor'))
-    
+
+
 @factura_scope.route('/factura_proveedor_view/<int:id>', methods=['GET'])
 def factura_proveedor_view(id):
-    entrada = entrada_select(id)
-    if entrada is None:
-        return jsonify({"error": "Factura no encontrada"}), 404
-    return jsonify(entrada)
+    entrada = Entrada(*entrada_select(id)[0])
+    list_products = json.loads(entrada.ent_detalle_producto)
+    if list_products:
+        print(list_products)
+        return render_template(f'{PATH_URL_PROVEEDOR}/factura_proveedor_view.html', list_products = list_products)
+    else:
+        raise Exception("Producto de entrada no encontrados")
+
 
 
 

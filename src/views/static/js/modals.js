@@ -1,23 +1,45 @@
 
-function openModal(name, type, id) {
-    fetch(`/${type}/${id}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('modal-title').innerText = name;
-            document.getElementById('modal-body').innerHTML = generateModalContent(data);
-            document.getElementById('infoModal').style.display = 'block';
-        });
-}
+function view_modal(title) {
 
-function generateModalContent(data) {
-    let content = '<ul>';
-    for (let key in data) {
-        content += `<li><strong>${key}:</strong> ${data[key]}</li> <br>`;
+    const modal = document.getElementById('infoModal');
+    const span = document.getElementsByClassName('close')[0];
+
+
+    document.getElementById('modal-title').innerText = title
+    modal.style.display = 'block'
+
+    
+    span.onclick = function() {
+        modal.style.display = 'none'
     }
-    content += '</ul>';
-    return content;
+    window.onclick = function(event) {
+        if(event.target == modal) {
+            modal.style.display = 'none'
+        }
+    } 
 }
 
-document.querySelector('.close').onclick = function() {
-    document.getElementById('infoModal').style.display = 'none';
+
+function delete_modal(redirect, id) {
+
+    const modal = document.getElementById('infoModal');
+    const span = document.getElementsByClassName('close')[0];
+    const close_modal = document.getElementById('close_button')
+
+    modal.style.display = 'block'
+    document.getElementById('deleteForm').action = `${redirect}/${id}`;
+
+    span.onclick = function() {
+        modal.style.display = 'none'
+    }
+    close_modal.onclick = function() {
+        modal.style.display = 'none'    
+    }
+    window.onclick = function(event) {
+        if(event.target == modal) {
+            modal.style.display = 'none'
+        }
+    } 
 }
+
+

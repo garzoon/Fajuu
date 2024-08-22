@@ -19,6 +19,8 @@ def create_connection():
     except Exception as ex:
         print(f"Error para conectarse a la base de datos: {ex}")
         return None
+        
+
 
 #Realizar proceso de conexion, creacion de cursor y fetch one (SOLO PARA CONSULTAS SELECT)
 def fetch_one(query, parameters):
@@ -37,6 +39,7 @@ def fetch_one(query, parameters):
             cur.close()
         if connection:
             connection.close()
+            print("conexion cerrada")
 
 def fetch_query(query, parameters):
     connection = None
@@ -56,6 +59,7 @@ def fetch_query(query, parameters):
             cur.close()
         if connection:
             connection.close()
+            print("conexion cerrada")
 
 # Verificar que un producto existe en la base de datos
 def element_exist(table: str, field: str, value) -> bool:

@@ -1,0 +1,38 @@
+<!-- MODAL INFORMATION ENTRADA -->
+
+<div id="genericModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title"></h2>
+        <div id="modal-body"></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#Item</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Unidad Medida</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            {% if list_products %}
+            {% for value in list_products %}
+                <tr>
+                    <td>{{ value['nombre_clave'] }}</td>
+                    <td>{{ value['cantidad'] }}</td>
+                    <td>{{ value['unidad_medida'] }}</td>
+                </tr>
+            {% endfor %}
+                
+            {% else %}
+                <tr>
+                    <td>No se encontraron productos</td>
+                </tr>
+            {% endif%}
+            </tbody>  
+        </table>
+        </div>
+    </div>
+</div>

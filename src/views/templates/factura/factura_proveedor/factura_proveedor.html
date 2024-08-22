@@ -29,30 +29,40 @@
         <div class="table">
             <table>
                 <thead>
-                    <th>Numero factura</th>
-                    <th>Id proveedor</th>
-                    <th>Proveedor</th>
-                    <th>Fecha de entrada</th>
-                    <th>Acciones</th>
+                    <tr>
+                        <th>Numero factura</th>
+                        <th>Id proveedor</th>
+                        <th>Proveedor</th>
+                        <th>Fecha de entrada</th>
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    {% for factura in data %}
+                    {% if list_entradas %}
+                        {% for entrada in list_entradas %}
+                            <tr>
+                                <td> {{ entrada.0 }}</td>
+                                <td> {{ entrada.1 }}</td>
+                                <td> {{ entrada.2 }}</td>
+                                <td> {{ entrada.3 }}</td>
+                                <td>
+                                    <button onclick="view_modal('Factura: {{ entrada.0 }}')">Ver</button>
+                                    <!-- open modal views faturas proveedor -->
+                                    {% include "factura/factura_proveedor/factura_proveedor_view.html" %}
+                                    <button onclick="deleteElement('{{ entrada.0 }}');">Eliminar</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td> {{ factura.0 }}</td>
-                            <td> {{ factura.1 }}</td>
-                            <td> {{ factura.2 }}</td>
-                            <td> {{ factura.3 }}</td>
-                            <td>
-                                <button onclick="openModal('Factura de entrada: {{ factura.0}}', 'facturas/factura_proveedor_view', '{{ factura.0 }}')">Ver</button>
-                                <button onclick="deleteElement('{{ factura.0 }}');">Eliminar</button>
-                                <button>Editar</button>
-                            </td>
+                            <td>No hay faturas para mostrar</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
-        {% include 'includes/modal_view.html' %}
+        <h1>{{ list_products | safe }}</h1>
+
     </section>
 </main>
 <footer class="footer">
@@ -64,7 +74,7 @@
 {% block customScript %}
 <script>
     function deleteElement(id) {
-        if (confirm("¿Estas seguro que deseas eliminar la factura?")){
+        if (confirm(`La factura ${id} esta por ser eliminada, deseas eliminarla`)){
             let url = `factura_proveedor_delete/${id}`;
             if (url) {
                 window.location.href = url
@@ -73,7 +83,6 @@
     }
 </script>    
 
-<script src="{{ url_for('static', filename='js/modals.js') }}"></script>
 {% endblock %}
 
 {% endblock %}

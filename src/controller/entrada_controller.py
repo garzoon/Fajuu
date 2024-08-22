@@ -44,15 +44,15 @@ def entrada_create(entrada : Entrada) -> Entrada:
     return entrada
 
 
-def entrada_delete (ent_id):
-    if not element_exist('entradas', 'ent_id', ent_id):
+def entrada_delete (entrada: Entrada):
+    if not element_exist('entradas', 'ent_id', entrada.ent_id):
         raise Exception("Entrada no encontrado")
 
     query = "DELETE FROM entradas WHERE ent_id = %s"
-    parameters = [ent_id, ]
+    parameters = [entrada.ent_id, ]
 
     fetch_query(query, parameters)
-    return "Entrada eliminada"
+    return entrada
 
 
 def entrada_update(entrada: Entrada) -> Entrada:

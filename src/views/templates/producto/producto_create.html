@@ -1,0 +1,47 @@
+{% extends './layout.html' %}
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
+{% endblock %}
+
+{% block main %}
+<main class="main">
+    <section class="section-productos">
+        <h1>Nuevo producto</h1>
+        <form class="frm-productos" action="{{ url_for('producto_scope.create') }}" method="post">
+            <label  class="inp-descripcionProducto" for="producto_descripcion">Descripcion</label>
+            <input class="inp-descripcionProducto" id="producto_descripcion" name="producto_descripcion" type="text" required>
+
+            <label class="lbl-categoria" for="slc-categoria">Categoria</label>
+            <select  class="slc-categoria" id="producto_categoria" name="producto_categoria" required>
+                <option value="1">Refrigerado</option>
+                <option value="2">Congelado</option>
+                <option value="3">Seco</option>
+            </select>
+
+            <label  class="lbl-descripcionProducto" for="producto_precio">Precio(en venta)</label>
+            <input class="inp-descripcionProducto" id="producto_precio" name="producto_precio" type="number" placeholder="COP" required>
+                
+            <label class="lbl-estadoProducto" for="producto_medida">Unidad de medida</label>
+            <select class="slc-estadoProducto" id="producto_medida" name="producto_medida" required>
+                <option value="Kilogramo">Kilogramo</option>
+                <option value="Gramo">Gramo</option>
+                <option value="Litro">Litro</option>
+                <option value="Mililitro">Mililitro</option>
+                <option value="Unidad">Unidad</option>
+            </select>
+
+            <button class="btn proveedor-buttons_cargar" type="submit">Crear</button>
+        </form>
+    </section>
+</main>
+<footer class="footer">
+    <div class="action-buttons">
+        <button></button>
+        <button></button>
+        <a href=" {{ url_for('producto_scope.producto') }}" class="btn btn-primary">Volver</a>
+    </div>
+</footer>
+
+{% endblock %}
+        
