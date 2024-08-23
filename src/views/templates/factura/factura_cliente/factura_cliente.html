@@ -1,81 +1,141 @@
 {% extends './layout.html' %}
 
+
+
 {% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
 {% endblock %}
 
 {% block main %}
 
+
 <main class="main">
-    <section class="section-misFacturas">
-        <h1>Buscar facturas</h1>
-        <form class="frm-misFacturas">
+    <section class="section-productos">
+        <h1>Facturas de cliente</h1>
+        <form class="frm-productos" action="{{ url_for('factura_cliente_scope.factura') }}" method="POST">
             <div class="section-froms">
+                <label class="lbl-IDproducto" for="factura_id">Id factura</label>
+                <input class="inp-IDproducto" id="factura_id" name="factura_id" type="number">
 
-                <label  class="lbl-IDfactura_cliente" for="inp-IDfactura_cliente">Numero Factura</label>
-                <input class="inp-IDfactura_cliente" id="inp-IDfactura_cliente" type="text">
+                <label class="lbl-IDproducto" for="cliente_id">Id cliente</label>
+                <input class="inp-IDproducto" id="cliente_id" name="cliente_id" type="number">
 
-                <label  class="lbl-IDcliente_cliente" for="inp-IDcliente_cliente">ID cliente</label>
-                <input class="inp-IDcliente_cliente" id="inp-IDcliente_cliente" type="text">  
-
-                <label class="lbl-fechaIngreso_cliente" for="inp-fechaIngreso_cliente">Fecha de ingreso</label>
-                <input class="inp-fechaIngreso_cliente" id="inp-fechaIngreso_cliente" type="date" name="">
-
-                <label class="lbl-fechaIngreso_cliente" for="inp-fechaIngreso_cliente">Fecha de vencimiento</label>
-                <input class="inp-fechaIngreso_cliente" id="inp-fechaIngreso_cliente" type="date" name="">
-
-                <label class="lbl-estado_cliente" for="slc-estado_cliente">Estado</label>
-                <select name="" class="slc-estado_cliente" id="slc-estado_cliente">
-                    <option value="">Pendiente</option>
-                    <option value="proveedor">Pago</option>
-                    <option value="cliente">Cancelado</option>
-                </select>
+                <label class="lbl-IDproducto" for="factura_fecha">Fecha de emision</label>
+                <input class="inp-IDproducto" id="factura_fecha" name="factura_fecha" type="date">
             </div>
-            <div class="section-buttons">
-                <button class="btn btn-cliente btn-cliente_filtra">Filtra</button>
-            </div>
+
+            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
         </form>
 
-        <h1>Relacion de facturas</h1>
         <div class="table">
             <table>
                 <thead>
-                    <th>Numero factura</th>
-                    <th>Id Cliente</th>
-                    <th>Cliente</th>
-                    <th>Fecha de entrada</th>
-                    <th>Fecha de vencimiento</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <tr>
+                        <th>Id factura</th>
+                        <th>Id cliente</th>
+                        <th>Cliente</th>
+                        <th>Fecha de emision</th>
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    {% for factura in products %}
-                        <tr>
-                            <td> {{ factura.0 }}</td>
-                            <td> {{ factura.1 }}</td>
-                            <td> {{ factura.2 }}</td>
-                            <td> {{ factura.3 }}</td>
-                            <td> {{ factura.4 }}</td>
-                            <td> {{ factura.5 }}</td>
-                            <td>
-                                <a href="">ver</a>
-                                <a href="">eliminar</a>
-                                <a href="">editar</a>
-                            </td>
-                        </tr>
+
+                    {% if list_facturas %}
+                    {% for factura in list_facturas %}
+                    <tr>
+                        <td>{{ factura[0] }}</td>
+                        <td>{{ factura[1] }}</td>
+                        <td>{{ factura[2] }}</td>
+                        <td>{{ factura[3] }}</td>
+                        <td>
+                            <button onclick="mostrarProducto('{{ factura[0] }}')">Ver</button>
+                            {% include 'factura/factura_cliente/factura_cliente_view.html' %}
+                            <button
+                                onclick="delete_modal('factura_cliente_delete', '{{ factura[0] }}')">Eliminar</button>
+                            {% include 'includes/modal_close.html' %}
+                        </td>
+                    </tr>
                     {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>
+                            No hay facturas para mostrar
+                        </td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
     </section>
 </main>
 
-<!-- Footer - buttons action -->
 <footer class="footer">
-    <form action="{{ url_for('factura.factura_volver') }}" method="POST">
+    <form action="{{ url_for('factura_scope.factura') }}" method="get">
         <button type="submit" class="btn btn-primary">Volver</button>
     </form>
 </footer>
 
+{% block customScript %}
+<script>
+    function mostrarProducto(facturaID) {
+        const modal = document.getElementById('infoModal');
+        const span = document.getElementsByClassName('close')[0];
 
+        fetch(`factura_cliente_details/${facturaID}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Error) {
+                    alert(data.Error);
+                } else {
+                    document.getElementById('title-entrada').innerText = `Factura Id: ${data.id}`;
+
+                    document.getElementById('modal-fact-id').innerText = data.id;
+                    document.getElementById('modal-fact-clienteId').innerText = data.cliente_id;
+                    document.getElementById('modal-fact-cliente').innerText = data.nombre;
+                    document.getElementById('modal-fact-fecha').innerText = data.fecha;
+
+                    // Llenar la tabla con los productos
+                    fillTable(data.dic_productos);
+
+                    modal.style.display = 'block';
+
+                    span.onclick = function () {
+                        modal.style.display = 'none';
+                    };
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none';
+                        }
+                    };
+                }
+            })
+            .catch(error => {
+                console.log('Error al obtener los detalles del producto:', error);
+            });
+    }
+
+    function fillTable(data) {
+        const tableBody = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+
+        tableBody.innerHTML = '';
+
+        for (const id in data) {
+            if (data.hasOwnProperty(id)) {
+                const row = tableBody.insertRow();
+
+                const cellId = row.insertCell(0);
+                const cellName = row.insertCell(1);
+                const cellQuantity = row.insertCell(2);
+                const cellUnit = row.insertCell(3);
+
+                cellId.textContent = id;
+                cellName.textContent = data[id][0];
+                cellQuantity.textContent = data[id][1];
+                cellUnit.textContent = data[id][2];
+            }
+        }
+    }
+</script>
+{% endblock %}
 {% endblock %}

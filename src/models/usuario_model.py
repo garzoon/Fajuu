@@ -12,7 +12,4 @@ class Usuario:
         self.rol_copiaid = rol_copiaid
         self.user_estado = user_estado
         
-    @classmethod # decarador para usar la clase sin necesidad de instansearla
-    def check_password (self,hashed_password, user_password):
-        return check_password_hash(hashed_password, user_password)
     

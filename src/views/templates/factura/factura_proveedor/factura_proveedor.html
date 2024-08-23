@@ -1,36 +1,38 @@
 {% extends './layout.html' %}
 
+
+
 {% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
 {% endblock %}
 
 {% block main %}
-<main class="main">
-    <section class="section-misFacturas">
-        <h1>Buscar facturas</h1>
-        <form class="frm-misFacturas" method="post">
-            <div class="section-froms">
-                <label  class="lbl-IDfactura_proveedor" for="inp-IDfactura_proveedor">Numero factura</label>
-                <input class="inp-IDfactura_proveedor" id="inp-IDfactura_proveedor" type="text">
 
-                <label  class="lbl-IDcliente_proveedor" for="inp-IDcliente_proveedor">ID proveedor</label>
-                <input class="inp-IDcliente_proveedor" id="inp-IDcliente_proveedor" type="text">
-                
-                <label class="lbl-fechaIngreso_proveedor" for="inp-fechaIngreso_proveedor">Fecha de ingreso</label>
-                <input class="inp-fechaIngreso_proveedor" id="inp-fechaIngreso_proveedor" type="date" name="">
+
+<main class="main">
+    <section class="section-productos">
+        <h1>Facturas de proveedor</h1>
+        <form class="frm-productos" action="{{ url_for('factura_proveedor_scope.factura') }}" method="POST">
+            <div class="section-froms">
+                <label class="lbl-IDproducto" for="entrada_id">Id entrada</label>
+                <input class="inp-IDproducto" id="entrada_id" name="entrada_id" type="number">
+
+                <label class="lbl-IDproducto" for="proveedor_id">Id proveedor</label>
+                <input class="inp-IDproducto" id="proveedor_id" name="proveedor_id" type="number">
+
+                <label class="lbl-IDproducto" for="entrada_fecha">Fecha de entrada</label>
+                <input class="inp-IDproducto" id="entrada_fecha" name="entrada_fecha" type="date">
             </div>
-            <div class="section-buttons">
-                <button class="btn btn-proveedor btn-proveedor_filtra">Filtra</button>
-            </div>
+
+            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
         </form>
 
-        <h1>Relacion de facturas</h1>
         <div class="table">
             <table>
                 <thead>
                     <tr>
-                        <th>Numero factura</th>
+                        <th>Id entrada</th>
                         <th>Id proveedor</th>
                         <th>Proveedor</th>
                         <th>Fecha de entrada</th>
@@ -38,51 +40,107 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     {% if list_entradas %}
-                        {% for entrada in list_entradas %}
-                            <tr>
-                                <td> {{ entrada.0 }}</td>
-                                <td> {{ entrada.1 }}</td>
-                                <td> {{ entrada.2 }}</td>
-                                <td> {{ entrada.3 }}</td>
-                                <td>
-                                    <button onclick="view_modal('Factura: {{ entrada.0 }}')">Ver</button>
-                                    <!-- open modal views faturas proveedor -->
-                                    {% include "factura/factura_proveedor/factura_proveedor_view.html" %}
-                                    <button onclick="deleteElement('{{ entrada.0 }}');">Eliminar</button>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                    {% for entrada in list_entradas %}
+                    <tr>
+                        <td>{{ entrada[0] }}</td>
+                        <td>{{ entrada[1] }}</td>
+                        <td>{{ entrada[2] }}</td>
+                        <td>{{ entrada[3] }}</td>
+                        <td>
+                            <button onclick="mostrarProducto('{{ entrada[0] }}')">Ver</button>
+                            {% include 'factura/factura_proveedor/factura_proveedor_view.html' %}
+                            <button
+                                onclick="delete_modal('factura_proveedor_delete', '{{ entrada[0] }}')">Eliminar</button>
+                            {% include 'includes/modal_close.html' %}
+                        </td>
+                    </tr>
+                    {% endfor %}
                     {% else %}
-                        <tr>
-                            <td>No hay faturas para mostrar</td>
-                        </tr>
+                    <tr>
+                        <td>
+                            No hay facturas para mostrar
+                        </td>
+                    </tr>
                     {% endif %}
                 </tbody>
             </table>
         </div>
-        <h1>{{ list_products | safe }}</h1>
-
     </section>
 </main>
+
 <footer class="footer">
-    <form action="{{ url_for('factura_scope.factura_volver') }}" method="POST">
+    <form action="{{ url_for('factura_scope.factura') }}" method="get">
         <button type="submit" class="btn btn-primary">Volver</button>
     </form>
 </footer>
 
 {% block customScript %}
 <script>
-    function deleteElement(id) {
-        if (confirm(`La factura ${id} esta por ser eliminada, deseas eliminarla`)){
-            let url = `factura_proveedor_delete/${id}`;
-            if (url) {
-                window.location.href = url
-            } 
+    function mostrarProducto(entradaId) {
+        const modal = document.getElementById('infoModal');
+        const span = document.getElementsByClassName('close')[0];
+
+        fetch(`factura_proveedor_details/${entradaId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Error) {
+                    alert(data.Error);
+                } else {
+                    document.getElementById('title-entrada').innerText = `Factura Id: ${data.id}`;
+
+                    document.getElementById('modal-ent-id').innerText = data.id;
+                    document.getElementById('modal-ent-provedorId').innerText = data.proveedor_id;
+                    document.getElementById('modal-ent-proveedor').innerText = data.razon_social;
+                    document.getElementById('modal-ent-fecha').innerText = data.fecha;
+
+                    // Llenar la tabla con los productos
+                    fillTable(data.dic_productos);
+
+                    modal.style.display = 'block';
+
+                    span.onclick = function () {
+                        modal.style.display = 'none';
+                    };
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none';
+                        }
+                    };
+                }
+            })
+            .catch(error => {
+                console.log('Error al obtener los detalles del producto:', error);
+            });
+    }
+
+    function fillTable(data) {
+        const tableBody = document.getElementById('productos-table').getElementsByTagName('tbody')[0];
+
+        // Limpiar las filas existentes
+        tableBody.innerHTML = '';
+
+        for (const id in data) {
+            if (data.hasOwnProperty(id)) {
+                const row = tableBody.insertRow();
+
+                // Insertar las celdas con los datos
+                const cellId = row.insertCell(0);
+                const cellName = row.insertCell(1);
+                const cellQuantity = row.insertCell(2);
+                const cellUnit = row.insertCell(3);
+
+                // Asignar valores a las celdas
+                cellId.textContent = id;
+                cellName.textContent = data[id][0];
+                cellQuantity.textContent = data[id][1];
+                cellUnit.textContent = data[id][2];
+            }
         }
     }
-</script>    
-
+</script>
 {% endblock %}
+
 
 {% endblock %}

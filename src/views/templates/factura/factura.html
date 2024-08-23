@@ -7,15 +7,27 @@
 {% block main %}
 <main class="main">
     <section class="section-misFacturas">
-        <h1>Buscar facturas</h1>
+        <h1>Facturas</h1>
         <form class="frm-misFacturas">
-            <label class="lbl-misFacturas" for="slc-misFacturas">Tipo de factura</label>
-            <select name="prueba" class="slc-misFacturas" id="slc-misFacturas" onchange="window.location.href=this.value">
-                <option value="">No definida</option>
-                <option value="/facturas/factura_proveedor">Proveedor</option>
-                <option value="/facturas/factura_cliente">Cliente</option>
+            <label class="lbl-misFacturas" for="select_factura">Seleccionar tipo de factura:</label>
+            <select  id="select_factura" onchange="redirect_factura()">
+                <option value="" selected disabled>Seleccione una factura</option>
+                <option value="factura_proveedor">Facturas de proveedor</option>
+                <option value="factura_cliente">Facturas de cliente</option>
             </select>
         </form>
     </section>
 </main>
+
+{% block customScript %}
+<script>
+    function redirect_factura() {
+        const select = document.getElementById('select_factura');
+        const selectedValue = select.value;
+        if (selectedValue) {
+            window.location.href = `/${selectedValue}`;
+        }
+    }
+</script>
+{% endblock %}
 {% endblock %}
