@@ -13,7 +13,7 @@
                 <h1>Datos de factura</h1>
                 <label for="proveedor_id">Id proveedor</label>
                 <input class="inp-idProveedor" id="proveedor_id" name="proveedor_id" type="text"
-                    value="{{ provedor_id }}">
+                    value="{{ proveedor_id }}">
 
                 <label for="factura-id">Id factura</label>
                 <input class="inp-idFactura" id="factura-id" name="factura-id" type="text" value="{{ factura_id }}">
@@ -33,7 +33,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>Item</th>
                     <th>Id producto</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
@@ -46,8 +45,7 @@
                 <tr>
                     <td>{{ key }}</td>
                     <td>{{ producto[0] }}</td>
-                    <td>{{ producto[1] }}</td>
-                    <td>{{ producto[2] }} {{ producto[3] }}</td>
+                    <td>{{ producto[1] }} {{ producto[2] }}</td>
                     <td>
                         <form action="{{ url_for('entrada.delete_entrada', id=key) }}" method="POST">
                             <button type="submit">Eliminar</button>
@@ -63,6 +61,9 @@
     <section class="footer">
         <form action="{{ url_for ('entrada.send_entrada') }}" method="POST">
             <button class="btn btn-primary">Enviar</button>
+        </form>
+        <form action="{{ url_for ('entrada.clear_entrada') }}" method="POST">
+            <button class="btn btn-primary">Descartar</button>
         </form>
     </section>
 </main>

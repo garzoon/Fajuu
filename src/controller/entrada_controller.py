@@ -22,16 +22,18 @@ def entrada_select(ent_id) -> Entrada:
 
 
 def entrada_create(entrada : Entrada) -> Entrada:
-    query = """INSERT INTO entradas 
-                    (ent_id, 
-                    prov_copiaid, 
-                    ent_detalle_producto, 
-                    ent_fecha_entrada) VALUES (%s, %s, %s, %s)"""
-    parameters = (entrada.ent_id, 
-                  entrada.prov_copiaid, 
-                  entrada.ent_detalle_producto, 
-                  entrada.ent_fecha_entrada)
-
+    query = """INSERT INTO entradas (
+        ent_id, 
+        prov_copiaid, 
+        ent_detalle_producto, 
+        ent_fecha_entrada) VALUES (%s, %s, %s, %s)
+    """
+    parameters = (
+        entrada.ent_id, 
+        entrada.prov_copiaid, 
+        entrada.ent_detalle_producto, 
+        entrada.ent_fecha_entrada
+    )
     fetch_query(query, parameters)
     return entrada
 
@@ -45,16 +47,17 @@ def entrada_delete (entrada: Entrada):
 
 
 def entrada_update(entrada: Entrada) -> Entrada:
-    query = ("""UPDATE entradas 
-                SET  
-                    prov_copiaid            = %s, 
-                    ent_detalle_producto    = %s, 
-                    ent_fecha_entrada       = %s
-                WHERE ent_id = %s
-                """)
-    parameters = (entrada.prov_copiaid, 
-                  entrada.ent_detalle_producto, 
-                  entrada.ent_fecha_entrada,
-                  entrada.ent_id)
+    query = ("""UPDATE entradas SET  
+        prov_copiaid            = %s, 
+        ent_detalle_producto    = %s, 
+        ent_fecha_entrada       = %s
+        WHERE ent_id            = %s
+    """)
+    parameters = (
+        entrada.prov_copiaid, 
+        entrada.ent_detalle_producto, 
+        entrada.ent_fecha_entrada,
+        entrada.ent_id
+    )
     fetch_query(query, parameters)
     return entrada

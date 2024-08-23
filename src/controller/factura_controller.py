@@ -22,47 +22,47 @@ def factura_select(fact_id) -> Factura:
 
 
 def factura_create(factura: Factura) -> Factura:
-    query = """INSERT INTO facturas 
-                    (fact_id, 
-                    clien_copiaid, 
-                    fact_detalle_productos, 
-                    fact_fecha_emision, 
-                    fact_fecha_vencimiento, 
-                    fact_estado) VALUES (%s, %s, %s, %s, %s, %s)"""
-    parameters = (factura.fact_id, 
-                  factura.clien_copiaid, 
-                  factura.fact_detalle_productos, 
-                  factura.fact_fecha_emision, 
-                  factura.fact_fecha_vencimiento, 
-                  factura.fact_estado)	
+    query = """INSERT INTO facturas (
+        fact_id, 
+        clien_copiaid, 
+        fact_detalle_productos, 
+        fact_fecha_emision, 
+        fact_estado) VALUES (%s, %s, %s, %s, %s)
+    """
+    parameters = (
+        factura.fact_id, 
+        factura.clien_copiaid, 
+        factura.fact_detalle_productos, 
+        factura.fact_fecha_emision, 
+        factura.fact_estado
+    )	
 
-    fetch_one(query, parameters)
+    fetch_query(query, parameters)
     return factura
 
 
 def factura_delete (factura: Factura) -> Factura:
     query = "DELETE FROM facturas WHERE fact_id = %s"
-    parameters = (factura.fact_id)
+    parameters = (factura.fact_id, )
 
-    fetch_one(query, parameters)
+    fetch_query(query, parameters)
     return factura
 
 
 def factura_update(factura: Factura) -> Factura:
-    query = ("""UPDATE usuarios
-                SET 
-                    clien_copiaid           = %s,
-                    fact_detalle_productos  = %s,
-                    fact_fecha_emision      = %s, 
-                    fact_fecha_vencimiento  = %s, 
-                    fact_estado             = %s
-                WHERE fact_id = %s
-                """)
-    parameters = (factura.clien_copiaid,
-                  factura.fact_detalle_productos,  
-                  factura.fact_fecha_emision, 
-                  factura.fact_fecha_vencimiento, 
-                  factura.fact_estado,
-                  factura.fact_id)
-    fetch_one(query, parameters)
+    query = ("""UPDATE facturas SET 
+        clien_copiaid           = %s,
+        fact_detalle_productos  = %s,
+        fact_fecha_emision      = %s, 
+        fact_estado             = %s
+        WHERE fact_id           = %s
+    """)
+    parameters = (
+        factura.clien_copiaid,
+        factura.fact_detalle_productos,  
+        factura.fact_fecha_emision,  
+        factura.fact_estado,
+        factura.fact_id
+    )
+    fetch_query(query, parameters)
     return factura

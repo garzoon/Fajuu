@@ -35,5 +35,6 @@ app.register_blueprint(usuario_scope, url_prefix="/usuario")
 app.register_blueprint(cliente_scope, url_prefix="/cliente")
 app.register_blueprint(proveedor_scope, url_prefix="/proveedor")
 app.register_blueprint(operador_scope, url_prefix="/operador")
+app.register_blueprint(salida_scope, url_prefix="/salida")
 if __name__ == "__main__":
     app.run()
