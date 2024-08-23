@@ -1,0 +1,26 @@
+{% extends './layout.html' %}
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
+{% endblock %}
+
+{% block main %}
+<main class="main">
+    <section class="section-misFacturas">
+        <h1>Usuarios</h1>
+        <form class="frm-misFacturas">
+            <button onclick="redirect_user('operador')">Operador</button>
+            <button onclick="redirect_user('proveedor')">Proveedor</button>
+            <button onclick="redirect_user('cliente')">Cliente</button>
+        </form>
+    </section>
+</main>
+
+{% block customScript %}
+<script>
+function redirect_user(redirect) {
+    window.location.href = `'${redirect}'/`;
+}
+</script>
+{% endblock %}
+{% endblock %}

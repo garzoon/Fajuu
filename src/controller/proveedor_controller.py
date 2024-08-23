@@ -13,9 +13,6 @@ def proveedor_list() -> Proveedor:
         return cur.fetchall()
 
 def proveedor_select(prov_id) -> Proveedor:
-    if not element_exist('proveedor', 'prov_id', prov_id):
-        raise Exception("Proveedor no encontrado")
-    
     query = "SELECT * FROM proveedor WHERE prov_id = %s ORDER BY prov_id DESC"
     parameters = (prov_id, )
 
@@ -27,9 +24,6 @@ def proveedor_select(prov_id) -> Proveedor:
 
 
 def proveedor_create(proveedor: Proveedor) -> Proveedor:
-    if element_exist('proveedor', 'prov_id', proveedor.prov_id):
-        raise Exception(f"Proveedot {proveedor.prov_id}: {proveedor.prov_nit} - {proveedor.prov_razonsocial} ya existe")
-    
     query = """INSERT INTO proveedor 
                     (prov_nit, 
                     prov_razonsocial, 
@@ -51,9 +45,6 @@ def proveedor_create(proveedor: Proveedor) -> Proveedor:
 
 
 def proveedor_delete (proveedor: Proveedor) -> Proveedor:
-    if not element_exist('proveedor', 'prov_id', proveedor.prov_id):
-        raise Exception("Proveedor no encontrado")
-
     query = "DELETE FROM proveedor WHERE prov_id = %s"
     parameters = (proveedor.prov_id)
 
@@ -62,9 +53,6 @@ def proveedor_delete (proveedor: Proveedor) -> Proveedor:
 
 
 def proveedor_update(proveedor: Proveedor) -> Proveedor:
-    if not element_exist('proveedor', 'prov_id', proveedor.prov_id):
-        raise Exception("Proveedor no encontrado")
-
     query = ("""UPDATE usuarios
                 SET 
                     prov_nit            = %s, 

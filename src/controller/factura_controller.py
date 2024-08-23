@@ -2,9 +2,7 @@ from ..models.factura_model import Factura
 from ..database.connection import *
 
 def factura_list() -> Factura:
-
     query = "SELECT * FROM facturas ORDER BY fact_id DESC"
-
     connection = create_connection()
     if connection:
         cur = connection.cursor()
@@ -13,9 +11,6 @@ def factura_list() -> Factura:
 
 
 def factura_select(fact_id) -> Factura:
-    if not element_exist('facturas', 'fact_id', fact_id):
-        raise Exception("Factura no encontrada")
-    
     query = "SELECT * FROM facturas WHERE fact_id = %s ORDER BY fact_id DESC"
     parameters = (fact_id, )
 
@@ -27,9 +22,6 @@ def factura_select(fact_id) -> Factura:
 
 
 def factura_create(factura: Factura) -> Factura:
-    if element_exist('facturas', 'fact_id', factura.fact_id):
-        raise Exception(f"Factura {factura.fact_id} : {factura.clien_copiaid} ya existe")
-    
     query = """INSERT INTO facturas 
                     (fact_id, 
                     clien_copiaid, 
@@ -49,9 +41,6 @@ def factura_create(factura: Factura) -> Factura:
 
 
 def factura_delete (factura: Factura) -> Factura:
-    if not element_exist('facturas', 'fact_id', factura.fact_id):
-        raise Exception("Factura no encontrada")
-
     query = "DELETE FROM facturas WHERE fact_id = %s"
     parameters = (factura.fact_id)
 
@@ -60,9 +49,6 @@ def factura_delete (factura: Factura) -> Factura:
 
 
 def factura_update(factura: Factura) -> Factura:
-    if not element_exist('facturas', 'fact_id', factura.fact_id):
-        raise Exception("Factura no encontrada")
-
     query = ("""UPDATE usuarios
                 SET 
                     clien_copiaid           = %s,

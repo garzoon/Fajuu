@@ -1,0 +1,95 @@
+{% extends './layout.html' %}
+
+
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/usuario.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
+{% endblock %}
+
+{% block main %}
+
+
+<main class="main">
+    <section class="section-productos">
+        <h1>Productos</h1>
+        <form class="frm-productos" action="{{ url_for('producto_scope.producto') }}" method="POST">
+            <div class="section-froms">
+                <label class="lbl-IDproducto" for="producto_id">Id Producto</label>
+                <input class="inp-IDproducto" id="producto_id" name="producto_id" type="text">
+        
+                <label class="lbl-categoria" for="producto_categoria">Categoria</label>
+                <select class="slc-categoria" id="producto_categoria" name="producto_categoria">
+                    <option value="" selected>No definido</option>
+                    <option value="1">Refrigerado</option>
+                    <option value="2">Congelado</option>   
+                    <option value="3">Seco</option>
+                </select>
+        
+                <label class="lbl-estadoProducto" for="producto_estado">Estado</label>
+                <select class="slc-estadoProducto" id="producto_estado" name="producto_estado">
+                    <option value="" selected>No definido</option>
+                    <option value="disponible">Disponible</option>
+                    <option value="innactivo">Innactivo</option>
+                    <option value="agotado">Agotado</option>
+                </select>
+            </div>
+        
+            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
+        </form>
+        
+        <h1>Relacion de productos</h1>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Producto</th>
+                        <th>Descripcion</th>
+                        <th>Categoria</th>
+                        <th>Und. Medida</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    
+                    {% if list_producto %}
+                        {% for producto in list_producto %}
+                            <tr>
+                                <td>{{ producto[0] }}</td>
+                                <td>{{ producto[1] }}</td>
+                                <td>{{ producto[2] }}</td>
+                                <td>{{ producto[3] }}</td>
+                                <td>{{ producto[4] }}</td>
+                                <td>{{ producto[5] }}</td>
+                                <td> 
+                                    <button onclick="mostrarProducto('{{ producto[0] }}')">Ver</button>
+                                    {% include 'producto/producto_view.html' %}
+                                    <button onclick="redirect('producto_update', '{{ producto[0] }}')">Editar</button>
+                                    <button onclick="delete_modal('producto_delete', '{{ producto[0] }}')">Eliminar</button>
+                                    {% include 'includes/modal_close.html' %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>
+                            No hay productos para mostrar
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <form action="{{ url_for('producto_scope.producto_add') }}" method="get">
+        <button type="submit" class="btn btn-primary">Crear </button>
+    </form>
+</footer>
+
+
+{% endblock %}

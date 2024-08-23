@@ -4,7 +4,6 @@ from ..database.connection import *
 def get_product_category(cate_copiaid) -> Categoria:
     query = "SELECT * FROM categorias WHERE cate_id = %s"
     parameters = (cate_copiaid, )
-
     connection = create_connection()
     if connection:
         cur = connection.cursor()
@@ -13,9 +12,7 @@ def get_product_category(cate_copiaid) -> Categoria:
     
 
 def producto_list() -> Producto:
-
     query = """SELECT * FROM productos ORDER BY prod_id DESC"""
-
     connection = create_connection()
     if connection:
         cur = connection.cursor()
@@ -24,9 +21,6 @@ def producto_list() -> Producto:
 
 
 def producto_select(prod_id) -> Producto:
-    if not element_exist('productos', 'prod_id', prod_id):
-        raise Exception("Producto no encontrado")
-    
     query = """SELECT * FROM productos WHERE prod_id = %s"""
     parameters = (prod_id, )
 
@@ -37,10 +31,7 @@ def producto_select(prod_id) -> Producto:
         return cur.fetchall()
 
 
-def producto_create(producto: Producto) -> Producto:
-    if element_exist('productos', 'prod_id', producto.prod_id):
-        raise Exception(f"Producto {producto.prod_id}:{producto.prod_descripcion} ya existe")
-    
+def producto_create(producto: Producto) -> Producto: 
     query = """INSERT INTO productos 
                     (prod_descripcion, 
                     cate_copiaid,
@@ -56,9 +47,6 @@ def producto_create(producto: Producto) -> Producto:
 
 
 def producto_delete (producto: Producto) -> Producto:
-    if not element_exist('productos', 'prod_id', producto.prod_id):
-        raise Exception("Producto no encontrado")
-
     query = "DELETE FROM productos WHERE prod_id = %s"
     parameters = (producto.prod_id, )
 
@@ -67,9 +55,6 @@ def producto_delete (producto: Producto) -> Producto:
 
 
 def producto_update(producto: Producto) -> Producto:
-    if not element_exist('productos', 'prod_id', producto.prod_id):
-        raise Exception("Producto no encontrado")
-
     query = ("""UPDATE productos
                 SET 
                     prod_descripcion    = %s, 
@@ -89,3 +74,11 @@ def producto_update(producto: Producto) -> Producto:
                   producto.prod_id)
     fetch_query(query, parameters)
     return producto
+
+def producto_entrada(prod_id, prod_stock) -> Producto:
+    producto = Producto(*producto_select(prod_id)[0])
+    new_stock = int(prod_stock) + int(producto.prod_stock)
+    query = ("UPDATE productos SET prod_stock = %s WHERE prod_id = %s")
+    parameters = (new_stock, prod_id)
+    return fetch_query(query, parameters)
+     

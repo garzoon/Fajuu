@@ -1,0 +1,97 @@
+{% extends './layout.html' %}
+
+
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
+{% endblock %}
+
+{% block main %}
+
+
+<main class="main">
+    <section class="section-productos">
+        <h1>Operador</h1>
+        <form class="frm-productos" action="{{ url_for('operador_scope.operador') }}" method="POST">
+            <div class="section-froms">
+                <label class="lbl-IDproducto" for="operador_nombre">Nombre</label>
+                <input class="inp-IDproducto" id="operador_nombre" name="operador_nombre" type="text">
+        
+                <label class="lbl-IDproducto" for="operador_apellido">Apellido</label>
+                <input class="inp-IDproducto" id="operador_apellido" name="operador_apellido" type="text">
+
+                <label class="lbl-IDproducto" for="operador_identificacion">Identificacion</label>
+                <input class="inp-IDproducto" id="operador_identificacion" name="operador_identificacion" type="text">
+
+                <label class="lbl-categoria" for="operador_rol">Rol</label>
+                <select class="slc-categoria" id="operador_rol" name="operador_rol">
+                    <option value="" selected>No definido</option>
+                    <option value="1">Administrador</option>
+                    <option value="2">Usuario</option>  
+                </select>
+        
+                <label class="lbl-estadoProducto" for="operador_estado">Estado</label>
+                <select class="slc-estadoProducto" id="operador_estado" name="operador_estado">
+                    <option value="" selected>No definido</option>
+                    <option value="activo">Activo</option>
+                    <option value="innactivo">Innactivo</option>
+                </select>
+            </div>
+        
+            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
+        </form>
+        
+        <h1>Relacion de productos</h1>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Identificacion</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr> 
+                </thead>
+                <tbody>
+                    
+                    {% if list_operadores %}
+                        {% for operador in list_operadores %}
+                            <tr>
+                                <td>{{ operador[0] }}</td>
+                                <td>{{ operador[1] }}</td>
+                                <td>{{ operador[2] }}</td>
+                                <td>{{ operador[3] }}</td>
+                                <td>{{ operador[4] }}</td>
+                                <td> 
+                                    <button onclick="mostrarProducto('{{ operador[0] }}')">Ver</button>
+                                    {% include 'usuario/operador/operador_view.html' %}
+                                    <button onclick="redirect('operador_update', '{{ operador[0] }}')">Editar</button>
+                                    <button onclick="delete_modal('operador_delete', '{{ operador[0] }}')">Eliminar</button>
+                                    {% include 'includes/modal_close.html' %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>
+                            No hay usuarios para mostrar
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <form action="{{ url_for('operador_scope.operador_add') }}" method="get">
+        <button type="submit" class="btn btn-primary">Crear </button>
+    </form>
+</footer>
+
+
+{% endblock %}

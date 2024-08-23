@@ -5,6 +5,14 @@ from ..database.connection import *
 def fullname(user_nombre, user_apellido):
         return f"{user_nombre} {user_apellido}"
 
+def get_user_rol(rol_id):
+    query = "SELECT rol_descripcion FROM tipo_usuario WHERE rol_id = %s"
+    parameters = (rol_id, )
+    connection = create_connection()
+    if connection:
+        cur = connection.cursor()
+        cur.execute(query, parameters)
+        return cur.fetchall()
 
 def usuario_list() -> Usuario:
     query = "SELECT * FROM usuarios ORDER BY user_id DESC"
@@ -17,9 +25,6 @@ def usuario_list() -> Usuario:
 
 
 def usuario_select(user_id) -> Usuario:
-    if not element_exist('usuarios', 'user_id', user_id):
-        raise Exception("Usuario no encontrado")
-    
     query = "SELECT * FROM usuarios WHERE user_id = %s ORDER BY user_id DESC"
     parameters = (user_id, )
 
@@ -31,70 +36,51 @@ def usuario_select(user_id) -> Usuario:
 
 
 def usuario_create(usuario: Usuario) -> Usuario:
-    if element_exist('Usuarios', 'user_id', usuario.user_id):
-        raise Exception(f"Usuario {usuario.user_id}{fullname(usuario.user_nombre, usuario.user_apellido)} ya existe")
-    
-    query = """INSERT INTO productos 
-                    (user_nombre, 
-                    user_apellido, 
-                    user_password, 
-                    user_ciudad, 
-                    user_direccion, 
-                    user_email, 
-                    user_telefono, 
-                    rol_copiaid, 
-                    user_estado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-    parameters = (usuario.user_nombre, 
+    query = """INSERT INTO usuarios (
+                                user_id,
+                                user_nombre, 
+                                user_apellido, 
+                                user_password, 
+                                user_email, 
+                                user_telefono, 
+                                rol_copiaid) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    parameters = (usuario.user_id,
+                  usuario.user_nombre, 
                   usuario.user_apellido, 
                   usuario.user_password, 
-                  usuario.user_ciudad, 
-                  usuario.user_direccion, 
                   usuario.user_email, 
                   usuario.user_telefono, 
-                  usuario.rol_copiaid, 
-                  usuario.user_estado)
+                  usuario.rol_copiaid)
 
-    fetch_one(query, parameters)
+    fetch_query(query, parameters)
     return usuario
 
 
 def usuario_delete (usuario: Usuario) -> Usuario:
-    if not element_exist('usuarios', 'user_id', usuario.user_id):
-        raise Exception("Usuario no encontrado")
-
     query = "DELETE FROM usuarios WHERE user_id = %s"
-    parameters = (usuario.user_id)
+    parameters = (usuario.user_id, )
 
-    fetch_one(query, parameters)
+    fetch_query(query, parameters)
     return usuario
 
 
 def usuario_update(usuario: Usuario) -> Usuario:
-    if not element_exist('usuarios', 'user_id', usuario.user_id):
-        raise Exception("Usuario no encontrado")
-
     query = ("""UPDATE usuarios
                 SET 
                     user_nombre     = %s, 
                     user_apellido   = %s, 
-                    user_password   = %s, 
-                    user_ciudad     = %s, 
-                    user_direccion  = %s, 
+                    user_password   = %s,
                     user_email      = %s, 
                     user_telefono   = %s,
-                    rol_copiaid     = %s,
                     user_estado     = %s
                 WHERE user_id = %s
                 """)
     parameters = (usuario.user_nombre, 
                   usuario.user_apellido, 
                   usuario.user_password, 
-                  usuario.user_ciudad, 
-                  usuario.user_direccion, 
                   usuario.user_email, 
-                  usuario.user_telefono, 
-                  usuario.rol_copiaid, 
+                  usuario.user_telefono,
                   usuario.user_estado,
                   usuario.user_id)
-    fetch_one(query, parameters)
+    fetch_query(query, parameters)
     return usuario

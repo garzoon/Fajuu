@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
-import json
 from ..controller import *
 from ..models import Producto, Categoria
 
@@ -66,10 +65,17 @@ def create():
             producto_categoria = request.form.get('producto_categoria')
             producto_precio = request.form.get('producto_precio')
             producto_medida = request.form.get('producto_medida')
-            producto = Producto(producto_id, producto_descripcion, producto_categoria, producto_medida, producto_precio)
+
+            producto = Producto(
+                producto_id, 
+                producto_descripcion, 
+                producto_categoria, 
+                producto_medida, 
+                producto_precio
+            )
             producto_create(producto)
 
-            flash("Product Added Successfully")
+            flash(f"Producto {producto_descripcion} fue agregado", "success")
             return redirect(url_for('producto_scope.producto'))
         except Exception as ex:
             raise Exception(ex)
@@ -80,10 +86,10 @@ def delete(id):
     try:
         producto = Producto(*producto_select(id)[0])
         producto_delete(producto)
-        flash('Product Delete Successfully')
+        flash(f'Producto ({producto.prod_id}) {producto.prod_descripcion} fue eliminado', "success")
         return redirect(url_for('producto_scope.producto'))
     except Exception as ex:
-            raise Exception(ex)
+        raise Exception(ex)
 
 @producto_scope.route('/producto_update/<int:id>', methods = ['GET', 'POST'])
 def update(id):
@@ -96,9 +102,18 @@ def update(id):
             producto_medida = request.form.get('producto_medida')
             producto_precio = request.form.get('producto_precio')
             producto_estado = producto_search.prod_estado
-            producto_update(producto = Producto(producto_id, producto_descripcion, producto_categoria, producto_medida, producto_precio, producto_estado))
 
-            flash("Product Update Successfully")
+            producto_update(
+                producto = Producto(
+                    producto_id, 
+                    producto_descripcion, 
+                    producto_categoria, 
+                    producto_medida, 
+                    producto_precio, 
+                    producto_estado
+                ))
+
+            flash(f"Producto {producto_id} fue actualizado", "success")
             return redirect(url_for('producto_scope.producto'))
         except Exception as ex:
             raise Exception(ex)

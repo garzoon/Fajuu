@@ -22,12 +22,12 @@ function view_modal(title) {
 
 function delete_modal(redirect, id) {
 
-    const modal = document.getElementById('infoModal');
-    const span = document.getElementsByClassName('close')[0];
+    const modal = document.getElementById('delete_modal');
+    const span = document.getElementsByClassName('delete_modal_close')[0];
     const close_modal = document.getElementById('close_button')
 
     modal.style.display = 'block'
-    document.getElementById('deleteForm').action = `${redirect}/${id}`;
+    document.getElementById('delete_form').action = `${redirect}/${id}`;
 
     span.onclick = function() {
         modal.style.display = 'none'

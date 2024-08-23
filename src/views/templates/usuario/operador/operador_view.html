@@ -1,0 +1,72 @@
+<div id="genericModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title">Detalles de usuario</h2>
+        <h2 id="title-product"></h2>
+        <div id="modal-body">
+            <ul>
+                <li>
+                    <strong>Identificacion:</strong> <span id="modal-opera-id"></span>
+                </li>
+                <li>
+                    <strong>Nombre(s):</strong> <span id="modal-opera-nombre"></span>
+                </li>
+                <li>
+                    <strong>Apellido(s):</strong> <span id="modal-opera-apellido"></span>
+                </li>
+                <li>
+                    <strong>Correo electronico:</strong> <span id="modal-opera-email"></span>
+                </li>
+                <li>
+                    <strong>Telefono:</strong> <span id="modal-opera-telefono"></span>
+                </li>
+                <li>
+                    <strong>Rol:</strong> <span id="modal-opera-rol"></span>
+                </li>
+                <li>
+                    <strong>Estado:</strong> <span id="modal-opera-estado"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+function mostrarProducto(operadorId) {
+    const modal = document.getElementById('infoModal');
+    const span = document.getElementsByClassName('close')[0];
+
+    fetch(`operador_details/${operadorId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                document.getElementById('title-product').innerText = `${data.nombre} ${data.apellido}`
+
+                document.getElementById('modal-opera-id').innerText = data.id;
+                document.getElementById('modal-opera-nombre').innerText = data.nombre;
+                document.getElementById('modal-opera-apellido').innerText = data.apellido;
+                document.getElementById('modal-opera-email').innerText = data.email;
+                document.getElementById('modal-opera-telefono').innerText = data.telefono;
+                document.getElementById('modal-opera-rol').innerText = data.rol;
+                document.getElementById('modal-opera-estado').innerText = data.estado;
+
+                modal.style.display = 'block'
+
+                    
+                span.onclick = function() {
+                    modal.style.display = 'none'
+                }
+                window.onclick = function(event) {
+                    if(event.target == modal) {
+                        modal.style.display = 'none'
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            console.log('Error al obtener los detalles del usuario:', error);
+        })
+}
+</script>

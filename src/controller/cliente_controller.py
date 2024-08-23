@@ -2,12 +2,10 @@ from ..models.cliente_model import Cliente
 from ..database.connection import *
 
 def fullname(cliente : Cliente):
-        return f"{cliente.clien_nombre} {cliente.clien_apellido}"
+    return f"{cliente.clien_nombre} {cliente.clien_apellido}"
 
 def cliente_list() -> Cliente:
-
     query = "SELECT * FROM clientes ORDER BY clien_id DESC"
-
     connection = create_connection()
     if connection:
         cur = connection.cursor()
@@ -16,9 +14,6 @@ def cliente_list() -> Cliente:
 
 
 def cliente_select(clien_id) -> Cliente:
-    if not element_exist('clientes', 'clien_id', clien_id):
-        raise Exception("Cliente no encontrado")
-    
     query = "SELECT * FROM clientes WHERE clien_id = %s ORDER BY clien_id DESC"
     parameters = (clien_id, )
 
@@ -31,9 +26,6 @@ def cliente_select(clien_id) -> Cliente:
 
 
 def cliente_create(cliente : Cliente) -> Cliente:
-    if element_exist('clientes', 'clien_id', cliente.clien_id):
-        raise Exception(f"Cliente {cliente.clien_id} : {fullname(cliente.clien_nombre ,cliente.clien_apellido)} ya existe")
-    
     query = """INSERT INTO clientes 
                 (clien_nit, 
                 clien_nombre, 
@@ -57,9 +49,6 @@ def cliente_create(cliente : Cliente) -> Cliente:
 
 
 def cliente_delete (cliente : Cliente) -> Cliente:
-    if not element_exist('clientes', 'clien_id', cliente.clien_id):
-        raise Exception("Cliente no encontrado")
-
     query = "DELETE FROM clientes WHERE clien_id = %s"
     parameters = [cliente.clien_id]
 
@@ -68,9 +57,6 @@ def cliente_delete (cliente : Cliente) -> Cliente:
 
 
 def cliente_update(cliente : Cliente) -> Cliente:
-    if not element_exist('clientes', 'clien_id', cliente.clien_id):
-        raise Exception("Cliente no encontrado")
-
     query = ("""UPDATE clientes 
                 SET 
                     clien_nit       = %s, 

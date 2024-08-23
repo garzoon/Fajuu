@@ -1,6 +1,9 @@
+from flask import session
 from src.database.connection import *
 from src.controller import * 
 from src.models import *
+import json
 
-producto = Producto(*producto_select(1)[0])
-print(producto.prod_precio)
+rol = 1
+
+print(get_user_rol(rol)[0][0])

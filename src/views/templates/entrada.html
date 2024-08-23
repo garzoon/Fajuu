@@ -1,68 +1,72 @@
 {% extends 'layout.html' %}
 
 {% block customCss %}
-<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/entrada.css') }}">         -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/entrada.css') }}">
 {% endblock %}
 
 {% block main %}
 <main class="main">
     <section class="section-entradas">
 
-        <form action="{{ url_for('entrada.cargar') }}" method="POST">
+        <form action="{{ url_for('entrada.entrada') }}" method="POST">
             <div class="factura_entradas">
-                <h1>Provedor</h1>
-                <label for="lbl-idProveedor">Id proveedor</label>
-                <input class="inp-idProveedor" name="inp-idProveedor" id="inp-idProveedor" type="text">
-            </div>
+                <h1>Datos de factura</h1>
+                <label for="proveedor_id">Id proveedor</label>
+                <input class="inp-idProveedor" id="proveedor_id" name="proveedor_id" type="text" value="{{ provedor_id }}">
 
-            <div class="factura_entradas">
-                <h1>Factura</h1>
-                <label for="lbl-idFactura">Id factura</label>
-                <input class="inp-idFactura" name="inp-idFactura" id="inp-idFactura" type="text">
+                <label for="factura-id">Id factura</label>
+                <input class="inp-idFactura" id="factura-id" name="factura-id" type="text" value="{{ factura_id }}">
             </div>
 
             <div class="productos_entradas">
                 <h1>Productos</h1>
-                <label for="lbl-idProducto">Id producto</label>
-                <input class="inp-idProducto" name="inp-idProducto" id="inp-idProducto" type="text">                 
-                <label for="lbl-cantidad_producto">Cantidad</label>
-                <input class="inp-cantidad_producto" name="inp-cantidad_producto" id="inp-cantidad_producto" type="text">
+                <label for="producto-id">Id producto</label>
+                <input class="inp-idProducto" name="producto-id" id="producto-id" type="text" >                 
+                <label for="producto-cantidad">Cantidad</label>
+                <input class="inp-cantidad_producto" id="producto-cantidad" name="producto-cantidad" type="text">
             </div>
 
             <button class="btn proveedor-buttons_cargar" type="submit">Cargar</button>
         </form>
         
-        <table class="table">
+        <table>
             <thead>
                 <tr>
                     <th>Item</th>
                     <th>Id producto</th>
-                    <th>Descripcion</th>
-                    <th>Categoria</th>
-                    <th>Acciones</th>
-                </tr> 
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Eliminar</th>
+                </tr>
             </thead>
             <tbody>
-                {% for product in list_products %}
-                <tr>
-                    <td></td>
-                    <td>{{ product[0] }}</td>
-                    <td>{{ product[1] }}</td>
-                    <td>{{ product[2] }}</td>
-                    <td>
-                        <a href="">Edit</a>
-                        <a href="/delete_contact/{{ contact.0 }}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
+                {% if dic_productos %}
+                    {% for key, producto in dic_productos.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }}</td>
+                        <td>{{ producto[2] }} {{ producto[3] }}</td>
+                        <td>
+                            <form action="{{ url_for('entrada.delete_entrada', id=key) }}" method="POST">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
+        
     </section>
     <section class="footer">
-        <form action="">
+        <form action="{{ url_for ('entrada.send_entrada') }}" method="POST">
             <button class="btn btn-primary">Enviar</button>
         </form>
     </section>
 </main>
+
+{% block customScript %}
+{% endblock %}
 
 {% endblock %}

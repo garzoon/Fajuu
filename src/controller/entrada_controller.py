@@ -2,9 +2,7 @@ from ..models.entrada_model import Entrada
 from ..database.connection import *
 
 def entrada_list() -> Entrada:
-
     query = "SELECT * FROM entradas ORDER BY ent_id DESC"
-
     connection = create_connection()
     if connection:
         cur = connection.cursor()
@@ -13,9 +11,6 @@ def entrada_list() -> Entrada:
 
 
 def entrada_select(ent_id) -> Entrada:
-    if not element_exist('entradas', 'ent_id', ent_id):
-        raise Exception("Entrada no encontrado")
-    
     query = "SELECT * FROM entradas WHERE ent_id = %s ORDER BY ent_id DESC"
     parameters = (ent_id, )
 
@@ -27,9 +22,6 @@ def entrada_select(ent_id) -> Entrada:
 
 
 def entrada_create(entrada : Entrada) -> Entrada:
-    if element_exist('entradas', 'ent_id', entrada.ent_id):
-        raise Exception(f"Entrada {entrada.ent_id} ya existe")
-    
     query = """INSERT INTO entradas 
                     (ent_id, 
                     prov_copiaid, 
@@ -45,9 +37,6 @@ def entrada_create(entrada : Entrada) -> Entrada:
 
 
 def entrada_delete (entrada: Entrada):
-    if not element_exist('entradas', 'ent_id', entrada.ent_id):
-        raise Exception("Entrada no encontrado")
-
     query = "DELETE FROM entradas WHERE ent_id = %s"
     parameters = [entrada.ent_id, ]
 
@@ -56,9 +45,6 @@ def entrada_delete (entrada: Entrada):
 
 
 def entrada_update(entrada: Entrada) -> Entrada:
-    if not element_exist('entradas', 'ent_id', entrada.ent_id):
-        raise Exception("Entrada no encontrado")
-
     query = ("""UPDATE entradas 
                 SET  
                     prov_copiaid            = %s, 
