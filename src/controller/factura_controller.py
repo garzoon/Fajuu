@@ -26,15 +26,13 @@ def factura_create(factura: Factura) -> Factura:
         fact_id, 
         clien_copiaid, 
         fact_detalle_productos, 
-        fact_fecha_emision, 
-        fact_estado) VALUES (%s, %s, %s, %s, %s)
+        fact_fecha_emision) VALUES (%s, %s, %s, %s)
     """
     parameters = (
         factura.fact_id, 
         factura.clien_copiaid, 
         factura.fact_detalle_productos, 
-        factura.fact_fecha_emision, 
-        factura.fact_estado
+        factura.fact_fecha_emision
     )	
 
     fetch_query(query, parameters)
@@ -53,15 +51,13 @@ def factura_update(factura: Factura) -> Factura:
     query = ("""UPDATE facturas SET 
         clien_copiaid           = %s,
         fact_detalle_productos  = %s,
-        fact_fecha_emision      = %s, 
-        fact_estado             = %s
+        fact_fecha_emision      = %s
         WHERE fact_id           = %s
     """)
     parameters = (
         factura.clien_copiaid,
         factura.fact_detalle_productos,  
-        factura.fact_fecha_emision,  
-        factura.fact_estado,
+        factura.fact_fecha_emision,
         factura.fact_id
     )
     fetch_query(query, parameters)

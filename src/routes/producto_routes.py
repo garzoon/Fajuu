@@ -38,7 +38,7 @@ def producto():
     list_producto = []
     
     for producto in product_list_result:
-        producto = Producto(*producto[:6])
+        producto = Producto(*producto)
         categoria = Categoria(*get_product_category(producto.cate_copiaid)[0])
         item_producto = (
             producto.prod_id, 
@@ -66,13 +66,17 @@ def create():
             producto_categoria = request.form.get('producto_categoria')
             producto_precio = request.form.get('producto_precio')
             producto_medida = request.form.get('producto_medida')
+            producto_estado = None,
+            producto_stock = None
 
             producto = Producto(
                 producto_id, 
                 producto_descripcion, 
                 producto_categoria, 
                 producto_medida, 
-                producto_precio
+                producto_precio,
+                producto_estado,
+                producto_stock
             )
             producto_create(producto)
 
@@ -115,6 +119,7 @@ def update(id):
             producto_medida = request.form.get('producto_medida')
             producto_precio = request.form.get('producto_precio')
             producto_estado = producto_search.prod_estado
+            producto_stock = producto_search.prod_stock
 
             producto_update(
                 producto = Producto(
@@ -123,7 +128,8 @@ def update(id):
                     producto_categoria, 
                     producto_medida, 
                     producto_precio, 
-                    producto_estado
+                    producto_estado,
+                    producto_stock
                 ))
 
             flash(f"Producto {producto_id} fue actualizado", "success")

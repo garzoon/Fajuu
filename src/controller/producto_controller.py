@@ -80,40 +80,62 @@ def producto_update(producto: Producto) -> Producto:
     fetch_query(query, parameters)
     return producto
 
-def get_estado_producto(prod_id):
-    producto = Producto(*producto_select(prod_id)[0])
+def get_estado_producto(prod_id) -> str:
+    producto = producto_select(prod_id)
+    if not producto:
+        return None  # o algún valor indicativo si el producto no existe
+
+    producto = Producto(*producto[0])
     if producto.prod_stock > 0:
         return 'disponible'
-    else:
-        query = "UPDATE productos SET prod_estado = %s WHERE prod_id = %s"
-        fetch_query(query, ('agotado', prod_id))
-        return 'agotado'
+    return 'agotado'
 
-def producto_entrada(prod_id, prod_stock) -> Producto:
-    producto = Producto(*producto_select(prod_id)[0])
+def update_producto_estado(prod_id, estado) -> None:
+    query = "UPDATE productos SET prod_estado = %s WHERE prod_id = %s"
+    fetch_query(query, (estado, prod_id))
+
+def producto_entrada(prod_id, prod_stock) -> None:
+    producto = producto_select(prod_id)
+    if not producto:
+        return
+
+    producto = Producto(*producto[0])
     new_stock = int(prod_stock) + int(producto.prod_stock)
-    query = ("UPDATE productos SET prod_stock = %s WHERE prod_id = %s")
-    parameters = (new_stock, prod_id)
-    return fetch_query(query, parameters)
+    query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
+    fetch_query(query, (new_stock, prod_id))
+
+    # Actualizar el estado si es necesario
+    if new_stock > 0:
+        update_producto_estado(prod_id, 'disponible')
 
 def producto_salida(prod_id, prod_stock) -> str:
-    if get_estado_producto(prod_id) == 'disponible':   
-        producto = Producto(*producto_select(prod_id)[0])
-        new_stock = int(producto.prod_stock) - int(prod_stock)
-        
-        if new_stock < 0:
-            return "Stock insuficiente para la operación"
-        
-        query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
-        parameters = (new_stock, prod_id)
-        fetch_query(query, parameters)
-        
-        if new_stock == 0:
-            query = "UPDATE productos SET prod_estado = %s WHERE prod_id = %s"
-            fetch_query(query, ('agotado', prod_id))
-        
-        return "Factura de salida agregada"
+    producto = Producto(*producto_select(prod_id)[0])
+    
+    if get_estado_producto(prod_id) == 'disponible': 
+        # Verificar si el stock a retirar es menor o igual al stock actual
+        if int(prod_stock) <= int(producto.prod_stock):
+            new_stock = int(producto.prod_stock) - int(prod_stock)
+
+            # Actualizar stock si es mayor que 0
+            if new_stock > 0:
+                query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
+                parameters = (new_stock, prod_id)
+                fetch_query(query, parameters)
+                return "Stock actualizado con éxito"
+
+            # Si el stock es 0 después de la operación, actualizar estado a 'agotado'
+            elif new_stock == 0:
+                update_producto_estado(prod_id, 'agotado')
+                query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
+                parameters = (new_stock, prod_id)
+                fetch_query(query, parameters)
+                return f"Producto {producto.prod_descripcion} agotado tras la salida"
+
+        else:
+            return f"Stock insuficiente para retirar {prod_stock} unidades de {producto.prod_descripcion}"
+    
     else:
-        return "Producto agotado"
+        return f"Producto {producto.prod_descripcion} ya está agotado"
+
 
      

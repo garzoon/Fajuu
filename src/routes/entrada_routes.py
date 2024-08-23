@@ -84,7 +84,6 @@ def delete_entrada(id):
         flash("Producto eliminado correctamente", "success")
     else:
         flash("Producto no encontrado", "error")
-        print(session['dic_productos'])  # Considera quitar esta línea en producción
 
     return redirect(url_for('entrada.entrada'))
 

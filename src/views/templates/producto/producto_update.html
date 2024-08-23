@@ -24,15 +24,6 @@
                 <option {% if producto.cate_copiaid==3 %} selected {% endif %} value="3">Seco</option>
             </select>
 
-            <label class="lbl-estadoProducto" for="producto_estado">Estado</label>
-            <select class="slc-estadoProducto" id="producto_estado" name="producto_estado">
-                <option {% if producto.prod_estado=='disponible' %} selected {% endif %} value="disponible">Disponible
-                </option>
-                <option {% if producto.prod_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
-                </option>
-                <option {% if producto.prod_estado=='agotado' %} selected {% endif %} value="agotado">Agotado</option>
-            </select>
-
             <label class="lbl-estadoProducto" for="producto_medida">Unidad de Medida</label>
             <select class="slc-estadoProducto" id="producto_medida" name="producto_medida">
                 <option {% if producto.prod_unidad_medida=='Kilogramo' %} selected {% endif %} value="Kilogramo">
