@@ -7,41 +7,36 @@
 {% block main %}
 <main class="main">
     <section class="section-productos">
-        <h1>Nuevo producto</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.create') }}" method="post">
-            <label  class="inp-descripcionProducto" for="producto_descripcion">Descripcion</label>
-            <input class="inp-descripcionProducto" id="producto_descripcion" name="producto_descripcion" type="text" required>
+        <h1>Nuevo cliente</h1>
+        <form class="frm-productos" action="{{ url_for('cliente_scope.create') }}" method="post">
 
-            <label class="lbl-categoria" for="slc-categoria">Categoria</label>
-            <select  class="slc-categoria" id="producto_categoria" name="producto_categoria" required>
-                <option value="1">Refrigerado</option>
-                <option value="2">Congelado</option>
-                <option value="3">Seco</option>
-            </select>
+            <label class="lbl-descripcionProducto" for="cliente_identificacion">Identificacion</label>
+            <input class="inp-descripcionProducto" id="cliente_identificacion" name="cliente_identificacion" type="text"
+                required>
 
-            <label  class="lbl-descripcionProducto" for="producto_precio">Precio(en venta)</label>
-            <input class="inp-descripcionProducto" id="producto_precio" name="producto_precio" type="number" placeholder="COP" required>
-                
-            <label class="lbl-estadoProducto" for="producto_medida">Unidad de medida</label>
-            <select class="slc-estadoProducto" id="producto_medida" name="producto_medida" required>
-                <option value="Kilogramo">Kilogramo</option>
-                <option value="Gramo">Gramo</option>
-                <option value="Litro">Litro</option>
-                <option value="Mililitro">Mililitro</option>
-                <option value="Unidad">Unidad</option>
-            </select>
+            <label class="lbl-descripcionProducto" for="cliente_nombre">Nombre(s)</label>
+            <input class="inp-descripcionProducto" id="cliente_nombre" name="cliente_nombre" type="text" required>
 
-            <button class="btn proveedor-buttons_cargar" type="submit">Crear</button>
+            <label class="lbl-descripcionProducto" for="cliente_ciudad">Ciudad</label>
+            <input class="inp-descripcionProducto" id="cliente_ciudad" name="cliente_ciudad" type="text" required>
+
+            <label class="lbl-descripcionProducto" for="cliente_direccion">Direccion</label>
+            <input class="inp-descripcionProducto" id="cliente_direccion" name="cliente_direccion" type="text" required>
+
+            <label class="lbl-descripcionProducto" for="cliente_email">Correo electronico</label>
+            <input class="inp-descripcionProducto" id="cliente_email" name="cliente_email" type="email" required>
+
+            <label class="lbl-descripcionProducto" for="cliente_telefono">Numero de telefono</label>
+            <input class="inp-descripcionProducto" id="cliente_telefono" name="cliente_telefono" type="number" required>
+
+            <button class="btn proveedor-buttons_cargar" id="cliente_submit" type="submit">Crear</button>
         </form>
     </section>
 </main>
 <footer class="footer">
     <div class="action-buttons">
-        <button></button>
-        <button></button>
-        <a href=" {{ url_for('producto_scope.producto') }}" class="btn btn-primary">Volver</a>
+        <a href=" {{ url_for('cliente_scope.cliente') }}" class="btn btn-primary">Volver</a>
     </div>
 </footer>
 
 {% endblock %}
-        

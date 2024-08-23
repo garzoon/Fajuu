@@ -36,21 +36,24 @@ def usuario_select(user_id) -> Usuario:
 
 
 def usuario_create(usuario: Usuario) -> Usuario:
-    query = """INSERT INTO usuarios (
-                                user_id,
-                                user_nombre, 
-                                user_apellido, 
-                                user_password, 
-                                user_email, 
-                                user_telefono, 
-                                rol_copiaid) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-    parameters = (usuario.user_id,
-                  usuario.user_nombre, 
-                  usuario.user_apellido, 
-                  usuario.user_password, 
-                  usuario.user_email, 
-                  usuario.user_telefono, 
-                  usuario.rol_copiaid)
+    query = """INSERT INTO usuarios ( 
+        user_id,
+        user_nombre, 
+        user_apellido, 
+        user_password, 
+        user_email, 
+        user_telefono, 
+        rol_copiaid) VALUES (%s, %s, %s, %s, %s, %s, %s
+    )"""
+    parameters = (
+        usuario.user_id,
+        usuario.user_nombre, 
+        usuario.user_apellido, 
+        usuario.user_password, 
+        usuario.user_email, 
+        usuario.user_telefono, 
+        usuario.rol_copiaid
+    )
 
     fetch_query(query, parameters)
     return usuario
@@ -65,22 +68,23 @@ def usuario_delete (usuario: Usuario) -> Usuario:
 
 
 def usuario_update(usuario: Usuario) -> Usuario:
-    query = ("""UPDATE usuarios
-                SET 
-                    user_nombre     = %s, 
-                    user_apellido   = %s, 
-                    user_password   = %s,
-                    user_email      = %s, 
-                    user_telefono   = %s,
-                    user_estado     = %s
-                WHERE user_id = %s
-                """)
-    parameters = (usuario.user_nombre, 
-                  usuario.user_apellido, 
-                  usuario.user_password, 
-                  usuario.user_email, 
-                  usuario.user_telefono,
-                  usuario.user_estado,
-                  usuario.user_id)
+    query = """UPDATE usuarios SET 
+        user_nombre     = %s, 
+        user_apellido   = %s, 
+        user_password   = %s,
+        user_email      = %s, 
+        user_telefono   = %s,
+        user_estado     = %s
+        WHERE user_id = %s
+    """
+    parameters = (
+        usuario.user_nombre, 
+        usuario.user_apellido, 
+        usuario.user_password, 
+        usuario.user_email, 
+        usuario.user_telefono,
+        usuario.user_estado,
+        usuario.user_id
+    )
     fetch_query(query, parameters)
     return usuario

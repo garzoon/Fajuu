@@ -9,7 +9,6 @@ def get_product_category(cate_copiaid) -> Categoria:
         cur = connection.cursor()
         cur.execute(query, parameters)
         return cur.fetchall()
-    
 
 def producto_list() -> Producto:
     query = """SELECT * FROM productos ORDER BY prod_id DESC"""
@@ -33,14 +32,18 @@ def producto_select(prod_id) -> Producto:
 
 def producto_create(producto: Producto) -> Producto: 
     query = """INSERT INTO productos 
-                    (prod_descripcion, 
-                    cate_copiaid,
-                    prod_unidad_medida,
-                    prod_precio) VALUES (%s, %s, %s, %s)"""
-    parameters = (producto.prod_descripcion, 
-                  producto.cate_copiaid, 
-                  producto.prod_unidad_medida,
-                  producto.prod_precio)
+        (prod_descripcion, 
+        cate_copiaid,
+        prod_unidad_medida,
+        prod_precio) 
+        VALUES (%s, %s, %s, %s)
+    """
+    parameters = (
+        producto.prod_descripcion, 
+        producto.cate_copiaid, 
+        producto.prod_unidad_medida,
+        producto.prod_precio
+    )
 
     fetch_query(query, parameters)
     return producto
@@ -55,23 +58,24 @@ def producto_delete (producto: Producto) -> Producto:
 
 
 def producto_update(producto: Producto) -> Producto:
-    query = ("""UPDATE productos
-                SET 
-                    prod_descripcion    = %s, 
-                    cate_copiaid        = %s, 
-                    prod_unidad_medida  = %s, 
-                    prod_stock          = %s, 
-                    prod_estado         = %s, 
-                    prod_precio         = %s
-                WHERE prod_id = %s
-                """)
-    parameters = (producto.prod_descripcion, 
-                  producto.cate_copiaid, 
-                  producto.prod_unidad_medida, 
-                  producto.prod_stock, 
-                  producto.prod_estado, 
-                  producto.prod_precio, 
-                  producto.prod_id)
+    query = ("""UPDATE productos SET 
+        prod_descripcion    = %s, 
+        cate_copiaid        = %s, 
+        prod_unidad_medida  = %s, 
+        prod_stock          = %s, 
+        prod_estado         = %s, 
+        prod_precio         = %s
+        WHERE prod_id = %s
+    """)
+    parameters = (
+        producto.prod_descripcion, 
+        producto.cate_copiaid, 
+        producto.prod_unidad_medida, 
+        producto.prod_stock, 
+        producto.prod_estado, 
+        producto.prod_precio, 
+        producto.prod_id
+    )
     fetch_query(query, parameters)
     return producto
 

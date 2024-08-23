@@ -3,70 +3,34 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2 id="modal-title">Detalles de producto</h2>
-        <h2 id="title-product"></h2>
+        <h2 id="title-cliente"></h2>
         <div id="modal-body">
             <ul>
                 <li>
-                    <strong>Id del producto:</strong> <span id="modal-prod-id"></span>
+                    <strong>Id cliente:</strong> <span id="modal-clien-id"></span>
                 </li>
                 <li>
-                    <strong>Descripcion:</strong> <span id="modal-prod-descripcion"></span>
+                    <strong>Identificacion:</strong> <span id="modal-clien-documento"></span>
                 </li>
                 <li>
-                    <strong>Categoria:</strong> <span id="modal-prod-categoria"></span>
+                    <strong>Nombre(s):</strong> <span id="modal-clien-nombre"></span>
                 </li>
                 <li>
-                    <strong>Unidad de medida:</strong> <span id="modal-prod-medida"></span>
+                    <strong>Ciudad:</strong> <span id="modal-clien-ciudad"></span>
                 </li>
                 <li>
-                    <strong>Precio de venta:</strong> <span id="modal-prod-precio"></span>
+                    <strong>Direccion:</strong> <span id="modal-clien-direccion"></span>
                 </li>
                 <li>
-                    <strong>Estado:</strong> <span id="modal-prod-estado"></span>
+                    <strong>Correo electronico:</strong> <span id="modal-clien-email"></span>
                 </li>
                 <li>
-                    <strong>Stock de producto:</strong> <span id="modal-prod-stock"></span>
+                    <strong>Telefono:</strong> <span id="modal-clien-telefono"></span>
+                </li>
+                <li>
+                    <strong>Estado:</strong> <span id="modal-clien-estado"></span>
                 </li>
             </ul>
         </div>
     </div>
 </div>
-<script>
-    function mostrarProducto(productId) {
-        const modal = document.getElementById('infoModal');
-        const span = document.getElementsByClassName('close')[0];
-
-        fetch(`producto_details/${productId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    document.getElementById('title-product').innerText = `${data.id} - ${data.descripcion}`
-
-                    document.getElementById('modal-prod-id').innerText = data.id;
-                    document.getElementById('modal-prod-descripcion').innerText = data.descripcion;
-                    document.getElementById('modal-prod-categoria').innerText = data.categoria;
-                    document.getElementById('modal-prod-medida').innerText = data.unidad_medida;
-                    document.getElementById('modal-prod-precio').innerText = data.precio;
-                    document.getElementById('modal-prod-estado').innerText = data.estado;
-                    document.getElementById('modal-prod-stock').innerText = data.stock;
-
-                    modal.style.display = 'block'
-
-                    
-                    span.onclick = function() {
-                        modal.style.display = 'none'
-                    }
-                    window.onclick = function(event) {
-                        if(event.target == modal) {
-                            modal.style.display = 'none'
-                        }
-                    }
-                }
-            })
-            .catch(error => {
-                console.log('Error al obtener los detalles del producto:', error);
-            })
-    }
-</script>

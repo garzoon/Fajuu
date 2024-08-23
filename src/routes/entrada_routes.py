@@ -23,7 +23,7 @@ def entrada():
         producto_cantidad = request.form.get('producto-cantidad')
 
         # Comprovaciones para evitar recopilar informacion falsa o duplicada
-        if proveedor_select(session['proveedor_id']):
+        if proveedor_select_id(session['proveedor_id']):
             if not entrada_select(session['factura_id']):
                 if producto_select(producto_id):
                     producto = Producto(*producto_select(producto_id)[0])

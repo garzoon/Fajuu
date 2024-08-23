@@ -17,15 +17,15 @@
             <div class="section-froms">
                 <label class="lbl-IDproducto" for="producto_id">Id Producto</label>
                 <input class="inp-IDproducto" id="producto_id" name="producto_id" type="text">
-        
+
                 <label class="lbl-categoria" for="producto_categoria">Categoria</label>
                 <select class="slc-categoria" id="producto_categoria" name="producto_categoria">
                     <option value="" selected>No definido</option>
                     <option value="1">Refrigerado</option>
-                    <option value="2">Congelado</option>   
+                    <option value="2">Congelado</option>
                     <option value="3">Seco</option>
                 </select>
-        
+
                 <label class="lbl-estadoProducto" for="producto_estado">Estado</label>
                 <select class="slc-estadoProducto" id="producto_estado" name="producto_estado">
                     <option value="" selected>No definido</option>
@@ -34,10 +34,10 @@
                     <option value="agotado">Agotado</option>
                 </select>
             </div>
-        
+
             <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
         </form>
-        
+
         <h1>Relacion de productos</h1>
         <div class="table">
             <table>
@@ -50,28 +50,28 @@
                         <th>Stock</th>
                         <th>Estado</th>
                         <th>Acciones</th>
-                    </tr> 
+                    </tr>
                 </thead>
                 <tbody>
-                    
+
                     {% if list_producto %}
-                        {% for producto in list_producto %}
-                            <tr>
-                                <td>{{ producto[0] }}</td>
-                                <td>{{ producto[1] }}</td>
-                                <td>{{ producto[2] }}</td>
-                                <td>{{ producto[3] }}</td>
-                                <td>{{ producto[4] }}</td>
-                                <td>{{ producto[5] }}</td>
-                                <td> 
-                                    <button onclick="mostrarProducto('{{ producto[0] }}')">Ver</button>
-                                    {% include 'producto/producto_view.html' %}
-                                    <button onclick="redirect('producto_update', '{{ producto[0] }}')">Editar</button>
-                                    <button onclick="delete_modal('producto_delete', '{{ producto[0] }}')">Eliminar</button>
-                                    {% include 'includes/modal_close.html' %}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                    {% for producto in list_producto %}
+                    <tr>
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }}</td>
+                        <td>{{ producto[2] }}</td>
+                        <td>{{ producto[3] }}</td>
+                        <td>{{ producto[4] }}</td>
+                        <td>{{ producto[5] }}</td>
+                        <td>
+                            <button onclick="mostrarProducto('{{ producto[0] }}')">Ver</button>
+                            {% include 'producto/producto_view.html' %}
+                            <button onclick="redirect('producto_update', '{{ producto[0] }}')">Editar</button>
+                            <button onclick="delete_modal('producto_delete', '{{ producto[0] }}')">Eliminar</button>
+                            {% include 'includes/modal_close.html' %}
+                        </td>
+                    </tr>
+                    {% endfor %}
                     {% else %}
                     <tr>
                         <td>
@@ -90,6 +90,48 @@
         <button type="submit" class="btn btn-primary">Crear </button>
     </form>
 </footer>
+
+{% block customScript %}
+<script>
+    function mostrarProducto(productId) {
+        const modal = document.getElementById('infoModal');
+        const span = document.getElementsByClassName('close')[0];
+
+        fetch(`producto_details/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById('title-product').innerText = `${data.id} - ${data.descripcion}`
+
+                    document.getElementById('modal-prod-id').innerText = data.id;
+                    document.getElementById('modal-prod-descripcion').innerText = data.descripcion;
+                    document.getElementById('modal-prod-categoria').innerText = data.categoria;
+                    document.getElementById('modal-prod-medida').innerText = data.unidad_medida;
+                    document.getElementById('modal-prod-precio').innerText = data.precio;
+                    document.getElementById('modal-prod-estado').innerText = data.estado;
+                    document.getElementById('modal-prod-stock').innerText = data.stock;
+
+                    modal.style.display = 'block'
+
+
+                    span.onclick = function () {
+                        modal.style.display = 'none'
+                    }
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none'
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('Error al obtener los detalles del producto:', error);
+            })
+    }
+</script>
+{% endblock %}
 
 
 {% endblock %}

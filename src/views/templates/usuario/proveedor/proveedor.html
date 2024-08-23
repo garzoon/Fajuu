@@ -3,7 +3,7 @@
 
 
 {% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/usuario.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
 {% endblock %}
 
@@ -12,70 +12,63 @@
 
 <main class="main">
     <section class="section-productos">
-        <h1>Productos</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.producto') }}" method="POST">
+        <h1>Proveedor</h1>
+        <form class="frm-productos" action="{{ url_for('proveedor_scope.proveedor') }}" method="POST">
             <div class="section-froms">
-                <label class="lbl-IDproducto" for="producto_id">Id Producto</label>
-                <input class="inp-IDproducto" id="producto_id" name="producto_id" type="text">
-        
-                <label class="lbl-categoria" for="producto_categoria">Categoria</label>
-                <select class="slc-categoria" id="producto_categoria" name="producto_categoria">
+
+                <label class="lbl-IDproducto" for="proveedor_id">Id proveedor</label>
+                <input class="inp-IDproducto" id="proveedor_id" name="proveedor_id" type="text">
+
+                <label class="lbl-IDproducto" for="proveedor_nit">NIT</label>
+                <input class="inp-IDproducto" id="proveedor_nit" name="proveedor_nit" type="text">
+
+                <label class="lbl-IDproducto" for="proveedor_razonSocial">Razon social</label>
+                <input class="inp-IDproducto" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text">
+
+                <label class="lbl-estadoProducto" for="proveedor_estado">Estado</label>
+                <select class="slc-estadoProducto" id="proveedor_estado" name="proveedor_estado">
                     <option value="" selected>No definido</option>
-                    <option value="1">Refrigerado</option>
-                    <option value="2">Congelado</option>   
-                    <option value="3">Seco</option>
-                </select>
-        
-                <label class="lbl-estadoProducto" for="producto_estado">Estado</label>
-                <select class="slc-estadoProducto" id="producto_estado" name="producto_estado">
-                    <option value="" selected>No definido</option>
-                    <option value="disponible">Disponible</option>
+                    <option value="activo">Activo</option>
                     <option value="innactivo">Innactivo</option>
-                    <option value="agotado">Agotado</option>
                 </select>
             </div>
-        
+
             <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
         </form>
-        
-        <h1>Relacion de productos</h1>
+
         <div class="table">
             <table>
                 <thead>
                     <tr>
-                        <th>ID Producto</th>
-                        <th>Descripcion</th>
-                        <th>Categoria</th>
-                        <th>Und. Medida</th>
-                        <th>Stock</th>
+                        <th>Id proveedor</th>
+                        <th>NIT</th>
+                        <th>Razon social</th>
                         <th>Estado</th>
                         <th>Acciones</th>
-                    </tr> 
+                    </tr>
                 </thead>
                 <tbody>
-                    
-                    {% if list_producto %}
-                        {% for producto in list_producto %}
-                            <tr>
-                                <td>{{ producto[0] }}</td>
-                                <td>{{ producto[1] }}</td>
-                                <td>{{ producto[2] }}</td>
-                                <td>{{ producto[3] }}</td>
-                                <td>{{ producto[4] }}</td>
-                                <td>{{ producto[5] }}</td>
-                                <td> 
-                                    <button onclick="mostrarProducto('{{ producto[0] }}')">Ver</button>
-                                    {% include 'producto/producto_view.html' %}
-                                    <button onclick="redirect('producto_update', '{{ producto[0] }}')">Editar</button>
-                                    <button onclick="delete_modal('producto_delete', '{{ producto[0] }}')">Eliminar</button>
-                                    {% include 'includes/modal_close.html' %}
-                                </td>
-                            </tr>
-                        {% endfor %}
+
+                    {% if list_proveedor %}
+                    {% for proveedor in list_proveedor %}
+                    <tr>
+                        <td>{{ proveedor[0] }}</td>
+                        <td>{{ proveedor[1] }}</td>
+                        <td>{{ proveedor[2] }}</td>
+                        <td>{{ proveedor[3] }}</td>
+                        <td>
+                            <button onclick="mostrarProducto('{{ proveedor[0] }}')">Ver</button>
+                            {% include 'usuario/proveedor/proveedor_view.html' %}
+                            <button onclick="redirect('proveedor_update', '{{ proveedor[0] }}')">Editar</button>
+                            <button onclick="delete_modal('proveedor_delete', '{{ proveedor[0] }}')">Eliminar</button>
+                            {% include 'includes/modal_close.html' %}
+                        </td>
+                    </tr>
+                    {% endfor %}
                     {% else %}
                     <tr>
                         <td>
-                            No hay productos para mostrar
+                            No hay usuarios para mostrar
                         </td>
                     </tr>
                     {% endif %}
@@ -85,11 +78,53 @@
     </section>
 </main>
 
-<footer class="footer">
-    <form action="{{ url_for('producto_scope.producto_add') }}" method="get">
-        <button type="submit" class="btn btn-primary">Crear </button>
+<div class="footer">
+    <form action="{{ url_for('proveedor_scope.proveedor_add') }}" method="get">
+        <button type="submit" class="btn btn-primary">Crear</button>
     </form>
-</footer>
+    <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
+        <button type="submit" class="btn btn-primary">Volver</button>
+    </form>
+</div>
+
+{% block customScript %}
+<script>
+    function mostrarProducto(proveedorId) {
+        const modal = document.getElementById('infoModal');
+        const span = document.getElementsByClassName('close')[0];
+
+        fetch(`proveedor_details/${proveedorId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById('title-proveedor').innerText = `${data.id} - ${data.razon_social}`
+
+                    document.getElementById('modal-prov-id').innerText = data.id;
+                    document.getElementById('modal-prov-nit').innerText = data.nit;
+                    document.getElementById('modal-prov-razonSocial').innerText = data.razon_social;
+                    document.getElementById('modal-prov-email').innerText = data.email;
+                    document.getElementById('modal-prov-telefono').innerText = data.telefono;
+                    document.getElementById('modal-prov-estado').innerText = data.estado;
+
+                    modal.style.display = 'block'
 
 
+                    span.onclick = function () {
+                        modal.style.display = 'none'
+                    }
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none'
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('Error al obtener los detalles del producto:', error);
+            })
+    }
+</script>
+{% endblock %}
 {% endblock %}

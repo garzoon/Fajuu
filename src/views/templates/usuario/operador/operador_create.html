@@ -9,44 +9,72 @@
     <section class="section-productos">
         <h1>Nuevo Operador</h1>
         <form class="frm-productos" action="{{ url_for('operador_scope.create') }}" method="post">
-            <label  class="inp-descripcionProducto" for="operador_identificacion">Identificacion</label>
-            <input class="inp-descripcionProducto" id="operador_identificacion" name="operador_identificacion" type="number" required>
+            <label class="inp-descripcionProducto" for="operador_identificacion">Identificacion</label>
+            <input class="inp-descripcionProducto" id="operador_identificacion" name="operador_identificacion"
+                type="number" required>
 
-            <label  class="lbl-descripcionProducto" for="operador_nombre">Nombre(s)</label>
+            <label class="lbl-descripcionProducto" for="operador_nombre">Nombre(s)</label>
             <input class="inp-descripcionProducto" id="operador_nombre" name="operador_nombre" type="text" required>
 
-            <label  class="lbl-descripcionProducto" for="operador_apellido">Apellido(s)</label>
+            <label class="lbl-descripcionProducto" for="operador_apellido">Apellido(s)</label>
             <input class="inp-descripcionProducto" id="operador_apellido" name="operador_apellido" type="text" required>
 
-            <label  class="lbl-descripcionProducto" for="operador_contrasenha">Contraseña</label>
-            <input class="inp-descripcionProducto" id="operador_contrasenha" name="operador_contrasenha" type="text" required>
+            <label class="lbl-descripcionProducto" for="operador_contrasenha">Contraseña</label>
+            <input class="inp-descripcionProducto" id="operador_contrasenha" name="operador_contrasenha" type="text"
+                required>
 
-            <label  class="lbl-descripcionProducto" for="operador_confirma_contrasenha">Confirma la contraseña</label>
-            <input class="inp-descripcionProducto" id="operador_confirma_contrasenha" name="operador_confirma_contrasenha" type="text" required>
+            <label class="lbl-descripcionProducto" for="operador_confirma_contrasenha">Confirma la contraseña</label>
+            <input class="inp-descripcionProducto" id="operador_confirma_contrasenha"
+                name="operador_confirma_contrasenha" type="text" required>
 
-            <label  class="lbl-descripcionProducto" for="operador_email">Correo electronico</label>
+            <p id="mensaje"></p>
+
+            <label class="lbl-descripcionProducto" for="operador_email">Correo electronico</label>
             <input class="inp-descripcionProducto" id="operador_email" name="operador_email" type="email" required>
 
-            <label  class="lbl-descripcionProducto" for="operador_telefono">Numero de telefono</label>
-            <input class="inp-descripcionProducto" id="operador_telefono" name="operador_telefono" type="number" required>
+            <label class="lbl-descripcionProducto" for="operador_telefono">Numero de telefono</label>
+            <input class="inp-descripcionProducto" id="operador_telefono" name="operador_telefono" type="number"
+                required>
 
             <label class="lbl-categoria" for="operador_rol">Rol</label>
-            <select  class="slc-categoria" id="operador_rol" name="operador_rol" required>
+            <select class="slc-categoria" id="operador_rol" name="operador_rol" required>
                 <option value="1">Administrador</option>
                 <option value="2">Usuario</option>
             </select>
-             
-            <button class="btn proveedor-buttons_cargar" type="submit">Crear</button>
+
+            <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Crear</button>
         </form>
     </section>
 </main>
 <footer class="footer">
     <div class="action-buttons">
-        <button></button>
-        <button></button>
         <a href=" {{ url_for('operador_scope.operador') }}" class="btn btn-primary">Volver</a>
     </div>
 </footer>
 
+{% block customScript %}
+<script>
+    var passwordInput = document.getElementById("operador_contrasenha");
+    var confirmPasswordInput = document.getElementById("operador_confirma_contrasenha");
+    var submitButton = document.getElementById("operador_submit");
+    var mensaje = document.getElementById("mensaje");
+
+    function validarContraseñas() {
+        var password = passwordInput.value;
+        var confirmPassword = confirmPasswordInput.value;
+
+        if (password === confirmPassword) {
+            mensaje.innerHTML = "";
+            submitButton.disabled = false; // Habilitar el botón de envío
+        } else {
+            mensaje.innerHTML = "Las contraseñas no coinciden.";
+            submitButton.disabled = true; // Deshabilitar el botón de envío
+        }
+    }
+
+    passwordInput.addEventListener("input", validarContraseñas);
+    confirmPasswordInput.addEventListener("input", validarContraseñas);
+
+</script>
 {% endblock %}
-        
+{% endblock %}

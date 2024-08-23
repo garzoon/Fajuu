@@ -9,18 +9,26 @@
     <section class="section-misFacturas">
         <h1>Usuarios</h1>
         <form class="frm-misFacturas">
-            <button onclick="redirect_user('operador')">Operador</button>
-            <button onclick="redirect_user('proveedor')">Proveedor</button>
-            <button onclick="redirect_user('cliente')">Cliente</button>
+            <label for="select_usuario">Seleccionar tipo de usuario:</label>
+            <select id="select_usuario" onchange="redirect_usuario()">
+                <option value="" selected disabled>Seleccione un usuario</option>
+                <option value="operador">Operador</option>
+                <option value="proveedor">Proveedor</option>
+                <option value="cliente">Cliente</option>
+            </select>
         </form>
     </section>
 </main>
 
 {% block customScript %}
 <script>
-function redirect_user(redirect) {
-    window.location.href = `'${redirect}'/`;
-}
+    function redirect_usuario() {
+        const select = document.getElementById('select_usuario');
+        const selectedValue = select.value;
+        if (selectedValue) {
+            window.location.href = `/${selectedValue}`;
+        }
+    }
 </script>
 {% endblock %}
 {% endblock %}

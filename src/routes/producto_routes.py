@@ -13,18 +13,19 @@ def producto():
     query = """SELECT * FROM productos WHERE 1=1"""
     parameters = []
 
-    
-
     if request.method == 'POST':
         producto_id = request.form.get('producto_id')
         producto_categoria = request.form.get('producto_categoria')
         producto_estado = request.form.get('producto_estado')
+        
         if producto_id:
             query += " AND prod_id LIKE %s"
             parameters.append(f"%{producto_id}%")
+            
         if producto_categoria:
             query += " AND cate_copiaid LIKE %s"
             parameters.append(f"%{producto_categoria}%")
+            
         if producto_estado:
             query += " AND prod_estado LIKE %s"
             parameters.append(f"%{producto_estado}%")
@@ -40,13 +41,13 @@ def producto():
         producto = Producto(*producto[:6])
         categoria = Categoria(*get_product_category(producto.cate_copiaid)[0])
         item_producto = (
-                        producto.prod_id, 
-                        producto.prod_descripcion,
-                        categoria.cate_descripcion,
-                        producto.prod_unidad_medida,
-                        producto.prod_stock,
-                        producto.prod_estado
-                        )
+            producto.prod_id, 
+            producto.prod_descripcion,
+            categoria.cate_descripcion,
+            producto.prod_unidad_medida,
+            producto.prod_stock,
+            producto.prod_estado
+        )
         list_producto.append(item_producto)
 
     return render_template(f'{PATH_URL_PRODUCTO}/producto.html', list_producto = list_producto)
@@ -77,8 +78,13 @@ def create():
 
             flash(f"Producto {producto_descripcion} fue agregado", "success")
             return redirect(url_for('producto_scope.producto'))
+        
+        # Manejo de errores
+        except mysql.connector.Error as ex:
+            flash("Error al intentar crear el producto", "error")
         except Exception as ex:
-            raise Exception(ex)
+            flash(f"Error inesperado: {ex}", "error")
+        return redirect(url_for('producto_scope.producto'))
             
     
 @producto_scope.route('/producto_delete/<int:id>', methods = ['GET', 'POST'])
@@ -86,10 +92,17 @@ def delete(id):
     try:
         producto = Producto(*producto_select(id)[0])
         producto_delete(producto)
-        flash(f'Producto ({producto.prod_id}) {producto.prod_descripcion} fue eliminado', "success")
+        flash(f'Producto {producto.prod_id} - {producto.prod_descripcion} fue eliminado', "success")
         return redirect(url_for('producto_scope.producto'))
+    
+    # Manejo de errores
+    except mysql.connector.IntegrityError as ex:
+        flash("No se puede eliminar el producto porque está en uso", "error")
+    except mysql.connector.Error as ex:
+        flash("Error al intentar eliminar el producto", "error")
     except Exception as ex:
-        raise Exception(ex)
+        flash(f"Error inesperado: {ex}", "error")
+    return redirect(url_for('producto_scope.producto'))
 
 @producto_scope.route('/producto_update/<int:id>', methods = ['GET', 'POST'])
 def update(id):
@@ -115,8 +128,12 @@ def update(id):
 
             flash(f"Producto {producto_id} fue actualizado", "success")
             return redirect(url_for('producto_scope.producto'))
+        # Manejo de errores
+        except mysql.connector.Error as ex:
+            flash("Error al intentar actualizar el producto", "error")
         except Exception as ex:
-            raise Exception(ex)
+            flash(f"Error inesperado: {ex}", "error")
+        return redirect(url_for('producto_scope.producto'))
         
     producto = Producto(*producto_select(id)[0])
 

@@ -3,70 +3,28 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2 id="modal-title">Detalles de producto</h2>
-        <h2 id="title-product"></h2>
+        <h2 id="title-proveedor"></h2>
         <div id="modal-body">
             <ul>
                 <li>
-                    <strong>Id del producto:</strong> <span id="modal-prod-id"></span>
+                    <strong>Id proveedor:</strong> <span id="modal-prov-id"></span>
                 </li>
                 <li>
-                    <strong>Descripcion:</strong> <span id="modal-prod-descripcion"></span>
+                    <strong>NIT:</strong> <span id="modal-prov-nit"></span>
                 </li>
                 <li>
-                    <strong>Categoria:</strong> <span id="modal-prod-categoria"></span>
+                    <strong>Razon social:</strong> <span id="modal-prov-razonSocial"></span>
                 </li>
                 <li>
-                    <strong>Unidad de medida:</strong> <span id="modal-prod-medida"></span>
+                    <strong>Correo electronico:</strong> <span id="modal-prov-email"></span>
                 </li>
                 <li>
-                    <strong>Precio de venta:</strong> <span id="modal-prod-precio"></span>
+                    <strong>Numero de telefono:</strong> <span id="modal-prov-telefono"></span>
                 </li>
                 <li>
-                    <strong>Estado:</strong> <span id="modal-prod-estado"></span>
-                </li>
-                <li>
-                    <strong>Stock de producto:</strong> <span id="modal-prod-stock"></span>
+                    <strong>Estado:</strong> <span id="modal-prov-estado"></span>
                 </li>
             </ul>
         </div>
     </div>
 </div>
-<script>
-    function mostrarProducto(productId) {
-        const modal = document.getElementById('infoModal');
-        const span = document.getElementsByClassName('close')[0];
-
-        fetch(`producto_details/${productId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    document.getElementById('title-product').innerText = `${data.id} - ${data.descripcion}`
-
-                    document.getElementById('modal-prod-id').innerText = data.id;
-                    document.getElementById('modal-prod-descripcion').innerText = data.descripcion;
-                    document.getElementById('modal-prod-categoria').innerText = data.categoria;
-                    document.getElementById('modal-prod-medida').innerText = data.unidad_medida;
-                    document.getElementById('modal-prod-precio').innerText = data.precio;
-                    document.getElementById('modal-prod-estado').innerText = data.estado;
-                    document.getElementById('modal-prod-stock').innerText = data.stock;
-
-                    modal.style.display = 'block'
-
-                    
-                    span.onclick = function() {
-                        modal.style.display = 'none'
-                    }
-                    window.onclick = function(event) {
-                        if(event.target == modal) {
-                            modal.style.display = 'none'
-                        }
-                    }
-                }
-            })
-            .catch(error => {
-                console.log('Error al obtener los detalles del producto:', error);
-            })
-    }
-</script>

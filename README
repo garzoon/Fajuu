@@ -3,3 +3,11 @@ Para subir un producto, este se subiera en fromato .json y debe segir el siguien
 
 en caso de ser mas de un prodcuto estos se deben almacenar en una lista:
 [{"id": numero id, "name": "nombre", "quantity": cantidad, "unit": "unidad de medida"}, ...]
+
+
+Antes de iniciar el proyecto descargar el documento requeriments y activar el entorno virtual
+
+Paso 1:
+pip install -r requirements.txt
+
+Paso 2:

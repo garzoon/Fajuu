@@ -7,46 +7,40 @@
 {% block main %}
 <main class="main">
     <section class="section-productos">
-        <h1>Editar producto</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.update', id=producto.prod_id) }}" method="post">
-            <label  class="inp-descripcionProducto" for="producto_descripcion">Descripcion</label>
-            <input class="inp-descripcionProducto" id="producto_descripcion" name="producto_descripcion" type="text" value="{{ producto.prod_descripcion }}">
+        <h1>Editar proovedor ({{ proveedor.prov_id }}) {{ proveedor.prov_razonsocial }}</h1>
+        <form class="frm-productos" action="{{ url_for('proveedor_scope.update', id=proveedor.prov_id) }}"
+            method="post">
 
-            <label  class="lbl-descripcionProducto" for="producto_precio">Precio(en venta)</label>
-            <input class="inp-descripcionProducto" id="producto_precio" name="producto_precio" type="number" placeholder="COP" value="{{ producto.prod_precio }}">
+            <label class="lbl-descripcionProducto" for="proveedor_nit">NIT</label>
+            <input class="inp-descripcionProducto" id="proveedor_nit" name="proveedor_nit" type="text"
+                value="{{ proveedor.prov_nit }}" required>
 
-            <label class="lbl-categoria" for="slc-categoria">Categoria</label>
-            <select  class="slc-categoria" id="producto_categoria" name="producto_categoria">
-                <option {% if producto.cate_copiaid == 1 %} selected {% endif %} value="1">Refrigerado</option>
-                <option {% if producto.cate_copiaid == 2 %} selected {% endif %} value="2">Congelado</option>     
-                <option {% if producto.cate_copiaid == 3 %} selected {% endif %} value="3">Seco</option>
-            </select>
-                
-            <label class="lbl-estadoProducto" for="producto_estado">Estado</label>
-            <select class="slc-estadoProducto" id="producto_estado" name="producto_estado">
-                <option {% if producto.prod_estado == 'disponible' %} selected {% endif %} value="disponible">Disponible</option>
-                <option {% if producto.prod_estado == 'innactivo' %} selected {% endif %} value="innactivo">Innactivo</option>
-                <option {% if producto.prod_estado == 'agotado' %} selected {% endif %} value="agotado">Agotado</option>
-            </select>
+            <label class="lbl-descripcionProducto" for="proveedor_razonSocial">Razon social</label>
+            <input class="inp-descripcionProducto" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text"
+                value="{{ proveedor.prov_razonsocial }}" required>
 
-            <label class="lbl-estadoProducto" for="producto_medida">Unidad de Medida</label>
-            <select class="slc-estadoProducto" id="producto_medida" name="producto_medida" >
-                <option {% if producto.prod_unidad_medida == 'Kilogramo' %} selected {% endif %} value="Kilogramo">Kilogramo</option>
-                <option {% if producto.prod_unidad_medida == 'Gramo' %} selected {% endif %} value="Gramo">Gramo</option>
-                <option {% if producto.prod_unidad_medida == 'Litro' %} selected {% endif %} value="Litro">Litro</option>
-                <option {% if producto.prod_unidad_medida == 'Mililitro' %} selected {% endif %} value="Mililitro">Mililitro</option>
-                <option {% if producto.prod_unidad_medida == 'Unidad' %} selected {% endif %} value="Unidad">Unidad</option>
+            <label class="lbl-descripcionProducto" for="proveedor_email">Correo electronico</label>
+            <input class="inp-descripcionProducto" id="proveedor_email" name="proveedor_email" type="email"
+                value="{{ proveedor.prov_email }}" required>
+
+            <label class="lbl-descripcionProducto" for="proveedor_telefono">Numero de telefono</label>
+            <input class="inp-descripcionProducto" id="proveedor_telefono" name="proveedor_telefono" type="number"
+                value="{{ proveedor.prov_telefono }}" required>
+
+            <label class="lbl-categoria" for="proovedor_estado">Estado</label>
+            <select class="slc-categoria" id="proovedor_estado" name="proovedor_estado" required>
+                <option {% if proveedor.prov_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
+                <option {% if proveedor.prov_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
+                </option>
             </select>
 
-            <button class="btn proveedor-buttons_cargar" type="submit">Editar</button>
+            <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Editar</button>
         </form>
     </section>
 </main>
 <footer class="footer">
     <div class="action-buttons">
-        <button></button>
-        <button></button>
-        <a href=" {{ url_for('producto_scope.producto') }}" class="btn btn-primary">Volver</a>
+        <a href=" {{ url_for('proveedor_scope.proveedor') }}" class="btn btn-primary">Volver</a>
     </div>
 </footer>
 
