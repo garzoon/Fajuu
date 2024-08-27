@@ -1,25 +1,17 @@
 from ..models.entrada_model import Entrada
 from ..database.connection import *
 
-def entrada_list() -> Entrada:
+def entrada_list():
     query = "SELECT * FROM entradas ORDER BY ent_id DESC"
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query)
-        return cur.fetchall()
+    return fetch_all(query)
 
-
-def entrada_select(ent_id) -> Entrada:
+def entrada_select(ent_id):
     query = "SELECT * FROM entradas WHERE ent_id = %s ORDER BY ent_id DESC"
     parameters = (ent_id, )
-
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        return cur.fetchall()
-
+    result = fetch_one(query, parameters)
+    if result:
+        return Entrada(*result)
+    return None
 
 def entrada_create(entrada : Entrada) -> Entrada:
     query = """INSERT INTO entradas (
@@ -34,15 +26,14 @@ def entrada_create(entrada : Entrada) -> Entrada:
         entrada.ent_detalle_producto, 
         entrada.ent_fecha_entrada
     )
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return entrada
 
 
 def entrada_delete (entrada: Entrada):
     query = "DELETE FROM entradas WHERE ent_id = %s"
     parameters = [entrada.ent_id, ]
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return entrada
 
 
@@ -59,5 +50,5 @@ def entrada_update(entrada: Entrada) -> Entrada:
         entrada.ent_fecha_entrada,
         entrada.ent_id
     )
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return entrada

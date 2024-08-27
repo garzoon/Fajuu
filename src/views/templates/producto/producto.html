@@ -8,8 +8,6 @@
 {% endblock %}
 
 {% block main %}
-
-
 <main class="main">
     <section class="section-productos">
         <h1>Productos</h1>
@@ -37,7 +35,6 @@
             <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
         </form>
 
-        <h1>Relacion de productos</h1>
         <div class="table">
             <table>
                 <thead>
@@ -82,13 +79,11 @@
             </table>
         </div>
     </section>
-</main>
 
-<footer class="footer">
-    <form action="{{ url_for('producto_scope.producto_add') }}" method="get">
-        <button type="submit" class="btn btn-primary">Crear </button>
+    <form action="{{ url_for('producto_scope.create_producto') }}" method="get">
+        <button type="submit" class="btn btn-primary">Crear</button>
     </form>
-</footer>
+</main>
 
 {% block customScript %}
 <script>

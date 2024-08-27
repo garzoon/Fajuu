@@ -3,12 +3,12 @@ import json
 from datetime import datetime
 
 from ..controller import *
-from ..models import Factura, Producto
+from ..models import Factura
 
 salida_scope = Blueprint("salida", __name__)
-PATH_URL_SALIDA = "salida" # Acortador de url
+PATH_URL_SALIDA = "salida"
 
-@salida_scope.route('/', methods=['POST', 'GET'])
+@salida_scope.route('/salida', methods=['POST', 'GET'])
 def salida():
 
     if 'dic_productos_salida' not in session:
@@ -20,12 +20,16 @@ def salida():
         producto_id = request.form.get('producto_id')
         producto_cantidad = request.form.get('producto_cantidad')
 
-        # Comprovaciones para evitar recopilar informacion falsa o duplicada
-        if cliente_select(session['cliente_id']):
-            if producto_select(producto_id):
-                producto = Producto(*producto_select(producto_id)[0])
-
-                # Verificar si el producto ya está en el diccionario
+        if not cliente_select(session['cliente_id']):
+            flash("Cliente no encontrado", "error")
+        elif get_cliente_estado(session['cliente_id']) == 'inactivo':
+            flash("Cliente inactivo", "error")
+        else:
+            if not producto_select(producto_id):
+                flash("Producto no encontrado", "error")
+            else:   
+                producto = producto_select(producto_id)
+                
                 if producto_id not in session['dic_productos_salida']:
                     producto_array = [producto_id, producto.prod_descripcion, producto_cantidad, producto.prod_unidad_medida]
                     session['dic_productos_salida'][producto_id] = producto_array[1:]
@@ -33,10 +37,6 @@ def salida():
                     flash("Producto agregado correctamente", "success")
                 else:   
                     flash("Producto ya agregado", "error")
-            else:   
-                flash("Producto no encontrado", "error")
-        else:   
-            flash("Cliente no encontrado", "error")
 
     return render_template(f'{PATH_URL_SALIDA}/salida.html', dic_productos = session['dic_productos_salida'], cliente_id = session.get('cliente_id', ''))
             
@@ -49,7 +49,6 @@ def send_salida ():
         flash("Faltan datos de cliente", "error")
         return redirect(url_for('salida.salida'))
     
-    # Subir entrada a la base de datos
     productos_json = json.dumps(session['dic_productos_salida'])  # Convertir el diccionario Python en un JSON
     current_timestamp = datetime.now()
     current_timestamp_str = current_timestamp.strftime('%Y-%m-%d')
@@ -57,10 +56,11 @@ def send_salida ():
     salida = Factura(factura_id, cliente_id, productos_json, current_timestamp_str)
     factura_create(salida)
     
-    
     # Actualizar valores de stock del producto en la base de datos
     for key, producto in session['dic_productos_salida'].items():
         resultado = producto_salida(key, producto[1])
+        
+        print(producto[1], producto[0])
 
         if isinstance(resultado, str):
             flash(resultado, "error")

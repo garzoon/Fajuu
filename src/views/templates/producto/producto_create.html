@@ -8,7 +8,7 @@
 <main class="main">
     <section class="section-productos">
         <h1>Nuevo producto</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.create') }}" method="post">
+        <form class="frm-productos" action="{{ url_for('producto_scope.create_producto') }}" method="post">
             <label class="inp-descripcionProducto" for="producto_descripcion">Descripcion</label>
             <input class="inp-descripcionProducto" id="producto_descripcion" name="producto_descripcion" type="text"
                 required>
@@ -36,11 +36,10 @@
             <button class="btn proveedor-buttons_cargar" type="submit">Crear</button>
         </form>
     </section>
-</main>
-<footer class="footer">
+
     <div class="action-buttons">
         <a href=" {{ url_for('producto_scope.producto') }}" class="btn btn-primary">Volver</a>
     </div>
-</footer>
+</main>
 
 {% endblock %}

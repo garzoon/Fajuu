@@ -3,12 +3,11 @@ import json
 from datetime import datetime
 
 from ..controller import *
-from ..models import Entrada, Producto
+from ..models import Entrada
 
 entrada_scope = Blueprint("entrada", __name__)
 
-@entrada_scope.route('/', methods=['POST', 'GET'])
-@entrada_scope.route('/', methods=['POST', 'GET'])
+@entrada_scope.route('/entrada', methods=['POST', 'GET'])
 def entrada():
     # Inicializa diccionario de productos si no existe
     if 'dic_productos' not in session:
@@ -21,27 +20,26 @@ def entrada():
         producto_id = request.form.get('producto-id')
         producto_cantidad = request.form.get('producto-cantidad')
 
-        # Verificaciones
-        if proveedor_select_id(session['proveedor_id']):
-            if not entrada_select(session['factura_id']):
-                if producto_select(producto_id):
-                    producto = Producto(*producto_select(producto_id)[0])
 
-                    # Verificar si el producto ya está en el diccionario
+        if not proveedor_select(session['proveedor_id']):
+            flash("Proveedor no encontrado", "error")
+        elif get_proveedor_estado(session['proveedor_id'])[0] == 'inactivo':
+            flash("Proveedor inactivo", "error")
+        else:
+            if entrada_select(session['factura_id']):
+                flash("Factura ya existe", "error")
+            else:
+                if not producto_select(producto_id):
+                    flash("Producto no encontrado", "error")       
+                else:
                     if producto_id not in session['dic_productos']:
+                        producto = producto_select(producto_id)
                         producto_array = [producto_id, producto.prod_descripcion, producto_cantidad, producto.prod_unidad_medida]
                         session['dic_productos'][producto_id] = producto_array[1:]
                         session.modified = True
                         flash("Producto agregado correctamente", "success")
                     else:
                         flash("Producto ya agregado", "error")
-
-                else:
-                    flash("Producto no encontrado", "error")
-            else:
-                flash("Factura ya existe", "error")
-        else:
-            flash("Proveedor no encontrado", "error")
 
     return render_template('entrada.html', dic_productos = session['dic_productos'], proveedor_id = session.get('proveedor_id', ''), factura_id = session.get('factura_id', ''))
 

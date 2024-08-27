@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
-from ..controller import *
-from ..models import Usuario
-from ..security import encrypt_password, check_password
+from ...controller import *
+from ...models import Usuario
 
 operador_scope = Blueprint("operador_scope", __name__)
 PATH_URL_USUARIO = "usuario/operador" # Acortador de url
@@ -9,7 +8,6 @@ PATH_URL_USUARIO = "usuario/operador" # Acortador de url
 @operador_scope.route('/', methods = ['POST', 'GET'])
 def operador():
 
-    connection = create_connection()
     query = """SELECT * FROM usuarios WHERE 1=1"""
     parameters = []
 
@@ -34,22 +32,19 @@ def operador():
 
         if operador_rol:
             query += " AND rol_copiaid LIKE %s"
-            parameters.append(f"%{operador_rol}%")
+            parameters.append(f"{operador_rol}")
             
         if operador_estado:
             query += " AND user_estado LIKE %s"
-            parameters.append(f"%{operador_estado}%")
+            parameters.append(f"{operador_estado}")
 
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        operador_list_result = cur.fetchall()
+    operador_list_result = fetch_all(query, parameters)
 
     list_operadores = []
     
     for operador in operador_list_result:
         operador = Usuario(*operador)
-        rol = get_user_rol(operador.rol_copiaid)[0][0]
+        rol = get_usuario_rol(operador.rol_copiaid)[0]
         item_operador = (
             operador.user_id, 
             operador.user_nombre,
@@ -62,23 +57,15 @@ def operador():
     return render_template(f'{PATH_URL_USUARIO}/operador.html', list_operadores = list_operadores)
 
 
-@operador_scope.route('/operador_add', methods = ['GET'])
-def operador_add():
-    return render_template(f'{PATH_URL_USUARIO}/operador_create.html')
-
-
-@operador_scope.route('/create', methods = ['POST' ,'GET'])
-def create():
+@operador_scope.route('/operador_create', methods = ['POST' ,'GET'])
+def create_operador():
     if request.method == 'POST':
         try:
             # Asignacion de valores, mediante un reques del front
             operador_identificacion = request.form.get('operador_identificacion')
             operador_nombre = request.form.get('operador_nombre')
             operador_apellido = request.form.get('operador_apellido')
-
             operador_contrasenha = request.form.get('operador_contrasenha')
-            hashed_password = encrypt_password(operador_contrasenha)
-
             operador_email = request.form.get('operador_email')
             operador_telefono = request.form.get('operador_telefono')
             operador_rol = request.form.get('operador_rol')
@@ -88,7 +75,7 @@ def create():
                 operador_identificacion,
                 operador_nombre,
                 operador_apellido,
-                hashed_password,
+                operador_contrasenha,
                 operador_email,
                 operador_telefono,
                 operador_rol                
@@ -105,33 +92,34 @@ def create():
             
         # Manejo de errores
         except mysql.connector.Error as ex:
-            flash("Error al intentar crear el usuario", "error")
+            flash("Error al intentar crear el usuario", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
+            flash(f"Error inesperado: {ex}", "warning")
+    return render_template(f'{PATH_URL_USUARIO}/operador_create.html')
             
     
 @operador_scope.route('/operador_delete/<int:id>', methods = ['GET', 'POST'])
-def delete(id):
+def delete_operador(id):
     try:
-        operador = Usuario(*usuario_select(id)[0])
+        operador = usuario_select(id)
         usuario_delete(operador)
-        flash(f'Usuario {operador.user_id} - {operador.user_nombre} {operador.user_apellido} fue eliminado', "success")
+        flash(f'Usuario ({operador.user_id} - {operador.user_nombre} {operador.user_apellido} fue eliminado', "success")
         return redirect(url_for('operador_scope.operador'))
     
     # Manejo de errores
     except mysql.connector.IntegrityError as ex:
-        flash("No se puede eliminar el usuario porque está en uso", "error")
+        flash("No se puede eliminar el usuario porque está en uso", "warning")
     except mysql.connector.Error as ex:
-        flash("Error al intentar eliminar el usuario", "error")
+        flash("Error al intentar eliminar el usuario", "warning")
     except Exception as ex:
-        flash(f"Error inesperado: {ex}", "error")
+        flash(f"Error inesperado: {ex}", "warning")
     return redirect(url_for('operador_scope.operador'))
 
 
 @operador_scope.route('/operador_update/<int:id>', methods = ['GET', 'POST'])
-def update(id):
+def update_operador(id):
     if request.method == 'POST':
-        operador_search = Usuario(*usuario_select(id)[0])
+        operador_search = usuario_select(id)
 
         try:
             operador_id = operador_search.user_id
@@ -159,33 +147,31 @@ def update(id):
         
         # Manejo de errores
         except mysql.connector.IntegrityError as ex:
-            flash("No se puede actualizar el usuario porque está en uso", "error")
+            flash("No se puede actualizar el usuario porque está en uso", "warning")
         except mysql.connector.Error as ex:
-            flash("Error al intentar actualizar el usuario", "error")
+            flash("Error al intentar actualizar el usuario", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
+            flash(f"Error inesperado: {ex}", "warning")
         
-    operador = Usuario(*usuario_select(id)[0])
-
+    operador = usuario_select(id)
     return render_template(f'{PATH_URL_USUARIO}/operador_update.html', operador = operador)
 
 
 @operador_scope.route('/operador_password/<int:id>', methods = ['GET', 'POST'])
-def operador_password(id):
+def update_password_operador(id):
     if request.method == 'POST':
-        operador_search = Usuario(*usuario_select(id)[0])
+        operador_search = usuario_select(id)
 
         try:
             operador_old_contrasenha = request.form.get('operador_old_contrasenha')
             operador_contrasenha = request.form.get('operador_contrasenha')
-            hashed_password = encrypt_password(operador_contrasenha)
 
             if check_password(operador_search.user_password, operador_old_contrasenha):
                 operador = Usuario(
                     operador_search.user_id, 
                     operador_search.user_nombre, 
                     operador_search.user_apellido, 
-                    hashed_password, 
+                    operador_contrasenha, 
                     operador_search.user_email, 
                     operador_search.user_telefono,
                     operador_search.rol_copiaid, 
@@ -200,20 +186,20 @@ def operador_password(id):
         
         # Manejo de errores
         except mysql.connector.IntegrityError as ex:
-            flash("No se puede actualizar el usuario porque está en uso", "error")
+            flash("No se puede actualizar el usuario porque está en uso", "warning")
         except mysql.connector.Error as ex:
-            flash("Error al intentar actualizar el usuario", "error")
+            flash("Error al intentar actualizar el usuario", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
+            flash(f"Error inesperado: {ex}", "warning")
         
-    operador = Usuario(*usuario_select(id)[0])
+    operador = usuario_select(id)
     return render_template(f'{PATH_URL_USUARIO}/operador_password.html', operador=operador)
 
 
 @operador_scope.route('/operador_details/<int:id>', methods = ['GET'])
-def operador_details(id):
-    operador = Usuario(*usuario_select(id)[0])
-    rol = get_user_rol(operador.rol_copiaid)[0][0]
+def details_operador(id):
+    operador = usuario_select(id)
+    rol = get_usuario_rol(operador.rol_copiaid)[0]
     if operador:
         return jsonify({
             'id' : operador.user_id,

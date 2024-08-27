@@ -1,15 +1,15 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 import json
 
-from ..controller import *
-from ..models import Cliente, Factura
+from ...controller import *
+from ...models import Cliente, Factura
 
 factura_cliente_scope = Blueprint("factura_cliente_scope", __name__)
-PATH_URL_FACT_CLIENTE = "factura/factura_cliente" # Acortador de url
+PATH_URL_FACT_CLIENTE = "factura/factura_cliente"
 
 @factura_cliente_scope.route('/', methods = ['POST', 'GET'])
 def factura():
-    connection = create_connection()
+
     query = """SELECT * FROM facturas WHERE 1=1"""
     parameters = []
 
@@ -30,16 +30,13 @@ def factura():
             query += " AND fact_fecha_emision LIKE %s"
             parameters.append(f"%{factura_fecha}%")
 
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        factura_list_result = cur.fetchall()
+    factura_list_result = fetch_all(query, parameters)
 
     list_facturas = []
     
     for factura in factura_list_result:
         factura = Factura(*factura)
-        cliente = Cliente(*cliente_select(factura.clien_copiaid)[0])
+        cliente = cliente_select(factura.clien_copiaid)
         item_factura = (
             factura.fact_id, 
             factura.clien_copiaid,
@@ -51,27 +48,27 @@ def factura():
     return render_template(f'{PATH_URL_FACT_CLIENTE}/factura_cliente.html', list_facturas = list_facturas)
 
 @factura_cliente_scope.route('/factura_cliente_delete/<int:id>', methods = ['GET', 'POST'])
-def delete(id):
+def delete_factura_cliente(id):
     try:
-        factura = Factura(*factura_select(id)[0])
+        factura = factura_select(id)
         factura_delete(factura)
         flash(f'Factura de cliente {factura.fact_id} - {factura.clien_copiaid} fue eliminada', "success")
         return redirect(url_for('factura_cliente_scope.factura'))
     
     # Manejo de errores
     except mysql.connector.IntegrityError as ex:
-        flash("No se puede eliminar la factura porque está en uso", "error")
+        flash("No se puede eliminar la factura porque está en uso", "warning")
     except mysql.connector.Error as ex:
-        flash("Error al intentar eliminar la factura", "error")
+        flash("Error al intentar eliminar la factura", "warning")
     except Exception as ex:
-        flash(f"Error inesperado: {ex}", "error")
+        flash(f"Error inesperado: {ex}", "warning")
     return redirect(url_for('operador_scope.operador'))
 
 @factura_cliente_scope.route('/factura_cliente_details/<int:id>', methods = ['GET'])
-def factura_cliente_details(id):
-    factura = Factura(*factura_select(id)[0])
+def details_factura_cliente(id):
+    factura = factura_select(id)
     dic_productos = json.loads(factura.fact_detalle_productos)
-    cliente = Cliente(*cliente_select(factura.clien_copiaid)[0])
+    cliente = cliente_select(factura.clien_copiaid)
     if factura and cliente:
         return jsonify({
             'id' : factura.fact_id,

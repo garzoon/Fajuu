@@ -8,7 +8,7 @@
 <main class="main">
     <section class="section-productos">
         <h1>Editar usuario - ({{ operador.user_id }}) {{ operador.user_nombre }} {{ operador.user_apellido }}</h1>
-        <form class="frm-productos" action="{{ url_for('operador_scope.update', id=operador.user_id) }}" method="post">
+        <form class="frm-productos" action="{{ url_for('operador_scope.update_operador', id=operador.user_id) }}" method="post">
 
             <label class="lbl-descripcionProducto" for="operador_nombre">Nombre(s)</label>
             <input class="inp-descripcionProducto" id="operador_nombre" name="operador_nombre" type="text"
@@ -36,11 +36,10 @@
             <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Editar</button>
         </form>
     </section>
-</main>
-<footer class="footer">
+
     <div class="action-buttons">
         <a href=" {{ url_for('operador_scope.operador') }}" class="btn btn-primary">Volver</a>
     </div>
-</footer>
+</main>
 
 {% endblock %}

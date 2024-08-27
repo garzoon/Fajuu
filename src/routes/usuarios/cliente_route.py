@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
-from ..controller import *
-from ..models import Cliente
+
+from ...controller import *
+from ...models import Cliente
 
 cliente_scope = Blueprint("cliente_scope", __name__)
 PATH_URL_CLIENTE = "usuario/cliente" # Acortador de url
@@ -8,7 +9,6 @@ PATH_URL_CLIENTE = "usuario/cliente" # Acortador de url
 @cliente_scope.route('/', methods = ['POST', 'GET'])
 def cliente():
 
-    connection = create_connection()
     query = """SELECT * FROM clientes WHERE 1=1"""
     parameters = []
 
@@ -30,23 +30,20 @@ def cliente():
         if cliente_nombre:
             query += " AND clien_nombre LIKE %s"
             parameters.append(f"%{cliente_nombre}%")
-            
+
         if cliente_ciudad:
             query += " AND clien_ciudad LIKE %s"
             parameters.append(f"%{cliente_ciudad}%")
-            
+
         if cliente_estado:
             query += " AND clien_estado LIKE %s"
-            parameters.append(f"%{cliente_estado}%")
+            parameters.append(f"{cliente_estado}")
 
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        cliente_list_result = cur.fetchall()
+    cliente_search_result = fetch_all(query, parameters)
 
     list_cliente = []
-    
-    for cliente in cliente_list_result:
+
+    for cliente in cliente_search_result:
         cliente = Cliente(*cliente)
         item_cliente = (
             cliente.clien_id,
@@ -59,14 +56,8 @@ def cliente():
 
     return render_template(f'{PATH_URL_CLIENTE}/cliente.html', list_cliente = list_cliente)
 
-
-@cliente_scope.route('/cliente_add', methods = ['GET'])
-def cliente_add():
-    return render_template(f'{PATH_URL_CLIENTE}/cliente_create.html')
-
-
-@cliente_scope.route('/create', methods = ['POST' ,'GET'])
-def create():
+@cliente_scope.route('/cliente_create', methods = ['POST' ,'GET'])
+def create_cliente():
     if request.method == 'POST':
         try:
             # Asignacion de valores, mediante un reques del front
@@ -89,7 +80,7 @@ def create():
                 cliente_telefono
             )
             
-            if not cliente_select_document(cliente_identificacion): # Evitar el duplicado de identicacion
+            if not get_cliente_documento(cliente_identificacion): # Evitar el duplicado de identicacion
                 cliente_create(cliente)
                 flash(f"Cliente {cliente_identificacion} - {cliente_nombre} fue agregado", "success")
                 return redirect(url_for('cliente_scope.cliente'))
@@ -99,32 +90,33 @@ def create():
             
         # Manejo de errores
         except mysql.connector.Error as ex:
-            flash("Error al intentar crear el cliente", "error")
+            flash("Error al intentar crear el cliente", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
-        return redirect(url_for('cliente_scope.cliente'))
+            flash(f"Error inesperado: {ex}", "warning")
+            
+    return render_template(f'{PATH_URL_CLIENTE}/cliente_create.html')
             
     
 @cliente_scope.route('/cliente_delete/<int:id>', methods = ['GET', 'POST'])
-def delete(id):
+def delete_cliente(id):
     try:
-        cliente = Cliente(*cliente_select(id)[0])
+        cliente = cliente_select(id)
         cliente_delete(cliente)
         flash(f'Cliente {cliente.clien_id} - {cliente.clien_nombre} fue eliminado', "success")
 
     # Manejo de errores
     except mysql.connector.IntegrityError as ex:
-        flash("No se puede eliminar el cliente porque está en uso", "error")
+        flash("No se puede eliminar el cliente porque está en uso", "warning")
     except mysql.connector.Error as ex:
-        flash("Error al intentar eliminar el cliente", "error")
+        flash("Error al intentar eliminar el cliente", "warning")
     except Exception as ex:
-        flash(f"Error inesperado: {ex}", "error")
+        flash(f"Error inesperado: {ex}", "warning")
     return redirect(url_for('cliente_scope.cliente'))
 
 @cliente_scope.route('/cliente_update/<int:id>', methods = ['GET', 'POST'])
-def update(id):
+def update_cliente(id):
     if request.method == 'POST':
-        cliente_search = Cliente(*cliente_select(id)[0])
+        cliente_search = cliente_select(id)
         try:
             cliente_id = cliente_search.clien_id
             cliente_identificacion = request.form.get('cliente_identificacion')
@@ -152,19 +144,19 @@ def update(id):
         
         # Manejo de errores
         except mysql.connector.IntegrityError as ex:
-            flash("No se puede actualizar el cliente porque está en uso", "error")
+            flash("No se puede actualizar el cliente porque está en uso", "warning")
         except mysql.connector.Error as ex:
-            flash("Error al intentar actualizar el cliente", "error")
+            flash("Error al intentar actualizar el cliente", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
+            flash(f"Error inesperado: {ex}", "warning")
         
-    cliente = Cliente(*cliente_select(id)[0])
+    cliente = cliente_select(id)
 
     return render_template(f'{PATH_URL_CLIENTE}/cliente_update.html', cliente = cliente)
 
 @cliente_scope.route('/cliente_details/<int:id>', methods = ['GET'])
-def cliente_details(id):
-    cliente = Cliente(*cliente_select(id)[0])
+def details_cliente(id):
+    cliente = cliente_select(id)
     if cliente:
         return jsonify({
             'id' : cliente.clien_id,

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
-from ..controller import *
-from ..models import Proveedor
+from ...controller import *
+from ...models import Proveedor
 
 proveedor_scope = Blueprint("proveedor_scope", __name__)
 PATH_URL_PROVEEDOR = "usuario/proveedor" # Acortador de url
@@ -8,7 +8,6 @@ PATH_URL_PROVEEDOR = "usuario/proveedor" # Acortador de url
 @proveedor_scope.route('/', methods = ['POST', 'GET'])
 def proveedor():
 
-    connection = create_connection()
     query = """SELECT * FROM proveedor WHERE 1=1"""
     parameters = []
 
@@ -32,12 +31,9 @@ def proveedor():
             
         if proveedor_estado:
             query += " AND prov_estado LIKE %s"
-            parameters.append(f"%{proveedor_estado}%")
+            parameters.append(f"{proveedor_estado}")
 
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        proveedor_list_result = cur.fetchall()
+    proveedor_list_result = fetch_all(query, parameters)
 
     list_proveedor = []
     
@@ -54,13 +50,8 @@ def proveedor():
     return render_template(f'{PATH_URL_PROVEEDOR}/proveedor.html', list_proveedor = list_proveedor)
 
 
-@proveedor_scope.route('/proveedor_add', methods = ['GET'])
-def proveedor_add():
-    return render_template(f'{PATH_URL_PROVEEDOR}/proveedor_create.html')
-
-
-@proveedor_scope.route('/create', methods = ['POST' ,'GET'])
-def create():
+@proveedor_scope.route('/proveedor_create', methods = ['POST' ,'GET'])
+def create_proveedor():
     if request.method == 'POST':
         try:
             # Asignacion de valores, mediante un reques del front
@@ -79,26 +70,25 @@ def create():
                 proveedor_telefono
             )
             
-            if not proveedor_select_nit(proveedor_nit): # Evitar el duplicado de identicacion
+            if not get_proveedor_nit(proveedor_nit): # Evitar el duplicado de identicacion
                 proveedor_create(proveedor)
                 flash(f"Provedor {proveedor_nit} - {proveedor_razonSocial} fue agregado", "success")
                 return redirect(url_for('proveedor_scope.proveedor'))
             else: 
                 flash(f"Ya existe un proveedor con NIT {proveedor_nit}", "error")
-                return redirect(url_for('proveedor_scope.proveedor_add'))
+                return redirect(url_for('proveedor_scope.create_proveedor'))
             
         # Manejo de errores
         except mysql.connector.Error as ex:
-            flash("Error al intentar crear el proveedor", "error")
+            flash("Error al intentar crear el proveedor", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
-        return redirect(url_for('proveedor_scope.proveedor'))
-            
+            flash(f"Error inesperado: {ex}", "warning")
+    return render_template(f'{PATH_URL_PROVEEDOR}/proveedor_create.html')       
     
 @proveedor_scope.route('/proveedor_delete/<int:id>', methods = ['GET', 'POST'])
-def delete(id):
+def delete_proveedor(id):
     try:
-        proveedor = Proveedor(*proveedor_select_id(id)[0])
+        proveedor = proveedor_select(id)
         proveedor_delete(proveedor)
         flash(f'Proveedor {proveedor.prov_id} - {proveedor.prov_razonsocial} fue eliminado', "success")
 
@@ -112,9 +102,9 @@ def delete(id):
     return redirect(url_for('proveedor_scope.proveedor'))
 
 @proveedor_scope.route('/proveedor_update/<int:id>', methods = ['GET', 'POST'])
-def update(id):
+def update_proveedor(id):
     if request.method == 'POST':
-        proveedor_search = Proveedor(*proveedor_select_id(id)[0])
+        proveedor_search = proveedor_select(id)
         try:
             proveedor_id = proveedor_search.prov_id
             proveedor_nit = request.form.get('proveedor_nit')
@@ -144,13 +134,12 @@ def update(id):
         except Exception as ex:
             flash(f"Error inesperado: {ex}", "error")
         
-    proveedor = Proveedor(*proveedor_select_id(id)[0])
-
+    proveedor = proveedor_select(id)
     return render_template(f'{PATH_URL_PROVEEDOR}/proveedor_update.html', proveedor = proveedor)
 
 @proveedor_scope.route('/proveedor_details/<int:id>', methods = ['GET'])
-def proveedor_details(id):
-    proveedor = Proveedor(*proveedor_select_id(id)[0])
+def details_proveedor(id):
+    proveedor = proveedor_select(id)
     if proveedor:
         return jsonify({
             'id' : proveedor.prov_id,

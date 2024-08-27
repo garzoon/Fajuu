@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 import json
 
-from ..controller import *
-from ..models import Proveedor, Entrada
+from ...controller import *
+from ...models import Entrada
 
 factura_proveedor_scope = Blueprint("factura_proveedor_scope", __name__)
 PATH_URL_FACT_PROVEEDOR = "factura/factura_proveedor" # Acortador de url
@@ -10,7 +10,6 @@ PATH_URL_FACT_PROVEEDOR = "factura/factura_proveedor" # Acortador de url
 @factura_proveedor_scope.route('/', methods = ['POST', 'GET'])
 def factura():
 
-    connection = create_connection()
     query = """SELECT * FROM entradas WHERE 1=1"""
     parameters = []
 
@@ -31,16 +30,13 @@ def factura():
             query += " AND ent_fecha_entrada LIKE %s"
             parameters.append(f"%{entrada_fecha}%")
 
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        entrada_list_result = cur.fetchall()
+    entrada_list_result = fetch_all(query, parameters)
 
     list_entradas = []
     
     for entrada in entrada_list_result:
         entrada = Entrada(*entrada)
-        proveedor = Proveedor(*proveedor_select_id(entrada.prov_copiaid)[0])
+        proveedor = proveedor_select(entrada.prov_copiaid)
         item_entrada = (
             entrada.ent_id, 
             entrada.prov_copiaid,
@@ -53,9 +49,9 @@ def factura():
 
 
 @factura_proveedor_scope.route('/factura_proveedor_delete/<int:id>', methods = ['GET', 'POST'])
-def delete(id):
+def delete_factura_proveedor(id):
     try:
-        entrada = Entrada(*entrada_select(id)[0])
+        entrada = entrada_select(id)
         entrada_delete(entrada)
         flash(f'Factura de proveedor {entrada.ent_id} - {entrada.prov_copiaid} fue eliminada', "success")
         return redirect(url_for('factura_proveedor_scope.factura'))
@@ -70,10 +66,10 @@ def delete(id):
     return redirect(url_for('operador_scope.operador'))
 
 @factura_proveedor_scope.route('/factura_proveedor_details/<int:id>', methods = ['GET'])
-def factura_proveedor_details(id):
-    entrada = Entrada(*entrada_select(id)[0])
+def details_factura_proveedor(id):
+    entrada = entrada_select(id)
     dic_productos = json.loads(entrada.ent_detalle_producto)
-    proveedor = Proveedor(*proveedor_select_id(entrada.prov_copiaid)[0])
+    proveedor = proveedor_select(entrada.prov_copiaid)
     if entrada and proveedor:
         return jsonify({
             'id' : entrada.ent_id,

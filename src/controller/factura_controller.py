@@ -3,23 +3,15 @@ from ..database.connection import *
 
 def factura_list() -> Factura:
     query = "SELECT * FROM facturas ORDER BY fact_id DESC"
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query)
-        return cur.fetchall()
+    return fetch_all(query)
 
-
-def factura_select(fact_id) -> Factura:
+def factura_select(fact_id):
     query = "SELECT * FROM facturas WHERE fact_id = %s ORDER BY fact_id DESC"
     parameters = (fact_id, )
-
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        return cur.fetchall()
-
+    result = fetch_one(query, parameters)
+    if result:
+        return Factura(*result)
+    return None
 
 def factura_create(factura: Factura) -> Factura:
     query = """INSERT INTO facturas (
@@ -34,18 +26,14 @@ def factura_create(factura: Factura) -> Factura:
         factura.fact_detalle_productos, 
         factura.fact_fecha_emision
     )	
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return factura
-
 
 def factura_delete (factura: Factura) -> Factura:
     query = "DELETE FROM facturas WHERE fact_id = %s"
     parameters = (factura.fact_id, )
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return factura
-
 
 def factura_update(factura: Factura) -> Factura:
     query = ("""UPDATE facturas SET 
@@ -60,5 +48,5 @@ def factura_update(factura: Factura) -> Factura:
         factura.fact_fecha_emision,
         factura.fact_id
     )
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return factura

@@ -9,7 +9,6 @@ PATH_URL_PRODUCTO = "producto" # Acortador de url
 @producto_scope.route('/', methods = ['GET', 'POST'])
 def producto():
 
-    connection = create_connection()
     query = """SELECT * FROM productos WHERE 1=1"""
     parameters = []
 
@@ -30,16 +29,13 @@ def producto():
             query += " AND prod_estado LIKE %s"
             parameters.append(f"%{producto_estado}%")
 
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        product_list_result = cur.fetchall()
+    product_list_result = fetch_all(query, parameters)
 
     list_producto = []
     
     for producto in product_list_result:
         producto = Producto(*producto)
-        categoria = Categoria(*get_product_category(producto.cate_copiaid)[0])
+        categoria = get_producto_categoria(producto.cate_copiaid)
         item_producto = (
             producto.prod_id, 
             producto.prod_descripcion,
@@ -52,13 +48,8 @@ def producto():
 
     return render_template(f'{PATH_URL_PRODUCTO}/producto.html', list_producto = list_producto)
 
-
-@producto_scope.route('/producto_add', methods = ['GET'])
-def producto_add():
-    return render_template(f'{PATH_URL_PRODUCTO}/producto_create.html')
-
-@producto_scope.route('/create', methods = ['POST' ,'GET'])
-def create():
+@producto_scope.route('/producto_create', methods = ['POST' ,'GET'])
+def create_producto():
     if request.method == 'POST':
         try:
             producto_id = None
@@ -85,33 +76,33 @@ def create():
         
         # Manejo de errores
         except mysql.connector.Error as ex:
-            flash("Error al intentar crear el producto", "error")
+            flash("Error al intentar crear el producto", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
-        return redirect(url_for('producto_scope.producto'))
+            flash(f"Error inesperado: {ex}", "warning")
+    return render_template(f'{PATH_URL_PRODUCTO}/producto_create.html')
             
     
 @producto_scope.route('/producto_delete/<int:id>', methods = ['GET', 'POST'])
-def delete(id):
+def delete_producto(id):
     try:
-        producto = Producto(*producto_select(id)[0])
+        producto = producto_select(id)
         producto_delete(producto)
         flash(f'Producto {producto.prod_id} - {producto.prod_descripcion} fue eliminado', "success")
         return redirect(url_for('producto_scope.producto'))
     
     # Manejo de errores
     except mysql.connector.IntegrityError as ex:
-        flash("No se puede eliminar el producto porque está en uso", "error")
+        flash("No se puede eliminar el producto porque está en uso", "warning")
     except mysql.connector.Error as ex:
-        flash("Error al intentar eliminar el producto", "error")
+        flash("Error al intentar eliminar el producto", "warning")
     except Exception as ex:
-        flash(f"Error inesperado: {ex}", "error")
+        flash(f"Error inesperado: {ex}", "warning")
     return redirect(url_for('producto_scope.producto'))
 
 @producto_scope.route('/producto_update/<int:id>', methods = ['GET', 'POST'])
-def update(id):
+def update_producto(id):
     if request.method == 'POST':
-        producto_search = Producto(*producto_select(id)[0])
+        producto_search = producto_select(id)
         try:
             producto_id = producto_search.prod_id
             producto_descripcion = request.form.get('producto_descripcion')
@@ -136,19 +127,18 @@ def update(id):
             return redirect(url_for('producto_scope.producto'))
         # Manejo de errores
         except mysql.connector.Error as ex:
-            flash("Error al intentar actualizar el producto", "error")
+            flash("Error al intentar actualizar el producto", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
+            flash(f"Error inesperado: {ex}", "warning")
         return redirect(url_for('producto_scope.producto'))
         
-    producto = Producto(*producto_select(id)[0])
-
+    producto = producto_select(id)
     return render_template(f'{PATH_URL_PRODUCTO}/producto_update.html', producto = producto)
 
 @producto_scope.route('/producto_details/<int:id>', methods = ['GET'])
-def producto_details(id):
-    producto = Producto(*producto_select(id)[0])
-    categoria = Categoria(*get_product_category(producto.cate_copiaid)[0])
+def details_producto(id):
+    producto = producto_select(id)
+    categoria = get_producto_categoria(producto.cate_copiaid)
     if producto:
         return jsonify({
             'id' : producto.prod_id,

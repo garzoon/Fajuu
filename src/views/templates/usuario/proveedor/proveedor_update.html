@@ -8,7 +8,7 @@
 <main class="main">
     <section class="section-productos">
         <h1>Editar proovedor ({{ proveedor.prov_id }}) {{ proveedor.prov_razonsocial }}</h1>
-        <form class="frm-productos" action="{{ url_for('proveedor_scope.update', id=proveedor.prov_id) }}"
+        <form class="frm-productos" action="{{ url_for('proveedor_scope.update_proveedor', id=proveedor.prov_id) }}"
             method="post">
 
             <label class="lbl-descripcionProducto" for="proveedor_nit">NIT</label>
@@ -30,18 +30,18 @@
             <label class="lbl-categoria" for="proovedor_estado">Estado</label>
             <select class="slc-categoria" id="proovedor_estado" name="proovedor_estado" required>
                 <option {% if proveedor.prov_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
-                <option {% if proveedor.prov_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
+                <option {% if proveedor.prov_estado=='inactivo' %} selected {% endif %} value="inactivo">Inactivo
                 </option>
             </select>
 
             <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Editar</button>
         </form>
     </section>
-</main>
-<footer class="footer">
+
     <div class="action-buttons">
         <a href=" {{ url_for('proveedor_scope.proveedor') }}" class="btn btn-primary">Volver</a>
     </div>
-</footer>
+</main>
+
 
 {% endblock %}

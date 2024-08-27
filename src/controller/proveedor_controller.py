@@ -2,35 +2,17 @@ from ..models.proveedor_model import Proveedor
 from ..database.connection import *
 
 
-def proveedor_list() -> Proveedor:
+def proveedor_list():
     query = "SELECT * FROM proveedor ORDER BY prov_id DESC"
+    return fetch_all(query)
 
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query)
-        return cur.fetchall()
-
-def proveedor_select_nit(prov_nit) -> Proveedor:
-    query = "SELECT * FROM proveedor WHERE prov_nit = %s ORDER BY prov_id DESC"
-    parameters = (prov_nit, )
-
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        return cur.fetchall()
-    
-def proveedor_select_id(prov_id) -> Proveedor:
+def proveedor_select(prov_id):
     query = "SELECT * FROM proveedor WHERE prov_id = %s ORDER BY prov_id DESC"
     parameters = (prov_id, )
-
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        return cur.fetchall()
-
+    result = fetch_one(query, parameters)
+    if result:
+        return Proveedor(*result)
+    return None 
 
 def proveedor_create(proveedor: Proveedor) -> Proveedor:
     query = """INSERT INTO proveedor(
@@ -47,18 +29,14 @@ def proveedor_create(proveedor: Proveedor) -> Proveedor:
         proveedor.prov_telefono, 
         proveedor.prov_estado
     )
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return proveedor
-
 
 def proveedor_delete (proveedor: Proveedor) -> Proveedor:
     query = "DELETE FROM proveedor WHERE prov_id = %s"
     parameters = (proveedor.prov_id, )
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return proveedor
-
 
 def proveedor_update(proveedor: Proveedor) -> Proveedor:
     query = """UPDATE proveedor SET 
@@ -77,5 +55,17 @@ def proveedor_update(proveedor: Proveedor) -> Proveedor:
         proveedor.prov_estado,
         proveedor.prov_id
     )
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return proveedor
+
+
+def get_proveedor_nit(prov_nit):
+    query = "SELECT * FROM proveedor WHERE prov_nit = %s ORDER BY prov_id DESC"
+    parameters = (prov_nit, )
+    return fetch_one(query, parameters)
+
+def get_proveedor_estado(prov_id):
+    query = "SELECT prov_estado FROM proveedor WHERE prov_id = %s ORDER BY prov_id DESC"
+    parameters = (prov_id, )
+    return fetch_one(query, parameters)
+    

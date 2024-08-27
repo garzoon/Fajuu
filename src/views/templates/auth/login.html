@@ -9,32 +9,45 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
+
 <main class="main-login">
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class="flash-message {{ category }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% block main %}
+    
+    {% endblock %}
     <h1 class="">logIn</h1>
-    <form class="form-login" action="/login" method="post">
-     
+    <form class="form-login" action="{{ url_for('auth_scope.login') }}" method="post">
         <label for="username">Identificacion</label>
-        <input class="inp-identidad item-primary" id="username" name="username" type="text" required>    
+        <input class="inp-identidad item-primary" id="user_id" name="user_id" type="number" required autocomplete="off">    
                   
         <label for="password">Contraseña</label>
-        <input class="inp-password item-primary" id="password" name="password" type="password"  placeholder="Contraseña" required>
-            
-        <section class="section-floating">
-            <div class="section-recordar">
-                <input class="check-recordar" name="remember-checkbox" type="checkbox">
-                <label class="lbl-recordar" for="remember-checkbox">
-                    Recuerdame
-                </label>     
-            </div>
-
-            <div class="section-recuperar">
-                <a href="">olvide mi contraseña</a>
-            </div>
-        </section>
+        <input class="inp-password item-primary" id="user_password" name="user_password" type="password" required autocomplete="off">
+        <button type="button" onclick="viewPassword()">Ver</button>
 
         <button type="submit" class="btn-iniciar_sesion">Iniciar sesión</button>
     </form>
     
 </main>
+
+<script>
+    function viewPassword() {
+        var input = document.getElementById("user_password");
+        if (input.type === "password"){
+            input.type = "text";
+        }
+        else {
+            input.type = "password"
+        }
+    } 
+</script>
+
 </body>
 </html>

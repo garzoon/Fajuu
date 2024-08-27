@@ -84,16 +84,18 @@
             </table>
         </div>
     </section>
+
+    <div class="footer">
+        <form action="{{ url_for('operador_scope.create_operador') }}" method="get">
+            <button type="submit" class="btn btn-primary">Crear</button>
+        </form>
+        <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
+            <button type="submit" class="btn btn-primary">Volver</button>
+        </form>
+    </div>
 </main>
 
-<div class="footer">
-    <form action="{{ url_for('operador_scope.operador_add') }}" method="get">
-        <button type="submit" class="btn btn-primary">Crear</button>
-    </form>
-    <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
-        <button type="submit" class="btn btn-primary">Volver</button>
-    </form>
-</div>
+
 
 {% block customScript %}
 <script>

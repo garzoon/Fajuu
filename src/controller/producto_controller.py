@@ -2,34 +2,17 @@ from flask import flash
 from ..models import Producto, Categoria
 from ..database.connection import *
 
-def get_product_category(cate_copiaid) -> Categoria:
-    query = "SELECT * FROM categorias WHERE cate_id = %s"
-    parameters = (cate_copiaid, )
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        return cur.fetchall()
-
-def producto_list() -> Producto:
+def producto_list():
     query = """SELECT * FROM productos ORDER BY prod_id DESC"""
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query)
-        return cur.fetchall()
+    return fetch_all(query)
 
-
-def producto_select(prod_id) -> Producto:
+def producto_select(prod_id):
     query = """SELECT * FROM productos WHERE prod_id = %s"""
     parameters = (prod_id, )
-
-    connection = create_connection()
-    if connection:
-        cur = connection.cursor()
-        cur.execute(query, parameters)
-        return cur.fetchall()
-
+    result = fetch_one(query, parameters)
+    if result:
+        return Producto(*result)
+    return None 
 
 def producto_create(producto: Producto) -> Producto: 
     query = """INSERT INTO productos 
@@ -45,16 +28,14 @@ def producto_create(producto: Producto) -> Producto:
         producto.prod_unidad_medida,
         producto.prod_precio
     )
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return producto
 
 
 def producto_delete (producto: Producto) -> Producto:
     query = "DELETE FROM productos WHERE prod_id = %s"
     parameters = (producto.prod_id, )
-
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return "producto"
 
 
@@ -77,41 +58,51 @@ def producto_update(producto: Producto) -> Producto:
         producto.prod_precio, 
         producto.prod_id
     )
-    fetch_query(query, parameters)
+    execute_commit(query, parameters)
     return producto
 
-def get_estado_producto(prod_id) -> str:
+def get_producto_categoria(cate_copiaid):
+    query = "SELECT * FROM categorias WHERE cate_id = %s"
+    parameters = (cate_copiaid, )
+    result = fetch_one(query, parameters)
+    if result:
+        return Categoria(*result)
+    return None 
+
+
+def get_producto_estado(prod_id) -> str:
     producto = producto_select(prod_id)
     if not producto:
-        return None  # o algún valor indicativo si el producto no existe
+        return None 
 
-    producto = Producto(*producto[0])
+    producto = Producto(*producto)
     if producto.prod_stock > 0:
         return 'disponible'
     return 'agotado'
 
 def update_producto_estado(prod_id, estado) -> None:
     query = "UPDATE productos SET prod_estado = %s WHERE prod_id = %s"
-    fetch_query(query, (estado, prod_id))
+    parameters = (estado, prod_id)
+    execute_commit(query, parameters)
 
 def producto_entrada(prod_id, prod_stock) -> None:
     producto = producto_select(prod_id)
     if not producto:
-        return
+        return "Producto no existe"
 
-    producto = Producto(*producto[0])
+    producto = Producto(*producto)
     new_stock = int(prod_stock) + int(producto.prod_stock)
     query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
-    fetch_query(query, (new_stock, prod_id))
+    parameters = (new_stock, prod_id)
+    execute_commit(query, parameters)
 
-    # Actualizar el estado si es necesario
     if new_stock > 0:
         update_producto_estado(prod_id, 'disponible')
 
 def producto_salida(prod_id, prod_stock) -> str:
-    producto = Producto(*producto_select(prod_id)[0])
+    producto = Producto(*producto_select(prod_id))
     
-    if get_estado_producto(prod_id) == 'disponible': 
+    if get_producto_estado(prod_id) == 'disponible': 
         # Verificar si el stock a retirar es menor o igual al stock actual
         if int(prod_stock) <= int(producto.prod_stock):
             new_stock = int(producto.prod_stock) - int(prod_stock)
@@ -120,7 +111,7 @@ def producto_salida(prod_id, prod_stock) -> str:
             if new_stock > 0:
                 query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
                 parameters = (new_stock, prod_id)
-                fetch_query(query, parameters)
+                execute_commit(query, parameters)
                 return "Stock actualizado con éxito"
 
             # Si el stock es 0 después de la operación, actualizar estado a 'agotado'
@@ -128,14 +119,14 @@ def producto_salida(prod_id, prod_stock) -> str:
                 update_producto_estado(prod_id, 'agotado')
                 query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
                 parameters = (new_stock, prod_id)
-                fetch_query(query, parameters)
+                execute_commit(query, parameters)
                 return f"Producto {producto.prod_descripcion} agotado tras la salida"
 
         else:
             return f"Stock insuficiente para retirar {prod_stock} unidades de {producto.prod_descripcion}"
     
     else:
-        return f"Producto {producto.prod_descripcion} ya está agotado"
+        return f"Producto {producto.prod_descripcion} está agotado"
 
 
      

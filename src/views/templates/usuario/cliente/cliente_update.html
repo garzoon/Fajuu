@@ -8,7 +8,7 @@
 <main class="main">
     <section class="section-productos">
         <h1>Editar cliente {{ cliente.clien_nombre }}</h1>
-        <form class="frm-productos" action="{{ url_for('cliente_scope.update', id=cliente.clien_id) }}" method="post">
+        <form class="frm-productos" action="{{ url_for('cliente_scope.update_cliente', id=cliente.clien_id) }}" method="post">
 
             <label class="lbl-descripcionProducto" for="cliente_identificacion">Identificacion</label>
             <input class="inp-descripcionProducto" id="cliente_identificacion" name="cliente_identificacion" type="text"
@@ -44,11 +44,10 @@
             <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Editar</button>
         </form>
     </section>
-</main>
-<footer class="footer">
+
     <div class="action-buttons">
         <a href=" {{ url_for('cliente_scope.cliente') }}" class="btn btn-primary">Volver</a>
     </div>
-</footer>
+</main>
 
 {% endblock %}

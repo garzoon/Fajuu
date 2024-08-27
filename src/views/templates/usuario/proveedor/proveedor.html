@@ -29,7 +29,7 @@
                 <select class="slc-estadoProducto" id="proveedor_estado" name="proveedor_estado">
                     <option value="" selected>No definido</option>
                     <option value="activo">Activo</option>
-                    <option value="innactivo">Innactivo</option>
+                    <option value="inactivo">Inactivo</option>
                 </select>
             </div>
 
@@ -76,16 +76,18 @@
             </table>
         </div>
     </section>
+
+    <div class="footer">
+        <form action="{{ url_for('proveedor_scope.create_proveedor') }}" method="get">
+            <button type="submit" class="btn btn-primary">Crear</button>
+        </form>
+        <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
+            <button type="submit" class="btn btn-primary">Volver</button>
+        </form>
+    </div>
 </main>
 
-<div class="footer">
-    <form action="{{ url_for('proveedor_scope.proveedor_add') }}" method="get">
-        <button type="submit" class="btn btn-primary">Crear</button>
-    </form>
-    <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
-        <button type="submit" class="btn btn-primary">Volver</button>
-    </form>
-</div>
+
 
 {% block customScript %}
 <script>

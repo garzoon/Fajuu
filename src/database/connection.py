@@ -1,9 +1,7 @@
 import mysql.connector
 from mysql.connector import Error 
-import pymysql
 
 
-# Establecer 
 def create_connection():
     try:
         connection = mysql.connector.connect(
@@ -13,37 +11,73 @@ def create_connection():
         database = 'fajuu'
         )
         if connection.is_connected():
-            print("Conectado a la Db")
+            print("Db conectada")
             return connection
         else:
-            print("Conexion cerrada")
+            print("Db no conectada")
             return None
     except Exception as ex:
         print(f"Error para conectarse a la base de datos: {ex}")
         return None
         
+def fetch_one(query, parameters):
+    connection = None
+    cursor = None
+    connection = create_connection()
+    if connection:
+        try:
+            cursor = connection.cursor() # Retorna un diccionario
+            cursor.execute(query, parameters)
+            return cursor.fetchone()
+        except Error as ex: 
+            connection.rollback() 
+            print(f"Error al ejecutar la consulta: {ex}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+                print("Conexión cerrada")
+                
+def fetch_all(query, parameters = None):
+    connection = None
+    cursor = None
+    connection = create_connection()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(query, parameters)
+            return cursor.fetchall()
+        except Error as ex: 
+            connection.rollback() 
+            print(f"Error al ejecutar la consulta: {ex}")
+            raise
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+                print("Conexión cerrada")
+        
 
-
-#Realizar proceso de conexion, creacion de cursor y fetch one (SOLO PARA CONSULTAS SELECT)
-
-def fetch_query(query, parameters):
+def execute_commit(query, parameters):
     connection = None
     cur = None
-    try:
-        connection = create_connection() 
-        if connection:
+    connection = create_connection() 
+    if connection:
+        try:
             cur = connection.cursor()
             cur.execute(query, parameters)
-            connection.commit() 
-    except pymysql.Error as ex: 
-        if connection:
+            connection.commit()
+        except Error as ex: 
             connection.rollback() 
-        print(f"Error al ejecutar la consulta: {ex}")
-        raise
-    finally:
-        if cur:
-            cur.close()
-        if connection:
-            connection.close()
-            print("Conexión cerrada")
+            print(f"Error al ejecutar la consulta: {ex}")
+            raise
+        finally:
+            if cur:
+                cur.close()
+            if connection:
+                connection.close()
+                print("Conexión cerrada")
 

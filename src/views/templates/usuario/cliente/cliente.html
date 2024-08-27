@@ -81,16 +81,16 @@
             </table>
         </div>
     </section>
-</main>
 
-<div class="footer">
-    <form action="{{ url_for('cliente_scope.cliente_add') }}" method="get">
-        <button type="submit" class="btn btn-primary">Crear</button>
-    </form>
-    <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
-        <button type="submit" class="btn btn-primary">Volver</button>
-    </form>
-</div>
+    <div class="footer">
+        <form action="{{ url_for('cliente_scope.create_cliente') }}" method="get">
+            <button type="submit" class="btn btn-primary">Crear</button>
+        </form>
+        <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
+            <button type="submit" class="btn btn-primary">Volver</button>
+        </form>
+    </div>
+</main>
 
 {% block customScript %}
 <script>

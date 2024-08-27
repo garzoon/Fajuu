@@ -8,7 +8,7 @@
 <main class="main">
     <section class="section-productos">
         <h1>Nuevo proveedor</h1>
-        <form class="frm-productos" action="{{ url_for('proveedor_scope.create') }}" method="post">
+        <form class="frm-productos" action="{{ url_for('proveedor_scope.create_proveedor') }}" method="post">
 
             <label class="lbl-descripcionProducto" for="proveedor_nit">NIT</label>
             <input class="inp-descripcionProducto" id="proveedor_nit" name="proveedor_nit" type="text" required>
@@ -27,11 +27,11 @@
             <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Crear</button>
         </form>
     </section>
-</main>
-<footer class="footer">
+
+
     <div class="action-buttons">
         <a href=" {{ url_for('proveedor_scope.proveedor') }}" class="btn btn-primary">Volver</a>
     </div>
-</footer>
+</main>
 
 {% endblock %}
