@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-
+{% block blockTitle %}Salida{% endblock %}
 {% block customCss %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/entrada.css') }}">
 {% endblock %}
@@ -8,7 +8,7 @@
 <main class="main">
     <section class="section-entradas">
 
-        <form action="{{ url_for('salida.salida') }}" method="POST">
+        <form action="{{ url_for('salida_scope.salida') }}" method="POST">
             <div class="factura_entradas">
                 <h1>Datos de factura</h1>
                 <label for="cliente_id">Id cliente</label>
@@ -46,7 +46,7 @@
                     <td>{{ producto[1] }}</td>
                     <td>{{ producto[2] }} {{ producto[3] }}</td>
                     <td>
-                        <form action="{{ url_for('salida.delete_salida', id=key) }}" method="POST">
+                        <form action="{{ url_for('salida_scope.delete_salida', id=key) }}" method="POST">
                             <button type="submit">Eliminar</button>
                         </form>
                     </td>
@@ -58,10 +58,10 @@
 
     </section>
     <section class="footer">
-        <form action="{{ url_for ('salida.send_salida') }}" method="POST">
+        <form action="{{ url_for ('salida_scope.send_salida') }}" method="POST">
             <button class="btn btn-primary">Continuar</button>
         </form>
-        <form action="{{ url_for ('salida.clear_salida') }}" method="POST">
+        <form action="{{ url_for ('salida_scope.clear_salida') }}" method="POST">
             <button class="btn btn-primary">Descartar</button>
         </form>
     </section>

@@ -1,0 +1,40 @@
+{% extends './layout.html' %}
+
+{% block blockTitle %}Mi perfil{% endblock %}
+
+{% block customCss %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
+{% endblock %}
+
+{% block main %}
+<main class="main">
+    <section class="section-productos">
+        <h1>Editar producto</h1>
+        <div>
+            <p>
+                <strong>Nombre:</strong>
+                {{ list_usuario.user_nombre }}
+            </p>
+            <p>
+                <strong>Apellido:</strong>
+                {{ list_usuario.user_apellido }}
+            </p>
+            <p>
+                <strong>Correo electrónico:</strong>
+                {{ list_usuario.user_email }}
+            </p>
+            <p>
+                <strong>Número de telefono:</strong>
+                {{ list_usuario.user_telefono }}
+            </p>
+        </div>
+
+        <div class="action-buttons">
+            <a href=" {{ url_for('perfil_scope.update_perfil', id=list_usuario.user_id) }}" class="btn btn-primary">Editar</a>
+        </div>
+        <a onclick="redirect('perfil_password', '{{ list_usuario.user_id }}')" class="btn btn-primary">Cambiar contraseña</a>
+
+
+</main>
+
+{% endblock %}

@@ -5,8 +5,7 @@ from datetime import datetime
 from ..controller import *
 from ..models import Factura
 
-salida_scope = Blueprint("salida", __name__)
-PATH_URL_SALIDA = "salida"
+salida_scope = Blueprint("salida_scope", __name__)
 
 @salida_scope.route('/salida', methods=['POST', 'GET'])
 def salida():
@@ -38,7 +37,7 @@ def salida():
                 else:   
                     flash("Producto ya agregado", "error")
 
-    return render_template(f'{PATH_URL_SALIDA}/salida.html', dic_productos = session['dic_productos_salida'], cliente_id = session.get('cliente_id', ''))
+    return render_template('salida.html', dic_productos = session['dic_productos_salida'], cliente_id = session.get('cliente_id', ''))
             
 @salida_scope.route('/salida_send', methods = ['POST', 'GET'])
 def send_salida ():

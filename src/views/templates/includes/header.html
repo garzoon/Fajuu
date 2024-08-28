@@ -8,11 +8,12 @@
     </div>
 </header>
 <div>
-    <nav>
-        <a href="">Entrada</a>
-        <a href="">Salida</a>
-        <a href="">Productos</a>
-        <a href="">Facturas</a>
-        <a href="">Usuarios</a>
+    <nav> 
+        <a href="{{ url_for('entrada_scope.entrada') }}">Entrada</a>
+        <a href="{{ url_for('salida_scope.salida') }}">Salida</a>
+        <a href="{{ url_for('producto_scope.producto') }}">Productos</a>
+        <a href="{{ url_for('factura_scope.factura') }}">Facturas</a>
+        <a href="{{ url_for('usuario_scope.usuario') }}">Usuarios</a>
+        <a href="{{ url_for('perfil_scope.perfil') }}">Mi perfil</a>
     </nav>
 </div>

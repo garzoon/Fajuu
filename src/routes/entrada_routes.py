@@ -5,20 +5,21 @@ from datetime import datetime
 from ..controller import *
 from ..models import Entrada
 
-entrada_scope = Blueprint("entrada", __name__)
+entrada_scope = Blueprint("entrada_scope", __name__)
 
-@entrada_scope.route('/entrada', methods=['POST', 'GET'])
+@entrada_scope.route('/', methods=['POST', 'GET'])
 def entrada():
     # Inicializa diccionario de productos si no existe
+    
     if 'dic_productos' not in session:
         session['dic_productos'] = {}
 
     if request.method == 'POST':
         # Obtener datos del formulario
         session['proveedor_id'] = request.form.get('proveedor_id')
-        session['factura_id'] = request.form.get('factura-id')
-        producto_id = request.form.get('producto-id')
-        producto_cantidad = request.form.get('producto-cantidad')
+        session['factura_id'] = request.form.get('factura_id')
+        producto_id = request.form.get('producto_id')
+        producto_cantidad = request.form.get('producto_cantidad')
 
 
         if not proveedor_select(session['proveedor_id']):
@@ -40,8 +41,11 @@ def entrada():
                         flash("Producto agregado correctamente", "success")
                     else:
                         flash("Producto ya agregado", "error")
-
-    return render_template('entrada.html', dic_productos = session['dic_productos'], proveedor_id = session.get('proveedor_id', ''), factura_id = session.get('factura_id', ''))
+                        
+    
+    list_productos = get_productos()
+    return render_template('entrada.html', dic_productos = session['dic_productos'], proveedor_id = session.get('proveedor_id', ''), 
+                           factura_id = session.get('factura_id', ''), list_productos = list_productos)
 
             
 @entrada_scope.route('/entrada_send', methods = ['POST', 'GET'])
@@ -52,7 +56,7 @@ def send_entrada ():
     proveedor_id = session.get('proveedor_id')
     if factura_id is None or proveedor_id is None:
         flash("Faltan datos de factura o proveedor", "error")
-        return redirect(url_for('entrada.entrada'))
+        return redirect(url_for('entrada_scope.entrada'))
 
     # Actualizar valores de stock del producto en la db
     for key, producto in session['dic_productos'].items():
@@ -71,7 +75,7 @@ def send_entrada ():
     for key in keys_session:
         session.pop(key, None)
     flash("Factura de entrada agregada", "success")
-    return redirect(url_for('entrada.entrada'))
+    return redirect(url_for('entrada_scope.entrada'))
 
 
 @entrada_scope.route('/entrada_delete/<string:id>', methods=['POST'])
@@ -83,7 +87,7 @@ def delete_entrada(id):
     else:
         flash("Producto no encontrado", "error")
 
-    return redirect(url_for('entrada.entrada'))
+    return redirect(url_for('entrada_scope.entrada'))
 
 
 @entrada_scope.route('/entrada_clear', methods=['POST', 'GET'])
@@ -92,4 +96,4 @@ def clear_entrada():
     for key in keys_session:
         session.pop(key, None)
     flash("Factura de entrada descartada", "success")
-    return redirect(url_for('entrada.entrada'))
+    return redirect(url_for('entrada_scope.entrada'))

@@ -61,6 +61,10 @@ def producto_update(producto: Producto) -> Producto:
     execute_commit(query, parameters)
     return producto
 
+def get_productos():
+    query = "SELECT prod_id, prod_descripcion FROM productos "
+    return fetch_all(query)
+
 def get_producto_categoria(cate_copiaid):
     query = "SELECT * FROM categorias WHERE cate_id = %s"
     parameters = (cate_copiaid, )
@@ -90,7 +94,6 @@ def producto_entrada(prod_id, prod_stock) -> None:
     if not producto:
         return "Producto no existe"
 
-    producto = Producto(*producto)
     new_stock = int(prod_stock) + int(producto.prod_stock)
     query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
     parameters = (new_stock, prod_id)

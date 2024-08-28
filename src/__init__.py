@@ -13,6 +13,7 @@ init_bcrypt(app) # Encriptador
 app.register_blueprint(auth_scope)
 app.register_blueprint(entrada_scope, url_prefix='/entrada')
 app.register_blueprint(salida_scope, url_prefix='/salida')
+app.register_blueprint(perfil_scope, url_prefix='/perfil')
 
 app.register_blueprint(factura_scope, url_prefix='/facturas')
 app.register_blueprint(factura_proveedor_scope, url_prefix='/facturas_proveedor')

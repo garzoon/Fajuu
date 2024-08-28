@@ -8,7 +8,6 @@ PATH_URL_PRODUCTO = "producto" # Acortador de url
  
 @producto_scope.route('/', methods = ['GET', 'POST'])
 def producto():
-
     query = """SELECT * FROM productos WHERE 1=1"""
     parameters = []
 
@@ -130,8 +129,7 @@ def update_producto(id):
             flash("Error al intentar actualizar el producto", "warning")
         except Exception as ex:
             flash(f"Error inesperado: {ex}", "warning")
-        return redirect(url_for('producto_scope.producto'))
-        
+              
     producto = producto_select(id)
     return render_template(f'{PATH_URL_PRODUCTO}/producto_update.html', producto = producto)
 

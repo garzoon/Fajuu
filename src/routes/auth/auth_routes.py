@@ -18,8 +18,6 @@ def login():
             session['user_nombre'] = usuario.user_nombre
             session['user_apellido'] = usuario.user_apellido
             session['user_rol'] = usuario.rol_copiaid
-            session['user_email'] = usuario.user_email
-            session['user_telefono'] = usuario.user_telefono
             
             if usuario.rol_copiaid == 1:
                 print("el usuario es admin")
