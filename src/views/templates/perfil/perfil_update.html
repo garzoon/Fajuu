@@ -2,39 +2,40 @@
 
 {% block blockTitle %}Mi perfil - Editar{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Editar producto</h1>
-        <form class="frm-productos" action="{{ url_for('perfil_scope.update_perfil', id=usuario.user_id) }}"
-            method="post">
-            <label class="inp-descripcionProducto" for="user_nombre">Nombre</label>
-            <input class="inp-descripcionProducto" id="user_nombre" name="user_nombre" type="text"
-                value="{{ usuario.user_nombre }}">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Editar producto</h1>
+            <form class="frm-productos" action="{{ url_for('perfil_scope.update_perfil', id=usuario.user_id) }}"
+                method="post">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="user_nombre">Nombre</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="user_nombre" name="user_nombre"
+                    type="text" value="{{ usuario.user_nombre }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="user_apellido">Apellido</label>
-            <input class="inp-descripcionProducto" id="user_apellido" name="user_apellido" type="text"
-                value="{{ usuario.user_apellido }}">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="user_apellido">Apellido</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="user_apellido" name="user_apellido"
+                    type="text" value="{{ usuario.user_apellido }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="user_email">Correo electrónico</label>
-            <input class="inp-descripcionProducto" id="user_email" name="user_email" type="text"
-                value="{{ usuario.user_email }}">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="user_email">Correo electrónico</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="user_email" name="user_email" type="text"
+                    value="{{ usuario.user_email }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="user_telefono">Número de telefono</label>
-            <input class="inp-descripcionProducto" id="user_telefono" name="user_telefono" type="number"
-                value="{{ usuario.user_telefono }}"> 
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="user_telefono">Número de telefono</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="user_telefono" name="user_telefono"
+                    type="number" value="{{ usuario.user_telefono }}" required required autocomplete="off">
 
-            <button class="btn proveedor-buttons_cargar" type="submit">Guardar cambios</button>
-        </form>
+                <div class="row justify-content-between">
+                    <button class="col-5 col-md-2 button-action-second" type="button"
+                        onclick="redirectPague('/perfil')">Volver</button>
+                    <button class="col-5 col-md-2 button-action" type="submit">Editar</button>
+                </div>
+            </form>
+        </div>
+
     </section>
 
-    <div class="action-buttons">
-        <a href=" {{ url_for('perfil_scope.perfil') }}" class="btn btn-primary">Volver</a>
-    </div>
+
 </main>
 
 {% endblock %}

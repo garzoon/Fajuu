@@ -1,22 +1,23 @@
 {% extends './layout.html' %}
+
 {% block blockTitle %}Usuarios{% endblock %}
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
-{% endblock %}
 
 {% block main %}
-<main class="main">
-    <section class="section-misFacturas">
-        <h1>Usuarios</h1>
-        <form class="frm-misFacturas">
-            <label for="select_usuario">Seleccionar tipo de usuario:</label>
-            <select id="select_usuario" onchange="redirect_usuario()">
-                <option value="" selected disabled>Seleccione un usuario</option>
-                <option value="operador">Operador</option>
-                <option value="proveedor">Proveedor</option>
-                <option value="cliente">Cliente</option>
-            </select>
-        </form>
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Usuarios</h1>
+            <form class="frm-search row col-12 col-lg-12 p-0">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="select_usuario">Tipo de Usuario:</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="select_usuario"
+                    onchange="redirect_usuario()">
+                    <option value="" selected disabled>Selecciona un Usuario</option>
+                    <option value="operador">Operador</option>
+                    <option value="proveedor">Proveedor</option>
+                    <option value="cliente">Cliente</option>
+                </select>
+            </form>
+        </div>
     </section>
 </main>
 

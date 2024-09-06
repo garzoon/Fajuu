@@ -2,49 +2,56 @@
 
 {% block blockTitle %}Productos - Editar{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Editar producto</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.update_producto', id=producto.prod_id) }}" method="post">
-            <label class="inp-descripcionProducto" for="producto_descripcion">Descripcion</label>
-            <input class="inp-descripcionProducto" id="producto_descripcion" name="producto_descripcion" type="text"
-                value="{{ producto.prod_descripcion }}">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Editar producto</h1>
+            <form class="col-12 d-block" action="{{ url_for('producto_scope.update_producto', id=producto.prod_id) }}"
+                method="post">
 
-            <label class="lbl-descripcionProducto" for="producto_precio">Precio(en venta)</label>
-            <input class="inp-descripcionProducto" id="producto_precio" name="producto_precio" type="number"
-                placeholder="COP" value="{{ producto.prod_precio }}">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_descripcion">Descripcion</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_descripcion"
+                    name="producto_descripcion" type="text" value="{{ producto.prod_descripcion }}" required
+                    autocomplete="off">
 
-            <label class="lbl-categoria" for="slc-categoria">Categoria</label>
-            <select class="slc-categoria" id="producto_categoria" name="producto_categoria">
-                <option {% if producto.cate_copiaid==1 %} selected {% endif %} value="1">Refrigerado</option>
-                <option {% if producto.cate_copiaid==2 %} selected {% endif %} value="2">Congelado</option>
-                <option {% if producto.cate_copiaid==3 %} selected {% endif %} value="3">Seco</option>
-            </select>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_precio">Precio(en venta)</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_precio" name="producto_precio"
+                    type="number" placeholder="COP" value="{{ producto.prod_precio }}" required autocomplete="off">
 
-            <label class="lbl-estadoProducto" for="producto_medida">Unidad de Medida</label>
-            <select class="slc-estadoProducto" id="producto_medida" name="producto_medida">
-                <option {% if producto.prod_unidad_medida=='Kilogramo' %} selected {% endif %} value="Kilogramo">
-                    Kilogramo</option>
-                <option {% if producto.prod_unidad_medida=='Gramo' %} selected {% endif %} value="Gramo">Gramo</option>
-                <option {% if producto.prod_unidad_medida=='Litro' %} selected {% endif %} value="Litro">Litro</option>
-                <option {% if producto.prod_unidad_medida=='Mililitro' %} selected {% endif %} value="Mililitro">
-                    Mililitro</option>
-                <option {% if producto.prod_unidad_medida=='Unidad' %} selected {% endif %} value="Unidad">Unidad
-                </option>
-            </select>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="slc-categoria">Categoria</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_categoria"
+                    name="producto_categoria" required>
+                    <option {% if producto.cate_copiaid==1 %} selected {% endif %} value="1">Refrigerado</option>
+                    <option {% if producto.cate_copiaid==2 %} selected {% endif %} value="2">Congelado</option>
+                    <option {% if producto.cate_copiaid==3 %} selected {% endif %} value="3">Seco</option>
+                </select>
 
-            <button class="btn proveedor-buttons_cargar" type="submit">Editar</button>
-        </form>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_medida">Unidad de Medida</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_medida" name="producto_medida"
+                    required>
+                    <option {% if producto.prod_unidad_medida=='Kilogramo' %} selected {% endif %} value="Kilogramo">
+                        Kilogramo</option>
+                    <option {% if producto.prod_unidad_medida=='Gramo' %} selected {% endif %} value="Gramo">Gramo
+                    </option>
+                    <option {% if producto.prod_unidad_medida=='Litro' %} selected {% endif %} value="Litro">Litro
+                    </option>
+                    <option {% if producto.prod_unidad_medida=='Mililitro' %} selected {% endif %} value="Mililitro">
+                        Mililitro</option>
+                    <option {% if producto.prod_unidad_medida=='Unidad' %} selected {% endif %} value="Unidad">Unidad
+                    </option>
+                </select>
+
+
+                <div class="row justify-content-between">
+                    <button class="col-5 col-md-2 button-action-second" type="button"
+                        onclick="redirectPague('/productos')">Volver</button>
+                    <button class="col-5 col-md-2 button-action" type="submit">Editar</button>
+                </div>
+            </form>
+            </div>  
+        </div>
     </section>
-
-    <div class="action-buttons">
-        <a href=" {{ url_for('producto_scope.producto') }}" class="btn btn-primary">Volver</a>
-    </div>
 </main>
 
 {% endblock %}

@@ -2,46 +2,47 @@
 
 {% block blockTitle %}Operadores - Editar{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Editar usuario - ({{ operador.user_id }}) {{ operador.user_nombre }} {{ operador.user_apellido }}</h1>
-        <form class="frm-productos" action="{{ url_for('operador_scope.update_operador', id=operador.user_id) }}" method="post">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Editar Usuario - ({{ operador.user_id }}) {{ operador.user_nombre }} {{ operador.user_apellido }}</h1>
+            <form class="col-12 d-block" action="{{ url_for('operador_scope.update_operador', id=operador.user_id) }}"
+                method="post">
 
-            <label class="lbl-descripcionProducto" for="operador_nombre">Nombre(s)</label>
-            <input class="inp-descripcionProducto" id="operador_nombre" name="operador_nombre" type="text"
-                value="{{ operador.user_nombre }}" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_nombre">Nombre(s)</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_nombre" name="operador_nombre"
+                    type="text" value="{{ operador.user_nombre }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="operador_apellido">Apellido(s)</label>
-            <input class="inp-descripcionProducto" id="operador_apellido" name="operador_apellido" type="text"
-                value="{{ operador.user_apellido }}" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_apellido">Apellido(s)</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_apellido"
+                    name="operador_apellido" type="text" value="{{ operador.user_apellido }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="operador_email">Correo electronico</label>
-            <input class="inp-descripcionProducto" id="operador_email" name="operador_email" type="email"
-                value="{{ operador.user_email }}" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_email">Correo Electrónico</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_email" name="operador_email"
+                    type="email" value="{{ operador.user_email }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="operador_telefono">Numero de telefono</label>
-            <input class="inp-descripcionProducto" id="operador_telefono" name="operador_telefono" type="number"
-                value="{{ operador.user_telefono }}" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_telefono">Número de Telefono</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_telefono"
+                    name="operador_telefono" type="number" value="{{ operador.user_telefono }}" required required autocomplete="off">
 
-            <label class="lbl-categoria" for="operador_estado">Estado</label>
-            <select class="slc-categoria" id="operador_estado" name="operador_estado" required>
-                <option {% if operador.user_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
-                <option {% if operador.user_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
-                </option>
-            </select>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_estado">Estado</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_estado" name="operador_estado"
+                    required>
+                    <option {% if operador.user_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
+                    <option {% if operador.user_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
+                    </option>
+                </select>
 
-            <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Editar</button>
-        </form>
+
+                <div class="row justify-content-between">
+                    <button class="col-5 col-md-2 button-action-second" type="button"
+                        onclick="redirectPague('/operador')">Volver</button>
+                    <button class="col-5 col-md-2 button-action" type="submit">Editar</button>
+                </div>
+            </form>
+        </div>
     </section>
-
-    <div class="action-buttons">
-        <a href=" {{ url_for('operador_scope.operador') }}" class="btn btn-primary">Volver</a>
-    </div>
 </main>
 
 {% endblock %}

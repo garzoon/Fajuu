@@ -3,10 +3,14 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from ...controller import *
 from ...models import Cliente
 
+# Decoradores
+from ...utils.user_decorators import role_requiered
+
 cliente_scope = Blueprint("cliente_scope", __name__)
 PATH_URL_CLIENTE = "usuario/cliente" # Acortador de url
 
 @cliente_scope.route('/', methods = ['POST', 'GET'])
+@role_requiered([1])
 def cliente():
 
     query = """SELECT * FROM clientes WHERE 1=1"""
@@ -57,6 +61,7 @@ def cliente():
     return render_template(f'{PATH_URL_CLIENTE}/cliente.html', list_cliente = list_cliente)
 
 @cliente_scope.route('/cliente_create', methods = ['POST' ,'GET'])
+@role_requiered([1])
 def create_cliente():
     if request.method == 'POST':
         try:
@@ -98,6 +103,7 @@ def create_cliente():
             
     
 @cliente_scope.route('/cliente_delete/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def delete_cliente(id):
     try:
         cliente = cliente_select(id)
@@ -114,6 +120,7 @@ def delete_cliente(id):
     return redirect(url_for('cliente_scope.cliente'))
 
 @cliente_scope.route('/cliente_update/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def update_cliente(id):
     if request.method == 'POST':
         cliente_search = cliente_select(id)
@@ -155,6 +162,7 @@ def update_cliente(id):
     return render_template(f'{PATH_URL_CLIENTE}/cliente_update.html', cliente = cliente)
 
 @cliente_scope.route('/cliente_details/<int:id>', methods = ['GET'])
+@role_requiered([1])
 def details_cliente(id):
     cliente = cliente_select(id)
     if cliente:

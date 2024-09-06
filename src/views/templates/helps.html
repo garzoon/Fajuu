@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Logo Fajuu -->
+    <link rel="icon" href="../static/img/fajuu-single.png" type="image/x-icon">
+    <title>Fajuu - Ayuda</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../static/css/help.css">
+</head>
+
+<body class=" d-flex justify-content-center">
+    <main class="col-5">
+
+        <h1>Ayudas Fajuu</h1>
+
+
+        <div class="accordion accordion-flush col-12" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Modulo Entrada
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo Entrada es una función principal de Fajuu, este cumple la gran función de hacer un registro inmediato de todas las facturas generadas por un proveedor y los productos que esta contiene.</p>
+
+
+                        <h2>¿Como registrar una entrada?</h2>
+                        <ul>
+                            <li>
+                                <p>En la barra de navegación ubicamos el título <strong>"Entrada"</strong>, procedemos a dar click.</p>
+                            </li>
+                            <li>
+                                <p>Una vez ubicados, el primer ítem a rellenar es <strong>"Id Proveedor"</strong> en este se debe diligenciar el Id del proveedor establecido por el sistema Fajuu al momento de crear el proveedor en <a href="">Crear Proveedor</a></p>
+                            </li>
+                            <li>
+                                <p>El ítem <strong>"Id Factura"</strong> hace referencia al número de identificación de la factura entregada por el proveedor.</p>
+                            </li>
+                            <li>
+                                <p>Para seleccionar un producto es indispensable que este ya se encuentre creado en el sistema (<a href="">Crear un Producto</a>), al darle click en <strong>"Seleccione un producto"</strong> este nos desplegara una lista con los productos creados en el sistema hasta el momento, donde debemos ubicar el producto que corresponda al mostrado en la factura física y dar click.</p>
+                            </li>
+                            <li>
+                                <p>Seleccionado el producto, procedemos a especificar la cantidad del producto que va a ser ingresada al sistema en el ítem <strong>"Cantidad"</strong>, (tener en cuenta la unidad de medida establecida para ese producto).</p>
+                            </li>
+                            <li>
+                                <p>Dar click en <strong>"Cargar"</strong>.</p>
+                            </li>
+                        </ul>
+
+                        <p>El producto registrado se mostrará en la tabla inferior, el sistema permite el registro de varios productos sin necesidad de crear varios registros de la misma factura.</p>
+
+                        <p>En caso de equivocarse en el registro de un producto este puede ser eliminado dando click en el botón <img src="../static/img/table_item_delete.png" width="25rem"></p>
+                        
+                        <p>Registrados los productos con sus cantidades correspondientes, dar click en <strong>"Enviar"</strong></p>
+
+                        <p>Si presenta un inconveniente y desea descartar el registro de Entrada actual, dar click en <strong>"Descartar"</strong></p>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Modulo Salida
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo Salida es una función principal de Fajuu, este cumple la gran función de hacer un registro inmediato de todas las facturas generadas para un cliente y los productos que esta contiene.</p>
+
+
+                        <h2>¿Como registrar una salida?</h2>
+                        <ul>
+                            <li>
+                                <p>En la barra de navegación ubicamos el título <strong>"Salida"</strong>, procedemos a dar click.</p>
+                            </li>
+                            <li>
+                                <p>Una vez ubicados, el primer ítem a rellenar es <strong>"Id Cliente"</strong> en este se debe diligenciar el Id del cliente establecido por el sistema Fajuu al momento de crear el cliente en <a href="">Crear Cliente</a>.</p>
+                            </li>
+                            <li>
+                                <p>Para seleccionar un producto es indispensable que este ya se encuentre creado en el sistema (<a href="">Crear un Producto</a>), al darle click en <strong>"Seleccione un producto"</strong> este nos desplegara una lista con los productos creados en el sistema hasta el momento, donde debemos ubicar el producto que corresponda al mostrado en la factura física y dar click.</p>
+                            </li>
+                            <li>
+                                <p>Seleccionado el producto, procedemos a especificar la cantidad del producto que va a ser ingresada al sistema en el ítem <strong>"Cantidad"</strong>, (tener en cuenta la unidad de medida establecida para ese producto).</p>
+                            </li>
+                            <li>
+                                <p>Dar click en <strong>"Cargar"</strong>.</p>
+                            </li>
+                        </ul>
+
+                        <p>El producto registrado se mostrará en la tabla inferior, el sistema permite el registro de varios productos sin necesidad de crear varios registros de la misma factura.</p>
+
+                        <p>En caso de equivocarse en el registro de un producto este puede ser eliminado dando click en el botón <img src="../static/img/table_item_delete.png" width="25rem"></p>
+                        
+                        <p>Registrados los productos con sus cantidades correspondientes, dar click en <strong>"Enviar"</strong></p>
+
+                        <p>Si presenta un inconveniente y desea descartar el registro de Entrada actual, dar click en <strong>"Descartar"</strong></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Accordion Item #3
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate
+                        the
+                        <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more
+                        exciting
+                        happening here in terms of content, but just filling up the space to make it look, at least at
+                        first
+                        glance, a bit more representative of how this would look in a real-world application.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Scripts bootstrap -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

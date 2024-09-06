@@ -2,22 +2,21 @@
 
 {% block blockTitle %}Facturas{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/factura.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-misFacturas">
-        <h1>Facturas</h1>
-        <form class="frm-misFacturas">
-            <label class="lbl-misFacturas" for="select_factura">Seleccionar tipo de factura:</label>
-            <select  id="select_factura" onchange="redirect_factura()">
-                <option value="" selected disabled>Seleccione una factura</option>
-                <option value="facturas_proveedor">Facturas de proveedor</option>
-                <option value="facturas_cliente">Facturas de cliente</option>
-            </select>
-        </form>
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Facturas</h1>
+            <form class="frm-search row col-12 col-lg-12 p-0">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="select_factura">Tipo de Factura:</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="select_factura"
+                    onchange="redirect_factura()">
+                    <option value="" selected disabled>Selecciona una Factura</option>
+                    <option value="facturas_proveedor">Facturas de Proveedor</option>
+                    <option value="facturas_cliente">Facturas de Cliente</option>
+                </select>
+            </form>
+        </div>
     </section>
 </main>
 

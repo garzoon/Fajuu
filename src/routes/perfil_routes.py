@@ -2,14 +2,19 @@ from flask import Blueprint, session, render_template, redirect, url_for, reques
 from ..models import Usuario
 from ..controller import *
 
+# Decoradores
+from ..utils.user_decorators import role_requiered
+
 perfil_scope = Blueprint("perfil_scope", __name__)
 
 @perfil_scope.route('/', methods = ['GET'])
+@role_requiered([1, 2])
 def perfil():
     list_usuario = usuario_select(session.get('user_id'))
     return render_template('/perfil/perfil.html', list_usuario = list_usuario)
 
 @perfil_scope.route('perfil_update/<int:id>', methods = ['POST', 'GET'])
+@role_requiered([1, 2])
 def update_perfil(id):
     if request.method == 'POST':
         usuario_search = usuario_select(id)
@@ -48,6 +53,7 @@ def update_perfil(id):
     return render_template('/perfil/perfil_update.html', usuario = usuario)
 
 @perfil_scope.route('/perfil_password/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1, 2])
 def update_password_usuario(id):
     if request.method == 'POST':
         operador_search = usuario_select(id)

@@ -2,46 +2,47 @@
 
 {% block blockTitle %}Productos - Crear{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Nuevo producto</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.create_producto') }}" method="post">
-            <label class="inp-descripcionProducto" for="producto_descripcion">Descripcion</label>
-            <input class="inp-descripcionProducto" id="producto_descripcion" name="producto_descripcion" type="text"
-                required>
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Nuevo Producto</h1>
+            <form class="col-12 d-block" action="{{ url_for('producto_scope.create_producto') }}" method="post">
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_descripcion">Descripcion</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_descripcion"
+                    name="producto_descripcion" type="text" required autocomplete="off">
 
-            <label class="lbl-categoria" for="producto_categoria">Categoria</label>
-            <select class="slc-categoria" id="producto_categoria" name="producto_categoria" required>
-                <option value="1">Refrigerado</option>
-                <option value="2">Congelado</option>
-                <option value="3">Seco</option>
-            </select>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_categoria">Categoria</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_categoria" name="producto_categoria">
+                    <option value="1">Refrigerado</option>
+                    <option value="2">Congelado</option>
+                    <option value="3">Seco</option>
+                </select>
 
-            <label class="lbl-descripcionProducto" for="producto_precio">Precio(en venta)</label>
-            <input class="inp-descripcionProducto" id="producto_precio" name="producto_precio" type="number"
-                placeholder="COP" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_precio">Precio(en venta)</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_precio" name="producto_precio"
+                    type="number" placeholder="COP" required autocomplete="off">
 
-            <label class="lbl-estadoProducto" for="producto_medida">Unidad de medida</label>
-            <select class="slc-estadoProducto" id="producto_medida" name="producto_medida" required>
-                <option value="Kilogramo">Kilogramo</option>
-                <option value="Gramo">Gramo</option>
-                <option value="Litro">Litro</option>
-                <option value="Mililitro">Mililitro</option>
-                <option value="Unidad">Unidad</option>
-            </select>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="producto_medida">Unidad de Medida</label>
+                <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="producto_medida" name="producto_medida"
+                    required>
+                    <option value="Kilogramo">Kilogramo</option>
+                    <option value="Gramo">Gramo</option>
+                    <option value="Litro">Litro</option>
+                    <option value="Mililitro">Mililitro</option>
+                    <option value="Unidad">Unidad</option>
+                </select>
 
-            <button class="btn proveedor-buttons_cargar" type="submit">Crear</button>
-        </form>
+                <div class="row justify-content-between">
+                    <button class="col-5 col-md-2 button-action-second" type="button"
+                        onclick="redirectPague('/productos')">Volver</button>
+                    <button class="col-5 col-md-2 button-action" type="submit">Crear</button>
+                </div>
+            </form>
+        </div>
     </section>
 
-    <div class="action-buttons">
-        <a href=" {{ url_for('producto_scope.producto') }}" class="btn btn-primary">Volver</a>
-    </div>
+
 </main>
 
 {% endblock %}

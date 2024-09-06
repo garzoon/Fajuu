@@ -5,9 +5,13 @@ from datetime import datetime
 from ..controller import *
 from ..models import Entrada
 
+# Decoradores
+from ..utils.user_decorators import role_requiered
+
 entrada_scope = Blueprint("entrada_scope", __name__)
 
 @entrada_scope.route('/', methods=['POST', 'GET'])
+@role_requiered([1, 2])
 def entrada():
     # Inicializa diccionario de productos si no existe
     
@@ -15,7 +19,7 @@ def entrada():
         session['dic_productos'] = {}
 
     if request.method == 'POST':
-        # Obtener datos del formulario
+        
         session['proveedor_id'] = request.form.get('proveedor_id')
         session['factura_id'] = request.form.get('factura_id')
         producto_id = request.form.get('producto_id')
@@ -49,6 +53,7 @@ def entrada():
 
             
 @entrada_scope.route('/entrada_send', methods = ['POST', 'GET'])
+@role_requiered([1, 2])
 def send_entrada ():
 
     # Verifica si las claves existen en la sesión
@@ -79,6 +84,7 @@ def send_entrada ():
 
 
 @entrada_scope.route('/entrada_delete/<string:id>', methods=['POST'])
+@role_requiered([1, 2])
 def delete_entrada(id):
     if 'dic_productos' in session and id in session['dic_productos']:
         del session['dic_productos'][id]
@@ -91,6 +97,7 @@ def delete_entrada(id):
 
 
 @entrada_scope.route('/entrada_clear', methods=['POST', 'GET'])
+@role_requiered([1, 2])
 def clear_entrada():
     keys_session = ['factura_id', 'proveedor_id', 'dic_productos']
     for key in keys_session:

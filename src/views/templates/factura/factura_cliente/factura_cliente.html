@@ -2,33 +2,29 @@
 
 {% block blockTitle %}Facturas cliente{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
-{% endblock %}
-
 {% block main %}
 
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <form class="frm-search row col-12 p-0" action="{{ url_for('factura_cliente_scope.factura') }}"
+                method="POST">
+                <h1 class="col-12 col-md-2 p-0">Facturas de Cliente</h1>
 
-<main class="main">
-    <section class="section-productos">
-        <h1>Facturas de cliente</h1>
-        <form class="frm-productos" action="{{ url_for('factura_cliente_scope.factura') }}" method="POST">
-            <div class="section-froms">
-                <label class="lbl-IDproducto" for="factura_id">Id factura</label>
-                <input class="inp-IDproducto" id="factura_id" name="factura_id" type="number">
+                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="factura_id" name="factura_id"
+                    type="number" placeholder="Id Factura" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="cliente_id">Id cliente</label>
-                <input class="inp-IDproducto" id="cliente_id" name="cliente_id" type="number">
+                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="cliente_id" name="cliente_id"
+                    type="number" placeholder="Id Cliente" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="factura_fecha">Fecha de emision</label>
-                <input class="inp-IDproducto" id="factura_fecha" name="factura_fecha" type="date">
-            </div>
+                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="factura_fecha" name="factura_fecha"
+                    type="date">
 
-            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
-        </form>
+                <button class="button-action-second col-12 col-md-2 m-0 mb-2 m-md-3" type="submit">Filtrar</button>
+            </form>
+        </div>
 
-        <div class="table">
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -39,6 +35,9 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
+                {% if session.get('user_rol') == 1 %}
+
                 <tbody>
 
                     {% if list_facturas %}
@@ -49,29 +48,56 @@
                         <td>{{ factura[2] }}</td>
                         <td>{{ factura[3] }}</td>
                         <td>
-                            <button onclick="mostrarProducto('{{ factura[0] }}')">Ver</button>
+                            <button class="btn_table" onclick="mostrarProducto('{{ factura[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
+                            </button>
                             {% include 'factura/factura_cliente/factura_cliente_view.html' %}
-                            <button
-                                onclick="delete_modal('factura_cliente_delete', '{{ factura[0] }}')">Eliminar</button>
+                            <button class="btn_table"
+                                onclick="delete_modal('factura_cliente_delete', '{{ factura[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
+                            </button>
                             {% include 'includes/modal_close.html' %}
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
                     <tr>
-                        <td>
+                        <td colspan="5">
                             No hay facturas para mostrar
                         </td>
                     </tr>
                     {% endif %}
                 </tbody>
+                {% else %}
+                <tbody></tbody>
+
+                {% if list_facturas %}
+                {% for factura in list_facturas %}
+                <tr>
+                    <td>{{ factura[0] }}</td>
+                    <td>{{ factura[1] }}</td>
+                    <td>{{ factura[2] }}</td>
+                    <td>{{ factura[3] }}</td>
+                    <td>
+                        <button class="btn_table" onclick="mostrarProducto('{{ factura[0] }}')">
+                            <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5">
+                        No hay facturas para mostrar
+                    </td>
+                </tr>
+                {% endif %}
+                </tbody>
+                {% endif %}
             </table>
         </div>
+        <button class="item_form button-action col-12 col-lg-1 m-0" onclick="redirectPague('/facturas')">Volver</button>
     </section>
-
-    <form action="{{ url_for('factura_scope.factura') }}" method="get">
-        <button type="submit" class="btn btn-primary">Volver</button>
-    </form>
 </main>
 
 
@@ -87,7 +113,7 @@
                 if (data.Error) {
                     alert(data.Error);
                 } else {
-                    document.getElementById('title-entrada').innerText = `Factura Id: ${data.id}`;
+                    document.getElementById('modal-subtitle').innerText = `Factura Id: ${data.id}`;
 
                     document.getElementById('modal-fact-id').innerText = data.id;
                     document.getElementById('modal-fact-clienteId').innerText = data.cliente_id;

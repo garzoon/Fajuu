@@ -4,10 +4,14 @@ import json
 from ...controller import *
 from ...models import Entrada
 
+# Decoradores
+from ...utils.user_decorators import role_requiered
+
 factura_proveedor_scope = Blueprint("factura_proveedor_scope", __name__)
 PATH_URL_FACT_PROVEEDOR = "factura/factura_proveedor" # Acortador de url
 
 @factura_proveedor_scope.route('/', methods = ['POST', 'GET'])
+@role_requiered([1, 2])
 def factura():
 
     query = """SELECT * FROM entradas WHERE 1=1"""
@@ -49,6 +53,7 @@ def factura():
 
 
 @factura_proveedor_scope.route('/factura_proveedor_delete/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def delete_factura_proveedor(id):
     try:
         entrada = entrada_select(id)
@@ -66,6 +71,7 @@ def delete_factura_proveedor(id):
     return redirect(url_for('operador_scope.operador'))
 
 @factura_proveedor_scope.route('/factura_proveedor_details/<int:id>', methods = ['GET'])
+@role_requiered([1, 2])
 def details_factura_proveedor(id):
     entrada = entrada_select(id)
     dic_productos = json.loads(entrada.ent_detalle_producto)

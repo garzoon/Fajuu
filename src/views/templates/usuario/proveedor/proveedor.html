@@ -2,53 +2,49 @@
 
 {% block blockTitle %}Proveedores{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
-{% endblock %}
-
 {% block main %}
 
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <form class="frm-search row col-12 col-lg-10 p-0" action="{{ url_for('proveedor_scope.proveedor') }}"
+                method="POST">
+                <h1 class="col-12 col-lg-2 p-0">Proveedor</h1>
 
-<main class="main">
-    <section class="section-productos">
-        <h1>Proveedor</h1>
-        <form class="frm-productos" action="{{ url_for('proveedor_scope.proveedor') }}" method="POST">
-            <div class="section-froms">
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="proveedor_id" name="proveedor_id"
+                    type="number" placeholder="Id Proveedor" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="proveedor_id">Id proveedor</label>
-                <input class="inp-IDproducto" id="proveedor_id" name="proveedor_id" type="text">
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id="proveedor_nit" name="proveedor_nit"
+                    type="text" placeholder="NIT" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="proveedor_nit">NIT</label>
-                <input class="inp-IDproducto" id="proveedor_nit" name="proveedor_nit" type="text">
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id="proveedor_razonSocial"
+                    name="proveedor_razonSocial" type="text" placeholder="Razon Social" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="proveedor_razonSocial">Razon social</label>
-                <input class="inp-IDproducto" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text">
-
-                <label class="lbl-estadoProducto" for="proveedor_estado">Estado</label>
-                <select class="slc-estadoProducto" id="proveedor_estado" name="proveedor_estado">
-                    <option value="" selected>No definido</option>
+                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="proveedor_estado"
+                    name="proveedor_estado">
+                    <option value="" selected>Estado</option>
                     <option value="activo">Activo</option>
                     <option value="inactivo">Inactivo</option>
                 </select>
-            </div>
 
-            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
-        </form>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-md-3" type="submit">Filtra</button>
+            </form>
+            <button class="item_form button-action col-12 col-lg-2" onclick="redirectPague('proveedor_create')">Nuevo
+                Proveedor</button>
+        </div>
 
-        <div class="table">
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>Id proveedor</th>
+                        <th>Id Proveedor</th>
                         <th>NIT</th>
-                        <th>Razon social</th>
+                        <th>Razon Social</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-
                     {% if list_proveedor %}
                     {% for proveedor in list_proveedor %}
                     <tr>
@@ -57,17 +53,23 @@
                         <td>{{ proveedor[2] }}</td>
                         <td>{{ proveedor[3] }}</td>
                         <td>
-                            <button onclick="mostrarProducto('{{ proveedor[0] }}')">Ver</button>
+                            <button class="btn_table" onclick="mostrarProducto('{{ proveedor[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
+                            </button>
                             {% include 'usuario/proveedor/proveedor_view.html' %}
-                            <button onclick="redirect('proveedor_update', '{{ proveedor[0] }}')">Editar</button>
-                            <button onclick="delete_modal('proveedor_delete', '{{ proveedor[0] }}')">Eliminar</button>
+                            <button class="btn_table" onclick="redirect('proveedor_update', '{{ proveedor[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_edit.png') }}" width="25rem">
+                            </button>
+                            <button class="btn_table" onclick="delete_modal('proveedor_delete', '{{ proveedor[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
+                            </button>
                             {% include 'includes/modal_close.html' %}
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
                     <tr>
-                        <td>
+                        <td colspan="5">
                             No hay usuarios para mostrar
                         </td>
                     </tr>
@@ -75,16 +77,8 @@
                 </tbody>
             </table>
         </div>
+        <button class="item_form button-action col-12 col-lg-1 m-0" onclick="redirectPague('/usuarios')">Volver</button>
     </section>
-
-    <div class="footer">
-        <form action="{{ url_for('proveedor_scope.create_proveedor') }}" method="get">
-            <button type="submit" class="btn btn-primary">Crear</button>
-        </form>
-        <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
-            <button type="submit" class="btn btn-primary">Volver</button>
-        </form>
-    </div>
 </main>
 
 
@@ -101,7 +95,7 @@
                 if (data.error) {
                     alert(data.error);
                 } else {
-                    document.getElementById('title-proveedor').innerText = `${data.id} - ${data.razon_social}`
+                    document.getElementById('modal-subtitle').innerText = `${data.id} - ${data.razon_social}`
 
                     document.getElementById('modal-prov-id').innerText = data.id;
                     document.getElementById('modal-prov-nit').innerText = data.nit;

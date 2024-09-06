@@ -1,29 +1,51 @@
-header {
-    background-color: var(--color-green-light);
-    color: #fff;
+.header {
+    background-color: var(--color-blue-dark);
+    padding: .5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
-.form-control-dark {
-    border-color: var(--bs-gray);
+
+.header_title {
+    display: flex;
 }
-.form-control-dark:focus {
-    border-color: #fff;
-    box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+
+.header-titles{
+    color: var(--color-white);
+    font-size: 32px;
+    margin: 0 .5rem
 }
-  
-.text-small {
-    font-size: 85%;
+
+.header_links {
+    display: flex;
+    margin: 0;
+    align-items: center;
+    justify-content: end;
 }
-  
-.dropdown-toggle:not(:focus) {
-    outline: 0;
+
+.header_links button {
+    margin: 0 .8rem;
+    font-size: 16px;
 }
-.info-perfil{
-    position: absolute; 
-    inset: auto auto 0px 0px; 
-    margin: 0px; 
-    transform: translate(0px, -34px);
+
+.navbar-collapse {
+    align-items: center;
+    width: 100%;
 }
-.icon-fajuu {
-    padding: 0 1rem;
+
+.navbar {
+    background-color: var(--color-blue-dark);
+    -webkit-box-shadow: inset 0px 5px 10px -6px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: inset 0px 5px 10px -6px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 0px 5px 10px -6px rgba(0, 0, 0, 0.75);
 }
-  
+
+a.nav-link {
+    text-align: center;
+    color: var(--color-white)
+}
+
+.dark {
+    color: var(--color-white);
+    font-variation-settings: 'GRAD' -25;
+}

@@ -2,49 +2,46 @@
 
 {% block blockTitle %}Clientes{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
-{% endblock %}
-
 {% block main %}
 
 
-<main class="main">
-    <section class="section-productos">
-        <h1>Clientes</h1>
-        <form class="frm-productos" action="{{ url_for('cliente_scope.cliente') }}" method="POST">
-            <div class="section-froms">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <form class="frm-search row col-12 col-lg-10 p-0" action="{{ url_for('cliente_scope.cliente') }}"
+                method="POST">
+                <h1 class="col-12 col-lg-2 p-0">Clientes</h1>
 
-                <label class="lbl-IDproducto" for="cliente_id">Id cliente</label>
-                <input class="inp-IDproducto" id="cliente_id" name="cliente_id" type="text">
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_id" name="cliente_id" type="text"
+                    placeholder="Id Cliente" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="cliente_identificacion">Identificacion</label>
-                <input class="inp-IDproducto" id="cliente_identificacion" name="cliente_identificacion" type="text">
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_identificacion"
+                    name="cliente_identificacion" type="number" placeholder="Identificacion" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="cliente_nombre">Nombre(s)</label>
-                <input class="inp-IDproducto" id="cliente_nombre" name="cliente_nombre" type="text">
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_nombre" name="cliente_nombre"
+                    type="text" placeholder="Nombre(s)" autocomplete="off">
 
-                <label class="lbl-IDproducto" for="cliente_ciudad">Ciudad</label>
-                <input class="inp-IDproducto" id="cliente_ciudad" name="cliente_ciudad" type="text">
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_ciudad" name="cliente_ciudad"
+                    type="text" placeholder="Ciudad" autocomplete="off">
 
-                <label class="lbl-estadoProducto" for="cliente_estado">Estado</label>
-                <select class="slc-estadoProducto" id="cliente_estado" name="cliente_estado">
-                    <option value="" selected>No definido</option>
+                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_estado" name="cliente_estado">
+                    <option value="" selected>Estado</option>
                     <option value="activo">Activo</option>
                     <option value="innactivo">Innactivo</option>
                 </select>
-            </div>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-md-3" type="submit">Filtra</button>
+            </form>
 
-            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
-        </form>
+            <button class="item_form button-action col-12 col-lg-2" onclick="redirectPague('cliente_create')">Nuevo
+                Cliente</button>
+        </div>
 
-        <div class="table">
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>Id cliente</th>
-                        <th>Identificacion</th>
+                        <th>Id Cliente</th>
+                        <th>Identificación</th>
                         <th>Nombre(s)</th>
                         <th>Ciudad</th>
                         <th>Estado</th>
@@ -62,34 +59,32 @@
                         <td>{{ cliente[3] }}</td>
                         <td>{{ cliente[4] }}</td>
                         <td>
-                            <button onclick="mostrarProducto('{{ cliente[0] }}')">Ver</button>
+                            <button class="btn_table" onclick="mostrarProducto('{{ cliente[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
+                            </button>
                             {% include 'usuario/cliente/cliente_view.html' %}
-                            <button onclick="redirect('cliente_update', '{{ cliente[0] }}')">Editar</button>
-                            <button onclick="delete_modal('cliente_delete', '{{ cliente[0] }}')">Eliminar</button>
+                            <button class="btn_table" onclick="redirect('cliente_update', '{{ cliente[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_edit.png') }}" width="25rem">
+                            </button>
+                            <button class="btn_table" onclick="delete_modal('cliente_delete', '{{ cliente[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
+                            </button>
                             {% include 'includes/modal_close.html' %}
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
                     <tr>
-                        <td>
-                            No hay usuarios para mostrar
+                        <td colspan="6">
+                            No hay clientes para mostrar
                         </td>
                     </tr>
                     {% endif %}
                 </tbody>
             </table>
         </div>
+        <button class="item_form button-action col-12 col-lg-1 m-0" onclick="redirectPague('/usuarios')">Volver</button>
     </section>
-
-    <div class="footer">
-        <form action="{{ url_for('cliente_scope.create_cliente') }}" method="get">
-            <button type="submit" class="btn btn-primary">Crear</button>
-        </form>
-        <form action="{{ url_for('usuario_scope.usuario') }}" method="get">
-            <button type="submit" class="btn btn-primary">Volver</button>
-        </form>
-    </div>
 </main>
 
 {% block customScript %}
@@ -104,7 +99,7 @@
                 if (data.error) {
                     alert(data.error);
                 } else {
-                    document.getElementById('title-cliente').innerText = `${data.id} - ${data.nombre}`
+                    document.getElementById('modal-subtitle').innerText = `${data.id} - ${data.nombre}`
 
                     document.getElementById('modal-clien-id').innerText = data.id;
                     document.getElementById('modal-clien-documento').innerText = data.documento;

@@ -1,82 +1,79 @@
 {% extends 'layout.html' %}
+
 {% block blockTitle %}Entrada{% endblock %}
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/entrada.css') }}">
-{% endblock %}
 
 {% block main %}
-<main class="main">
-    <section class="section-entradas">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <form class="frm-search row col-12 p-0" action="{{ url_for('entrada_scope.entrada') }}" method="POST">
 
-        <form action="{{ url_for('entrada_scope.entrada') }}" method="POST">
-            <div class="factura_entradas">
-                <h1>Datos de factura</h1>
-                <label for="proveedor_id">Id proveedor</label>
-                <input class="inp-idProveedor" id="proveedor_id" name="proveedor_id" type="text"
-                    value="{{ proveedor_id }}">
+                <!-- datos de facturacion  -->
+                <div class="col-12 row m-0 p-0 align-items-center">
+                    <h1 class="col-12 col-md-3 p-0">Datos de Factura</h1>
+                    <input class="input-first col-12 col-md-3 m-0 mb-2 m-md-3" id="proveedor_id" name="proveedor_id"
+                        type="number" value="{{ proveedor_id }}" required placeholder="Id Proveedor" autocomplete="off">
 
-                <label for="factura_id">Id factura</label>
-                <input class="inp-idFactura" id="factura_id" name="factura_id" type="text" value="{{ factura_id }}">
-            </div>
+                    <input class="input-first col-12 col-md-3 m-0 mb-2 m-md-3" id="factura_id" name="factura_id"
+                        type="number" value="{{ factura_id }}" required placeholder="Id Factura" autocomplete="off">
+                </div>
 
-            <div class="productos_entradas">
-                <h1>Productos</h1>
-                <!-- <label for="producto-id">Id producto</label>
-                <input class="inp-idProducto" name="producto-id" id="producto-id" type="number">
-                 -->
-                <select name="producto_id" id="producto_id">
-                    {% if list_productos %}
-                    {% for producto in list_productos%}
-                    <option value="{{ producto[0] }}">{{ producto[0] }} - {{ producto[1] }}</option>
+                <!-- datos de producto  -->
+                <div class="col-12 row m-0 p-0 align-items-center">
+                    <h1 class="col-12 col-md-3 p-0">Productos</h1>
+                    <select class="input-first col-12 col-md-3 m-0 mb-2 m-md-3" name="producto_id" id="producto_id">
+                        <option value="" selected>Selecione un producto</option>
+                        {% if list_productos %}
+                        {% for producto in list_productos%}
+                        <option value="{{ producto[0] }}">{{ producto[0] }} - {{ producto[1] }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+
+                    <input class="input-first col-12 col-md-3 m-0 mb-2 m-md-3" id="producto_cantidad"
+                        name="producto_cantidad" type="number" required placeholder="Cantidad" autocomplete="off">
+
+                    <button class="button-action col-12 col-md-2" type="submit">Cargar</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id Producto</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if dic_productos %}
+                    {% for key, producto in dic_productos.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }} {{ producto[2] }}</td>
+                        <td>
+                            <form action="{{ url_for('entrada_scope.delete_entrada', id=key) }}"
+                                method="POST">
+                                <button class="btn_table" type="submit">
+                                    <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     {% endfor %}
-                    {% else %}
-                    <option value="">No hay productos</option>
                     {% endif %}
-                </select>
+                </tbody>
+            </table>
+        </div>
 
-                <label for="producto_cantidad">Cantidad</label>
-                <input class="inp-cantidad_producto" id="producto_cantidad" name="producto_cantidad" type="text">
-            </div>
-
-            <button class="btn proveedor-buttons_cargar" type="submit">Cargar</button>
-        </form>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Id producto</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if dic_productos %}
-                {% for key, producto in dic_productos.items() %}
-                <tr>
-                    <td>{{ key }}</td>
-                    <td>{{ producto[0] }}</td>
-                    <td>{{ producto[1] }} {{ producto[2] }}</td>
-                    <td>
-                        <form action="{{ url_for('entrada_scope.delete_entrada', id=key) }}" method="POST">
-                            <button type="submit">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-                {% endif %}
-            </tbody>
-        </table>
-
-    </section>
-    <section class="footer">
-        <div>
-            <form action="{{ url_for ('entrada_scope.send_entrada') }}" method="POST">
-                <button class="btn btn-primary">Enviar</button>
-            </form>
-            <form action="{{ url_for ('entrada_scope.clear_entrada') }}" method="POST">
-                <button class="btn btn-primary">Descartar</button>
-            </form>
+        <div class="row slc-container justify-content-between">
+            <button class="col-5 col-md-2 button-action-second" type="button"
+                onclick="redirectPague('entrada_clear')">Descartar</button>
+            <button class="col-5 col-md-2 button-action" type="button" onclick="redirectPague('entrada_send')">Enviar</button>
         </div>
     </section>
 </main>

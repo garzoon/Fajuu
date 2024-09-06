@@ -1,82 +1,167 @@
-/* Fuente Logo fajuu */
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
-
-/* Fuente Textos */
-@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 :root{
     /* colores */
+    --color-grey-dark: #BBBB;
+    --color-grey: #EEEEEE;
     --color-white: #FFFFFF;
-    --color-gray-light: #EEEEEE;
-    --color-gray-dark: #D9D9D9;
-    --color-green-dark: #3C9684;
-    --color-green-light: #46B39D;
-    --color-orange-dark: #E37A40;
-    --color-orange-light: #EBA782;
-    --color-blue-dark: #324C5C;
-    --color-blue-light: #475E6C;
+    --color-blue-dark: #111926;
+    --color-yellow: #FFD166;
 }
-
 *{
-    font-family: 'Rubik', sans-serif;
-    box-sizing: border-box;
-    margin: 0;
-    border: 0;
-    
-    text-decoration: none;
-    list-style: none;
+  box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  text-decoration: none !important;
+  list-style: none !important;
 }
-body{
-    background-color: var(--color-gray-light);
-    width: 100%;
-    height: 100vh;
-    font-family: 'Rubik', sans-serif;
+html,body{
+  font-family: "Outfit", sans-serif;
+  font-size: 18px;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--color-grey);
 }
-
-.header{
-    width: 100%;
-    height: 10%;
+h1{
+  font-size: 2rem;
 }
 
-.main{
-    width: 100%;
-    height: 80%;
-    padding: 1rem;
+/* Estilos botones e interactuadores */
+
+.button-first{
+  background-color: var(--color-white);
+  border-radius: 5px;
+  color: var(--color-blue-dark);
+  padding: .1rem;
+  height: 2rem;
+  font-weight: 500;
 }
-.footer{
-    height: 8%;
-    padding: 0 2rem;
+.button-second{
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid var(--color-white);
+  color: var(--color-white);
+  padding: .1rem;
+  height: 2rem;
+  font-weight: 500;
+}
+.button-action{
+  background-color: var(--color-blue-dark);
+  border-radius: 5px;
+  color: var(--color-white);
+  padding: .1rem;
+  height: 2rem;
+  font-weight: 500;
+}
+.button-action-second{
+  background-color: transparent;
+  border: 2px solid var(--color-blue-dark);
+  border-radius: 5px;
+  color: var(--color-blue-dark);
+  padding: .1rem;
+  height: 2rem;
+  font-weight: 500;
+}
+.input-first{
+  background-color: var(--color-grey);
+  border-radius: 5px;
+  padding: .1rem;
+  height: 2rem;
+  color: var(--color-blue-dark);
+}
+.anchor-action{
+  color: #CCCC;
+  cursor: pointer;
 }
 
-/* BUTTON STYLES */
+/* Estilos generales  */
 
-.btn{
-    cursor: pointer;
-}
-.btn:active{
-    transform: scale(1.1);
+.section{
+  background-color: var(--color-white);
+  border-radius: 10px;
 }
 
-/* ESTILOS DE TABLA */
-.table{
-    width: 100%;
-    display: flex;
+.slc-container{
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.table table{
-    width: 100%;
+
+.frm-search{
+  display: flex;
+  align-items: center;
 }
-.table thead{
-    background-color: var(--color-blue-light);
-    color: var(--color-white);
-    height: 1.5rem;
+.frm-search h1 {
+  font-size: 1.5rem;
+  margin: 0 !important;
 }
-.table tbody tr:nth-child(odd){
-    background-color: var(--color-gray-light);
+
+#mensaje{
+  color: var(--color-yellow);
 }
-.table tbody tr:hover{
-    background-color: var(--color-orange-dark);
+
+
+/* estilos de tabla */
+
+.table-wrapper {
+  width: 100%;
+  max-height  : 28rem;
+  overflow: auto;
+  margin: .5rem 0; 
 }
-.table td, th{
-    font-weight: 100;
-    height: 1.5rem;
+
+.table-wrapper table {
+  border-collapse: separate;
+  width: 100%;
+  border-spacing: 0;
+}
+
+.table-wrapper table thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+thead th{
+  background-color: #111926;
+  color: var(--color-white);
+  font-weight: 500;
+  text-align: center;
+}
+
+thead th:first-child {
+  border-top-left-radius: 10px;
+}
+
+thead th:last-child {
+  border-top-right-radius: 10px;
+  border-left: 2px solid #DDDDDD;
+}
+
+th, td {
+  padding: .5rem;
+  text-align: left;
+}
+
+.table-wrapper tbody td{
+  text-align: center;
+  height: 2rem;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #F2F2F2;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #FFFFFF;
+}
+tbody td:last-child {
+  border-left: 3px solid #DDDDDD;
+}
+
+.btn_table{
+  background-color: transparent;
+  border: none;
 }

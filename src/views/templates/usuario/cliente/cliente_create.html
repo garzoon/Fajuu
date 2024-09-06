@@ -2,42 +2,46 @@
 
 {% block blockTitle %}Clientes - Editar{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Nuevo cliente</h1>
-        <form class="frm-productos" action="{{ url_for('cliente_scope.create_cliente') }}" method="post">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Nuevo Cliente</h1>
+            <form class="col-12 d-block" action="{{ url_for('cliente_scope.create_cliente') }}"
+                method="post">
 
-            <label class="lbl-descripcionProducto" for="cliente_identificacion">Identificacion</label>
-            <input class="inp-descripcionProducto" id="cliente_identificacion" name="cliente_identificacion" type="text"
-                required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_identificacion">Identificación</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_identificacion"
+                    name="cliente_identificacion" type="number" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="cliente_nombre">Nombre(s)</label>
-            <input class="inp-descripcionProducto" id="cliente_nombre" name="cliente_nombre" type="text" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_nombre">Nombre(s)</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_nombre" name="cliente_nombre"
+                    type="text" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="cliente_ciudad">Ciudad</label>
-            <input class="inp-descripcionProducto" id="cliente_ciudad" name="cliente_ciudad" type="text" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_ciudad">Ciudad</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_ciudad" name="cliente_ciudad"
+                    type="text" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="cliente_direccion">Direccion</label>
-            <input class="inp-descripcionProducto" id="cliente_direccion" name="cliente_direccion" type="text" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_direccion">Dirección</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_direccion"
+                    name="cliente_direccion" type="text" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="cliente_email">Correo electronico</label>
-            <input class="inp-descripcionProducto" id="cliente_email" name="cliente_email" type="email" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_email">Correo Electrónico</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_email" name="cliente_email"
+                    type="email" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="cliente_telefono">Numero de telefono</label>
-            <input class="inp-descripcionProducto" id="cliente_telefono" name="cliente_telefono" type="number" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_telefono">Número de Telefono</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_telefono" name="cliente_telefono"
+                    type="number" required required autocomplete="off">
 
-            <button class="btn proveedor-buttons_cargar" id="cliente_submit" type="submit">Crear</button>
-        </form>
+                <div class="row justify-content-between">
+                    <button class="col-5 col-md-2 button-action-second" type="button"
+                        onclick="redirectPague('/cliente')">Volver</button>
+                    <button class="col-5 col-md-2 button-action" type="submit">Crear</button>
+                </div>
+            </form>
+        </div>
     </section>
-
-    <div class="action-buttons">
-        <a href=" {{ url_for('cliente_scope.cliente') }}" class="btn btn-primary">Volver</a>
-    </div>
 </main>
 
 {% endblock %}

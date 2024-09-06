@@ -47,6 +47,28 @@ def usuario_delete (usuario: Usuario) -> Usuario:
 
 
 def usuario_update(usuario: Usuario) -> Usuario:
+    query = """UPDATE usuarios SET 
+        user_nombre     = %s, 
+        user_apellido   = %s, 
+        user_password   = %s,
+        user_email      = %s, 
+        user_telefono   = %s,
+        user_estado     = %s
+        WHERE user_id = %s
+    """
+    parameters = (
+        usuario.user_nombre, 
+        usuario.user_apellido, 
+        usuario.user_password, 
+        usuario.user_email, 
+        usuario.user_telefono,
+        usuario.user_estado,
+        usuario.user_id
+    )
+    execute_commit(query, parameters)
+    return usuario
+
+def usuario_password(usuario: Usuario) -> Usuario:
     hashed_password = encrypt_password(usuario.user_password)
     query = """UPDATE usuarios SET 
         user_nombre     = %s, 

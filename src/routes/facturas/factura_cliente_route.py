@@ -4,10 +4,16 @@ import json
 from ...controller import *
 from ...models import Cliente, Factura
 
+# Decoradores
+from ...utils.user_decorators import role_requiered
+
 factura_cliente_scope = Blueprint("factura_cliente_scope", __name__)
 PATH_URL_FACT_CLIENTE = "factura/factura_cliente"
 
+
+
 @factura_cliente_scope.route('/', methods = ['POST', 'GET'])
+@role_requiered([1, 2])
 def factura():
 
     query = """SELECT * FROM facturas WHERE 1=1"""
@@ -48,6 +54,7 @@ def factura():
     return render_template(f'{PATH_URL_FACT_CLIENTE}/factura_cliente.html', list_facturas = list_facturas)
 
 @factura_cliente_scope.route('/factura_cliente_delete/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def delete_factura_cliente(id):
     try:
         factura = factura_select(id)
@@ -65,6 +72,7 @@ def delete_factura_cliente(id):
     return redirect(url_for('operador_scope.operador'))
 
 @factura_cliente_scope.route('/factura_cliente_details/<int:id>', methods = ['GET'])
+@role_requiered([1, 2])
 def details_factura_cliente(id):
     factura = factura_select(id)
     dic_productos = json.loads(factura.fact_detalle_productos)

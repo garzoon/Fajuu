@@ -3,6 +3,9 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from ...controller import *
 from ...utils.security import check_password
 
+# Decoradores
+from ...utils.user_decorators import role_requiered
+
 auth_scope = Blueprint("auth_scope", __name__)
 
 @auth_scope.route('/', methods=['POST', 'GET'])
@@ -37,15 +40,15 @@ def logout():
     return redirect(url_for('auth_scope.login'))
 
 @auth_scope.route('/home')
+@role_requiered([1])
 def admin_home():
-    # if 'user_id' in session or session.get('user_rol') != 1:
-    #     return redirect(url_for('auth_scope.login'))
+    
+    info_user = usuario_select(session['user_id'])
+    return render_template('admin_home.html', info_user = info_user)
 
-    return render_template('admin_home.html')
-
-@auth_scope.route('/home')
+@auth_scope.route('/home_user')
+@role_requiered([2])
 def user_home():
-    # if 'user_id' in session or session.get('user_rol') != 2:
-    #     return redirect(url_for('auth_scope.login'))
-    return render_template('user_home.html')
+    info_user = usuario_select(session['user_id'])
+    return render_template('user_home.html', info_user = info_user)
         

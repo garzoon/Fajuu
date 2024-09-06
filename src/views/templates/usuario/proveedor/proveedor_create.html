@@ -2,38 +2,36 @@
 
 {% block blockTitle %}Proveedores - Crear{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Nuevo proveedor</h1>
-        <form class="frm-productos" action="{{ url_for('proveedor_scope.create_proveedor') }}" method="post">
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <h1>Nuevo Proveedor</h1>
+            <form class="col-12 d-block" action="{{ url_for('proveedor_scope.create_proveedor') }}" method="post">
 
-            <label class="lbl-descripcionProducto" for="proveedor_nit">NIT</label>
-            <input class="inp-descripcionProducto" id="proveedor_nit" name="proveedor_nit" type="text" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_nit">NIT</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_nit" name="proveedor_nit" type="text" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="proveedor_razonSocial">Razon social</label>
-            <input class="inp-descripcionProducto" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text"
-                required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_razonSocial">Razon Social</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_razonSocial" name="proveedor_razonSocial"
+                    type="text" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="proveedor_email">Correo electronico</label>
-            <input class="inp-descripcionProducto" id="proveedor_email" name="proveedor_email" type="email" required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_email">Correo Electrónico</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_email" name="proveedor_email" type="email"
+                    required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="proveedor_telefono">Numero de telefono</label>
-            <input class="inp-descripcionProducto" id="proveedor_telefono" name="proveedor_telefono" type="number"
-                required>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_telefono">Número de Telefono</label>
+                <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_telefono" name="proveedor_telefono" type="number"
+                    required required autocomplete="off">
 
-            <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Crear</button>
-        </form>
+                <div class="row justify-content-between">
+                    <button class="col-5 col-md-2 button-action-second" type="button"
+                        onclick="redirectPague('/proveedor')">Volver</button>
+                    <button class="col-5 col-md-2 button-action" type="submit">Crear</button>
+                </div>
+            </form>
+        </div>
     </section>
-
-
-    <div class="action-buttons">
-        <a href=" {{ url_for('proveedor_scope.proveedor') }}" class="btn btn-primary">Volver</a>
-    </div>
 </main>
 
 {% endblock %}

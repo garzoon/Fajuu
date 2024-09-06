@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{% block blockTitle %}Inicio{% endblock %}
+
+{% block main %}
+
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container col-12 d-flex justify-content-center">
+            <h2 class="col-12 d-flex justify-content-center">Bienvenido a Fajuu</h2>
+            <div class="col-12  d-flex justify-content-center p-3">
+                <img src="{{ url_for('static', filename='img/cat.gif') }}" width="60px">
+            </div>
+            
+        </div>
+    </section>
+</main>
+{% endblock %}

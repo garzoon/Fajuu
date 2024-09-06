@@ -7,43 +7,43 @@
 {% endblock %}
 
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Editar proovedor ({{ proveedor.prov_id }}) {{ proveedor.prov_razonsocial }}</h1>
-        <form class="frm-productos" action="{{ url_for('proveedor_scope.update_proveedor', id=proveedor.prov_id) }}"
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container"></div>
+        <h1>Editar proovedor - ({{ proveedor.prov_id }}) {{ proveedor.prov_razonsocial }}</h1>
+        <form class="col-12 d-block" action="{{ url_for('proveedor_scope.update_proveedor', id=proveedor.prov_id) }}"
             method="post">
 
-            <label class="lbl-descripcionProducto" for="proveedor_nit">NIT</label>
-            <input class="inp-descripcionProducto" id="proveedor_nit" name="proveedor_nit" type="text"
-                value="{{ proveedor.prov_nit }}" required>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_nit">NIT</label>
+            <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_nit" name="proveedor_nit" type="text"
+                value="{{ proveedor.prov_nit }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="proveedor_razonSocial">Razon social</label>
-            <input class="inp-descripcionProducto" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text"
-                value="{{ proveedor.prov_razonsocial }}" required>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_razonSocial">Razon social</label>
+            <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text"
+                value="{{ proveedor.prov_razonsocial }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="proveedor_email">Correo electronico</label>
-            <input class="inp-descripcionProducto" id="proveedor_email" name="proveedor_email" type="email"
-                value="{{ proveedor.prov_email }}" required>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_email">Correo electronico</label>
+            <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_email" name="proveedor_email" type="email"
+                value="{{ proveedor.prov_email }}" required required autocomplete="off">
 
-            <label class="lbl-descripcionProducto" for="proveedor_telefono">Numero de telefono</label>
-            <input class="inp-descripcionProducto" id="proveedor_telefono" name="proveedor_telefono" type="number"
-                value="{{ proveedor.prov_telefono }}" required>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3o" for="proveedor_telefono">Numero de telefono</label>
+            <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_telefono" name="proveedor_telefono" type="number"
+                value="{{ proveedor.prov_telefono }}" required required autocomplete="off">
 
-            <label class="lbl-categoria" for="proovedor_estado">Estado</label>
-            <select class="slc-categoria" id="proovedor_estado" name="proovedor_estado" required>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proovedor_estado">Estado</label>
+            <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proovedor_estado" name="proovedor_estado" required>
                 <option {% if proveedor.prov_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
                 <option {% if proveedor.prov_estado=='inactivo' %} selected {% endif %} value="inactivo">Inactivo
                 </option>
             </select>
 
-            <button class="btn proveedor-buttons_cargar" id="operador_submit" type="submit">Editar</button>
+            <div class="row justify-content-between">
+                <button class="col-5 col-md-2 button-action-second" type="button"
+                    onclick="redirectPague('/proveedor')">Volver</button>
+                <button class="col-5 col-md-2 button-action" type="submit">Editar</button>
+            </div>
         </form>
     </section>
-
-    <div class="action-buttons">
-        <a href=" {{ url_for('proveedor_scope.proveedor') }}" class="btn btn-primary">Volver</a>
-    </div>
 </main>
-
 
 {% endblock %}

@@ -1,53 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- Custom Css -->
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% include 'includes/styles.html' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
 </head>
-<body>
 
-<main class="main-login">
+<body class="conatiner-fluid col-12">
 
-    {% with messages = get_flashed_messages(with_categories=True) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <p class="flash-message {{ category }}">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    {% endwith %}
+    <main class="main-login col-12 col-md-7 conatiner-fluid row">
 
-    {% block main %}
-    
-    {% endblock %}
-    <h1 class="">logIn</h1>
-    <form class="form-login" action="{{ url_for('auth_scope.login') }}" method="post">
-        <label for="username">Identificacion</label>
-        <input class="inp-identidad item-primary" id="user_id" name="user_id" type="number" required autocomplete="off">    
-                  
-        <label for="password">Contraseña</label>
-        <input class="inp-password item-primary" id="user_password" name="user_password" type="password" required autocomplete="off">
-        <button type="button" onclick="viewPassword()">Ver</button>
+        <h1 class="col-4 d-flex justify-content-center pb-4">Log in </h1>
 
-        <button type="submit" class="btn-iniciar_sesion">Iniciar sesión</button>
-    </form>
-    
-</main>
+        <form class="col-11 col-md-4 row d-flex justify-content-center" action="{{ url_for('auth_scope.login') }}"
+            method="post">
 
-<script>
-    function viewPassword() {
-        var input = document.getElementById("user_password");
-        if (input.type === "password"){
-            input.type = "text";
-        }
-        else {
-            input.type = "password"
-        }
-    } 
-</script>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <p class=" flash-message {{ category }}">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% block main %}
+            {% endblock %}
+
+            <label class="lbl-login m-1" for="user_id">Identificación</label>
+            <input class="col-12 inp-login p-1 m-1" id="user_id" name="user_id" type="number" required
+                autocomplete="off">
+
+            <label class="lbl-login m-1" for="user_password">Contraseña</label>
+            <div class="col-12 inp-login d-flex justify-content-between p-1 m-1">
+                <input class="inp-password item-primary" id="user_password" name="user_password" type="password"
+                    required autocomplete="off">
+                <button type="button" onclick="viewPassword()">
+                    <img src="{{ url_for('static', filename='img/item_view_grey.png') }}" width="20rem">
+                </button>
+            </div>
+            <button type="submit" class="btn-login p-1 m-3">Log in</button>
+        </form>
+
+    </main>
+
+    {% include 'includes/scripts.html' %}
+
+    <script>
+        function viewPassword() {
+            var input = document.getElementById("user_password");
+            if (input.type === "password") {
+                input.type = "text";
+            }
+            else {
+                input.type = "password"
+            }
+        } 
+    </script>
 
 </body>
+
 </html>

@@ -2,44 +2,51 @@
 
 {% block blockTitle %}Productos{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}">
-{% endblock %}
 
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Productos</h1>
-        <form class="frm-productos" action="{{ url_for('producto_scope.producto') }}" method="POST">
-            <div class="section-froms">
-                <label class="lbl-IDproducto" for="producto_id">Id Producto</label>
-                <input class="inp-IDproducto" id="producto_id" name="producto_id" type="text">
 
-                <label class="lbl-categoria" for="producto_categoria">Categoria</label>
-                <select class="slc-categoria" id="producto_categoria" name="producto_categoria">
-                    <option value="" selected>No definido</option>
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container">
+            <form class="frm-search row col-12 col-lg-10 p-0" action="{{ url_for('producto_scope.producto') }}"
+                method="POST">
+                <h1 class="col-12 col-lg-2 p-0 mb-2">Productos</h1>
+
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id="producto_id" name="producto_id"
+                    type="text" placeholder="Id producto" autocomplete="off">
+
+                <select class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id=" producto_categoria"
+                    name="producto_categoria">
+                    <option value="" selected>Categoria</option>
                     <option value="1">Refrigerado</option>
                     <option value="2">Congelado</option>
                     <option value="3">Seco</option>
                 </select>
 
-                <label class="lbl-estadoProducto" for="producto_estado">Estado</label>
-                <select class="slc-estadoProducto" id="producto_estado" name="producto_estado">
-                    <option value="" selected>No definido</option>
+                <select class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id=" producto_estado"
+                    name="producto_estado">
+                    <option value="" selected>Estado</option>
                     <option value="disponible">Disponible</option>
                     <option value="agotado">Agotado</option>
                 </select>
-            </div>
 
-            <button type="submit" class="btn btn-producto btn-filtra">Filtra</button>
-        </form>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-md-3" type="submit">Filtra</button>
+            </form>
 
-        <div class="table">
+
+
+            <button class="button-action col-12 col-lg-2 {% if session.get('user_rol') != 1 %}d-none{% endif %}"
+                onclick="redirectPague('producto_create')">Nuevo
+                Producto</button>
+
+        </div>
+
+
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>ID Producto</th>
+                        <th>Id Producto</th>
                         <th>Descripcion</th>
                         <th>Categoria</th>
                         <th>Und. Medida</th>
@@ -48,6 +55,49 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
+                {% if session.get('user_rol') == 1 %}
+                <tbody>
+
+                    {% if list_producto %}
+                    {% for producto in list_producto %}
+                    <tr>
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }}</td>
+                        <td>{{ producto[2] }}</td>
+                        <td>{{ producto[3] }}</td>
+                        <td>{{ producto[4] }}</td>
+                        {% if producto[5] == 'disponible' %}
+                        <td style="color: green;" >{{ producto[5] }}</td>
+                        {% else %}
+                        <td style="color: red;" >{{ producto[5] }}</td>
+                        {% endif %}
+
+
+                        <td>
+                            <button class="btn_table" onclick="mostrarProducto('{{ producto[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
+                            </button>
+                            {% include 'producto/producto_view.html' %}
+                            <button class="btn_table" onclick="redirect('producto_update', '{{ producto[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_edit.png') }}" width="25rem">
+                            </button>
+                            <button class="btn_table" onclick="delete_modal('producto_delete', '{{ producto[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
+                            </button>
+                            {% include 'includes/modal_close.html' %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="7">
+                            No hay productos para mostrar
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+                {% else %}
                 <tbody>
 
                     {% if list_producto %}
@@ -60,33 +110,30 @@
                         <td>{{ producto[4] }}</td>
                         <td>{{ producto[5] }}</td>
                         <td>
-                            <button onclick="mostrarProducto('{{ producto[0] }}')">Ver</button>
+                            <button class="btn_table" onclick="mostrarProducto('{{ producto[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
+                            </button>
                             {% include 'producto/producto_view.html' %}
-                            <button onclick="redirect('producto_update', '{{ producto[0] }}')">Editar</button>
-                            <button onclick="delete_modal('producto_delete', '{{ producto[0] }}')">Eliminar</button>
-                            {% include 'includes/modal_close.html' %}
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
                     <tr>
-                        <td>
+                        <td colspan="7">
                             No hay productos para mostrar
                         </td>
                     </tr>
                     {% endif %}
                 </tbody>
+                {% endif %}
             </table>
         </div>
     </section>
-
-    <form action="{{ url_for('producto_scope.create_producto') }}" method="get">
-        <button type="submit" class="btn btn-primary">Crear</button>
-    </form>
 </main>
 
 {% block customScript %}
 <script>
+
     function mostrarProducto(productId) {
         const modal = document.getElementById('infoModal');
         const span = document.getElementsByClassName('close')[0];
@@ -97,7 +144,7 @@
                 if (data.error) {
                     alert(data.error);
                 } else {
-                    document.getElementById('title-product').innerText = `${data.id} - ${data.descripcion}`
+                    document.getElementById('modal-subtitle').innerText = `${data.id} - ${data.descripcion}`;
 
                     document.getElementById('modal-prod-id').innerText = data.id;
                     document.getElementById('modal-prod-descripcion').innerText = data.descripcion;
@@ -107,25 +154,25 @@
                     document.getElementById('modal-prod-estado').innerText = data.estado;
                     document.getElementById('modal-prod-stock').innerText = data.stock;
 
-                    modal.style.display = 'block'
-
+                    modal.style.display = 'block';
 
                     span.onclick = function () {
-                        modal.style.display = 'none'
-                    }
+                        modal.style.display = 'none';
+                    };
                     window.onclick = function (event) {
                         if (event.target == modal) {
-                            modal.style.display = 'none'
+                            modal.style.display = 'none';
                         }
-                    }
+                    };
                 }
             })
             .catch(error => {
                 console.log('Error al obtener los detalles del producto:', error);
-            })
+            });
     }
 </script>
 {% endblock %}
+
 
 
 {% endblock %}

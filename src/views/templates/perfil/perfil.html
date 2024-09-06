@@ -2,39 +2,34 @@
 
 {% block blockTitle %}Mi perfil{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/producto.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-productos">
-        <h1>Editar producto</h1>
-        <div>
-            <p>
-                <strong>Nombre:</strong>
-                {{ list_usuario.user_nombre }}
-            </p>
-            <p>
-                <strong>Apellido:</strong>
-                {{ list_usuario.user_apellido }}
-            </p>
-            <p>
-                <strong>Correo electrónico:</strong>
-                {{ list_usuario.user_email }}
-            </p>
-            <p>
-                <strong>Número de telefono:</strong>
-                {{ list_usuario.user_telefono }}
-            </p>
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="d-flex justify-content-center">
+            <div class="d-block col-12 col-md-3">
+                <h1 class="col-12 d-flex justify-content-center">Hola, {{ list_usuario.user_nombre }}</h1>
+
+                <strong class="d-block mb-2 col-12 d-flex justify-content-center">Nombre</strong>
+                <p class="d-block input-first col-12"> {{ list_usuario.user_nombre }}</p>
+
+                <strong class="d-block mb-2 col-12 d-flex justify-content-center">Apellido</strong>
+                <p class="d-block input-first col-12"> {{ list_usuario.user_apellido }}</p>
+
+                <strong class="d-block mb-2 col-12 d-flex justify-content-center">Correo Electrónico</strong>
+                <p class="d-block input-first col-12"> {{ list_usuario.user_email }}</p>
+
+                <strong class="d-block mb-2 col-12 d-flex justify-content-center">Número de Telefono</strong>
+                <p class="d-block input-first col-12"> {{ list_usuario.user_telefono }}</p>
+
+                <button class="col-12 button-action" onclick="redirect('perfil_update', '{{ list_usuario.user_id }}')">Editar</button>
+                    <a class="d-block anchor-action" onclick="redirect('perfil_password', '{{ list_usuario.user_id }}')">Cambiar Contraseña</a>
+            </div>
+
+            
         </div>
 
-        <div class="action-buttons">
-            <a href=" {{ url_for('perfil_scope.update_perfil', id=list_usuario.user_id) }}" class="btn btn-primary">Editar</a>
-        </div>
-        <a onclick="redirect('perfil_password', '{{ list_usuario.user_id }}')" class="btn btn-primary">Cambiar contraseña</a>
-
-
+        
+    </section>
 </main>
 
 {% endblock %}

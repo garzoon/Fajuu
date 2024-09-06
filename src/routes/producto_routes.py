@@ -1,12 +1,16 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from ..controller import *
-from ..models import Producto, Categoria
+from ..models import Producto
+
+# Decoradores
+from ..utils.user_decorators import role_requiered
 
 producto_scope = Blueprint("producto_scope", __name__)
 PATH_URL_PRODUCTO = "producto" # Acortador de url
 
  
 @producto_scope.route('/', methods = ['GET', 'POST'])
+@role_requiered([1, 2])
 def producto():
     query = """SELECT * FROM productos WHERE 1=1"""
     parameters = []
@@ -48,6 +52,7 @@ def producto():
     return render_template(f'{PATH_URL_PRODUCTO}/producto.html', list_producto = list_producto)
 
 @producto_scope.route('/producto_create', methods = ['POST' ,'GET'])
+@role_requiered([1])
 def create_producto():
     if request.method == 'POST':
         try:
@@ -82,6 +87,7 @@ def create_producto():
             
     
 @producto_scope.route('/producto_delete/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def delete_producto(id):
     try:
         producto = producto_select(id)
@@ -99,6 +105,7 @@ def delete_producto(id):
     return redirect(url_for('producto_scope.producto'))
 
 @producto_scope.route('/producto_update/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def update_producto(id):
     if request.method == 'POST':
         producto_search = producto_select(id)
@@ -134,6 +141,7 @@ def update_producto(id):
     return render_template(f'{PATH_URL_PRODUCTO}/producto_update.html', producto = producto)
 
 @producto_scope.route('/producto_details/<int:id>', methods = ['GET'])
+@role_requiered([1, 2])
 def details_producto(id):
     producto = producto_select(id)
     categoria = get_producto_categoria(producto.cate_copiaid)

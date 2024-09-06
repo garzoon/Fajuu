@@ -2,10 +2,14 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from ...controller import *
 from ...models import Proveedor
 
+# Decoradores
+from ...utils.user_decorators import role_requiered
+
 proveedor_scope = Blueprint("proveedor_scope", __name__)
 PATH_URL_PROVEEDOR = "usuario/proveedor" # Acortador de url
 
 @proveedor_scope.route('/', methods = ['POST', 'GET'])
+@role_requiered([1])
 def proveedor():
 
     query = """SELECT * FROM proveedor WHERE 1=1"""
@@ -51,6 +55,7 @@ def proveedor():
 
 
 @proveedor_scope.route('/proveedor_create', methods = ['POST' ,'GET'])
+@role_requiered([1])
 def create_proveedor():
     if request.method == 'POST':
         try:
@@ -86,6 +91,7 @@ def create_proveedor():
     return render_template(f'{PATH_URL_PROVEEDOR}/proveedor_create.html')       
     
 @proveedor_scope.route('/proveedor_delete/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def delete_proveedor(id):
     try:
         proveedor = proveedor_select(id)
@@ -102,6 +108,7 @@ def delete_proveedor(id):
     return redirect(url_for('proveedor_scope.proveedor'))
 
 @proveedor_scope.route('/proveedor_update/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def update_proveedor(id):
     if request.method == 'POST':
         proveedor_search = proveedor_select(id)
@@ -138,6 +145,7 @@ def update_proveedor(id):
     return render_template(f'{PATH_URL_PROVEEDOR}/proveedor_update.html', proveedor = proveedor)
 
 @proveedor_scope.route('/proveedor_details/<int:id>', methods = ['GET'])
+@role_requiered([1])
 def details_proveedor(id):
     proveedor = proveedor_select(id)
     if proveedor:

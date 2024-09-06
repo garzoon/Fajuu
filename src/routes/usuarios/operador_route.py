@@ -2,10 +2,14 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from ...controller import *
 from ...models import Usuario
 
+# Decoradores
+from ...utils.user_decorators import role_requiered
+
 operador_scope = Blueprint("operador_scope", __name__)
 PATH_URL_USUARIO = "usuario/operador" # Acortador de url
 
 @operador_scope.route('/', methods = ['POST', 'GET'])
+@role_requiered([1])
 def operador():
 
     query = """SELECT * FROM usuarios WHERE 1=1"""
@@ -13,7 +17,7 @@ def operador():
 
     if request.method == 'POST':
         operador_nombre = request.form.get('operador_nombre')
-        operador_apellido = request.form.get('operador_apellido')
+        operador_apellido = request.form.get('operador_nombre')
         operador_identificacion = request.form.get('operador_identificacion')
         operador_rol = request.form.get('operador_rol')
         operador_estado = request.form.get('operador_estado')
@@ -23,7 +27,7 @@ def operador():
             parameters.append(f"%{operador_nombre}%")
 
         if operador_apellido:
-            query += " AND user_apellido LIKE %s"
+            query += " OR user_apellido LIKE %s"
             parameters.append(f"%{operador_apellido}%")
 
         if operador_identificacion:
@@ -58,6 +62,7 @@ def operador():
 
 
 @operador_scope.route('/operador_create', methods = ['POST' ,'GET'])
+@role_requiered([1])
 def create_operador():
     if request.method == 'POST':
         try:
@@ -99,6 +104,7 @@ def create_operador():
             
     
 @operador_scope.route('/operador_delete/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def delete_operador(id):
     try:
         operador = usuario_select(id)
@@ -117,6 +123,7 @@ def delete_operador(id):
 
 
 @operador_scope.route('/operador_update/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1])
 def update_operador(id):
     if request.method == 'POST':
         operador_search = usuario_select(id)
@@ -158,16 +165,15 @@ def update_operador(id):
 
 
 @operador_scope.route('/operador_password/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1, 2])
 def update_password_operador(id):
     if request.method == 'POST':
         operador_search = usuario_select(id)
 
         try:
-            operador_old_contrasenha = request.form.get('operador_old_contrasenha')
             operador_contrasenha = request.form.get('operador_contrasenha')
 
-            if check_password(operador_search.user_password, operador_old_contrasenha):
-                operador = Usuario(
+            operador = Usuario(
                     operador_search.user_id, 
                     operador_search.user_nombre, 
                     operador_search.user_apellido, 
@@ -176,13 +182,10 @@ def update_password_operador(id):
                     operador_search.user_telefono,
                     operador_search.rol_copiaid, 
                     operador_search.user_estado
-                )
-                usuario_update(operador)
-                flash(f"Usuario {operador_search.user_id} fue actualizado", "success")
-                return redirect(url_for('operador_scope.operador'))
-            else:
-                flash("La contraseña es incorrecta", "error")
-                return render_template(f'{PATH_URL_USUARIO}/operador_password.html')
+            )
+            usuario_password(operador)
+            flash(f"Usuario {operador_search.user_id} fue actualizado", "success")
+            return redirect(url_for('operador_scope.operador'))
         
         # Manejo de errores
         except mysql.connector.IntegrityError as ex:
@@ -197,6 +200,7 @@ def update_password_operador(id):
 
 
 @operador_scope.route('/operador_details/<int:id>', methods = ['GET'])
+@role_requiered([1])
 def details_operador(id):
     operador = usuario_select(id)
     rol = get_usuario_rol(operador.rol_copiaid)[0]

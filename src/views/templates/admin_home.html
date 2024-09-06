@@ -2,16 +2,17 @@
 
 {% block blockTitle %}Inicio{% endblock %}
 
-{% block customCss %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-{% endblock %}
-
 {% block main %}
-<main class="main">
-    <section class="section-home">
-        <h2>Welcome To</h2>
-        <h1 id="titulo">Fajuu</h1>
-        <h1>ADMIN</h1>
+
+<main class="p-1 p-md-3">
+    <section class="section p-3">
+        <div class="row slc-container col-12 d-flex justify-content-center">
+            <h2 class="col-12 d-flex justify-content-center">Bienvenido a Fajuu</h2>
+            <div class="col-12  d-flex justify-content-center p-3">
+                <img src="{{ url_for('static', filename='img/cat.gif') }}" width="60px">
+            </div>
+            
+        </div>
     </section>
 </main>
 {% endblock %}
