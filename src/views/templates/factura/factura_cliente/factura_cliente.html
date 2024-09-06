@@ -119,6 +119,7 @@
                     document.getElementById('modal-fact-clienteId').innerText = data.cliente_id;
                     document.getElementById('modal-fact-cliente').innerText = data.nombre;
                     document.getElementById('modal-fact-fecha').innerText = data.fecha;
+                    document.getElementById('modal-fact-precio').innerText = data.total_precio;
 
                     // Llenar la tabla con los productos
                     fillTable(data.dic_productos);
@@ -153,11 +154,13 @@
                 const cellName = row.insertCell(1);
                 const cellQuantity = row.insertCell(2);
                 const cellUnit = row.insertCell(3);
+                const cellTotal = row.insertCell(4);
 
                 cellId.textContent = id;
                 cellName.textContent = data[id][0];
                 cellQuantity.textContent = data[id][1];
                 cellUnit.textContent = data[id][2];
+                cellTotal.textContent = `$${data[id][3]}`;
             }
         }
     }

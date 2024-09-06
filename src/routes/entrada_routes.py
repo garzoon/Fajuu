@@ -42,6 +42,8 @@ def entrada():
                         producto_array = [producto_id, producto.prod_descripcion, producto_cantidad, producto.prod_unidad_medida]
                         session['dic_productos'][producto_id] = producto_array[1:]
                         session.modified = True
+                        
+                        print(session['dic_productos'])
                         flash("Producto agregado correctamente", "success")
                     else:
                         flash("Producto ya agregado", "error")
@@ -63,10 +65,6 @@ def send_entrada ():
         flash("Faltan datos de factura o proveedor", "error")
         return redirect(url_for('entrada_scope.entrada'))
 
-    # Actualizar valores de stock del producto en la db
-    for key, producto in session['dic_productos'].items():
-        producto_entrada(key, producto[1])
-
     # Subir entrada a la base de datos
     productos_json = json.dumps(session['dic_productos']) # Convertir la lista python en un lista json
 
@@ -74,6 +72,10 @@ def send_entrada ():
     current_timestamp_str = current_timestamp.strftime('%Y-%m-%d')
     entrada = Entrada(factura_id, proveedor_id, productos_json, current_timestamp_str)
     entrada_create(entrada)
+    
+    # Actualizar valores de stock del producto en la db
+    for key, producto in session['dic_productos'].items():
+        producto_entrada(key, producto[1])
 
     # Limpiar valores de la sesion
     keys_session = ['factura_id', 'proveedor_id', 'dic_productos']
@@ -89,6 +91,8 @@ def delete_entrada(id):
     if 'dic_productos' in session and id in session['dic_productos']:
         del session['dic_productos'][id]
         session.modified = True
+        
+        print(session['dic_productos'])
         flash("Producto eliminado correctamente", "success")
     else:
         flash("Producto no encontrado", "error")

@@ -7,6 +7,8 @@
     --color-white: #FFFFFF;
     --color-blue-dark: #111926;
     --color-yellow: #FFD166;
+    --color-blue: #007FAC;
+    --color-red: #BB1515;
 }
 *{
   box-sizing: border-box;

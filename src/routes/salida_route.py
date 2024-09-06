@@ -16,6 +16,9 @@ def salida():
 
     if 'dic_productos_salida' not in session:
         session['dic_productos_salida'] = {}
+        
+    if 'factura_valor_total' not in session:
+        session['factura_valor_total'] = 0
 
     if request.method == 'POST':
 
@@ -38,9 +41,6 @@ def salida():
                     
                     producto_array = [producto_id, producto.prod_descripcion, producto_cantidad, producto.prod_unidad_medida, valor_producto]
                     session['dic_productos_salida'][producto_id] = producto_array[1:]
-
-                    if 'factura_valor_total' not in session:
-                        session['factura_valor_total'] = 0
                     
                     session['factura_valor_total'] += valor_producto
                     
@@ -53,36 +53,43 @@ def salida():
                     flash("Producto ya agregado", "error")
                     
     list_productos = get_productos()
+    list_clientes = cliente_list()
     return render_template('salida.html', dic_productos = session['dic_productos_salida'], cliente_id = session.get('cliente_id', ''), 
-                           list_productos = list_productos, total_factura = session.get('factura_valor_total'))
+                           list_productos = list_productos, list_clientes = list_clientes, total_factura = session.get('factura_valor_total'))
             
 @salida_scope.route('/salida_send', methods = ['POST', 'GET'])
 @role_requiered([1, 2])
-def send_salida ():
+def send_salida():
     
-    # Verifica si las claves existen en la sesión
     cliente_id = session.get('cliente_id')
     if cliente_id is None:
         flash("Faltan datos de cliente", "error")
-        return redirect(url_for('salida.salida'))
+        return redirect(url_for('salida_scope.salida'))
     
-    productos_json = json.dumps(session['dic_productos_salida'])  # Convertir el diccionario Python en un JSON
-    current_timestamp = datetime.now()
-    current_timestamp_str = current_timestamp.strftime('%Y-%m-%d')
-    factura_id = None
-    salida = Factura(factura_id, cliente_id, productos_json, session['factura_valor_total'], current_timestamp_str)
+    productos_json = json.dumps(session.get('dic_productos_salida', {}))  # Convertir el diccionario Python en un JSON
+    
+    current_timestamp = datetime.now().strftime('%Y-%m-%d')
+    list_check = []
+    
+    for key, producto in session['dic_productos_salida'].items():
+        resultado = producto_check(key, producto[1])
+        list_check.append(resultado)
+    
+    if not all(list_check):
+        flash("La factura no pudo ser enviada correctamente debido a problemas de stock", "warning")
+        return redirect(url_for('salida_scope.salida'))
+    
+    salida = Factura(None, cliente_id, productos_json, session['factura_valor_total'], current_timestamp)
     factura_create(salida)
     
-    # Actualizar valores de stock del producto en la base de datos
     for key, producto in session['dic_productos_salida'].items():
-        resultado = producto_salida(key, producto[1])
-        keys_session = ['cliente_id', 'dic_productos_salida', 'factura_valor_total']
-        for key in keys_session:
-            session.pop(key, None)
-        if isinstance(resultado, str):
-            resultado
-            
-            
+        producto_salida(key, producto[1])
+    
+    keys_session = ['cliente_id', 'dic_productos_salida', 'factura_valor_total']
+    for key in keys_session:
+        session.pop(key, None)
+    
+    flash("Factura enviada con éxito", "success")
     return redirect(url_for('salida_scope.salida'))
 
 @salida_scope.route('/salida_delete/<string:id>', methods=['POST'])

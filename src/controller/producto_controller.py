@@ -100,35 +100,38 @@ def producto_entrada(prod_id, prod_stock) -> None:
 
     if new_stock > 0:
         update_producto_estado(prod_id, 'disponible')
-
-def producto_salida(prod_id, prod_stock) -> str:
+        
+def producto_check(prod_id, prod_stock) -> bool:
     producto = producto_select(prod_id)
     
-    if get_producto_estado(prod_id) == 'disponible': 
-        # Verificar si el stock a retirar es menor o igual al stock actual
+    if get_producto_estado(prod_id) == 'disponible':
         if int(prod_stock) <= int(producto.prod_stock):
-            new_stock = int(producto.prod_stock) - int(prod_stock)
-
-            # Actualizar stock si es mayor que 0
-            if new_stock > 0:
-                query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
-                parameters = (new_stock, prod_id)
-                execute_commit(query, parameters)
-                return flash("Stock actualizado con éxito", "success")
-
-            # Si el stock es 0 después de la operación, actualizar estado a 'agotado'
-            elif new_stock == 0:
-                update_producto_estado(prod_id, 'agotado')
-                query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
-                parameters = (new_stock, prod_id)
-                execute_commit(query, parameters)
-                return flash(f"Producto {producto.prod_descripcion} agotado tras la salida", "success")
-
+            return True
         else:
-            return flash(f"Stock insuficiente para retirar {prod_stock} unidades de {producto.prod_descripcion}", "error")
-    
+            flash(f"Stock insuficiente para retirar {prod_stock} unidades de {producto.prod_descripcion}", "error")
+            return False
     else:
-        return flash(f"Producto {producto.prod_descripcion} está agotado", "error")
+        flash(f"Producto {producto.prod_descripcion} está agotado", "error")
+        return False
+
+
+def producto_salida(prod_id, prod_stock) -> None:
+    producto = producto_select(prod_id)
+    new_stock = int(producto.prod_stock) - int(prod_stock)
+    
+    if new_stock > 0:
+        query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
+        parameters = (new_stock, prod_id)
+        execute_commit(query, parameters)
+        flash("Stock actualizado con éxito", "success")
+    
+    elif new_stock == 0:
+        update_producto_estado(prod_id, 'agotado')
+        query = "UPDATE productos SET prod_stock = %s WHERE prod_id = %s"
+        parameters = (new_stock, prod_id)
+        execute_commit(query, parameters)
+        flash(f"Producto {producto.prod_descripcion} agotado tras la salida", "success")
+
 
 
      

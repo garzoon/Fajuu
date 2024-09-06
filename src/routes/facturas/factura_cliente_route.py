@@ -83,7 +83,8 @@ def details_factura_cliente(id):
             'cliente_id' : factura.clien_copiaid,
             'nombre' : cliente.clien_nombre,
             'fecha' : factura.fact_fecha_emision,
-            'dic_productos' : dic_productos
+            'dic_productos' : dic_productos,
+            'total_precio' : factura.fact_valor_total
         })
     else:
         return jsonify({'Error' : "factura no encontrada"}), 404

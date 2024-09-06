@@ -68,9 +68,9 @@
                         <td>{{ producto[3] }}</td>
                         <td>{{ producto[4] }}</td>
                         {% if producto[5] == 'disponible' %}
-                        <td style="color: green;" >{{ producto[5] }}</td>
+                        <td style="color: var(--color-blue); font-weight: 600;">{{ producto[5] }}</td>
                         {% else %}
-                        <td style="color: red;" >{{ producto[5] }}</td>
+                        <td style="color: var(--color-red); font-weight: 600;">{{ producto[5] }}</td>
                         {% endif %}
 
 
