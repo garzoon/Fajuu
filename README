@@ -1,13 +1,19 @@
-Para subir un producto, este se subiera en fromato .json y debe segir el siguiente template:
-{"id": numero id, "name": "nombre", "quantity": cantidad, "unit": "unidad de medida"}
+PASO 1: Crear entorno virtual
+python -m venv env
 
-en caso de ser mas de un prodcuto estos se deben almacenar en una lista:
-[{"id": numero id, "name": "nombre", "quantity": cantidad, "unit": "unidad de medida"}, ...]
+PASO 2: Activar el entorno virtual
+. env/Scripts/activate
 
+PASO 3: Instalar Flask
+pip install flask
+
+PASO 4: Instalar Python MySQL Connector
+pip install mysql-connector-python
+
+Crear/Actualizar el archivo requirements.txt
+pip install -r requirements.txt
 
 Antes de iniciar el proyecto descargar el documento requeriments y activar el entorno virtual
 
-Paso 1:
-pip install -r requirements.txt
-
-Paso 2:
+PARA EJECUTAR EL PROYECTO:
+python index.py
