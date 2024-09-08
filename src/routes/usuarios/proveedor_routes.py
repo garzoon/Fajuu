@@ -100,11 +100,11 @@ def delete_proveedor(id):
 
     # Manejo de errores
     except mysql.connector.IntegrityError as ex:
-        flash("No se puede eliminar el proveedor porque está en uso", "error")
+        flash("No se puede eliminar el proveedor porque está en uso", "warning")
     except mysql.connector.Error as ex:
-        flash("Error al intentar eliminar el proveedor", "error")
+        flash("Error al intentar eliminar el proveedor", "warning")
     except Exception as ex:
-        flash(f"Error inesperado: {ex}", "error")
+        flash(f"Error inesperado: {ex}", "warning")
     return redirect(url_for('proveedor_scope.proveedor'))
 
 @proveedor_scope.route('/proveedor_update/<int:id>', methods = ['GET', 'POST'])
@@ -135,11 +135,11 @@ def update_proveedor(id):
         
         # Manejo de errores
         except mysql.connector.IntegrityError as ex:
-            flash("No se puede actualizar el proveedor porque está en uso", "error")
+            flash("No se puede actualizar el proveedor porque está en uso", "warning")
         except mysql.connector.Error as ex:
-            flash("Error al intentar actualizar el proveedor", "error")
+            flash("Error al intentar actualizar el proveedor", "warning")
         except Exception as ex:
-            flash(f"Error inesperado: {ex}", "error")
+            flash(f"Error inesperado: {ex}", "warning")
         
     proveedor = proveedor_select(id)
     return render_template(f'{PATH_URL_PROVEEDOR}/proveedor_update.html', proveedor = proveedor)

@@ -1,0 +1,29 @@
+<div id="genericModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="infoModal" class="modal">
+    <div class="modal-content col-5">
+        <span class="close">&times;</span>
+        <h2 id="modal-title">Lista Proveedores</h2>
+        <div id="modal-body">
+
+            <ul class="table-wrapper col-12">
+                {% if list_proveedores %}
+                {% for proveedor in list_proveedores %}
+
+                {% if proveedor[-1] == 'activo'%}
+
+                <li class="col-12 row d-flex justify-content-center"></li>
+                    <button class="button-action-second m-1 col-11" type="button" value="{{ proveedor[0] }}"
+                        onclick="setProveedorId(this.value)">{{ proveedor[0] }} - {{ proveedor[2] }}</button>
+                </li>
+                {% endif %}
+
+                {% endfor %}
+
+                {% else %}
+                <p>No hay proveedores D:</p>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</div>

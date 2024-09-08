@@ -25,10 +25,11 @@ def entrada():
         producto_id = request.form.get('producto_id')
         producto_cantidad = request.form.get('producto_cantidad')
 
+        proveedor = proveedor_select(session['proveedor_id'])
 
-        if not proveedor_select(session['proveedor_id']):
+        if not proveedor:
             flash("Proveedor no encontrado", "error")
-        elif get_proveedor_estado(session['proveedor_id'])[0] == 'inactivo':
+        elif proveedor.prov_estado == 'inactivo':
             flash("Proveedor inactivo", "error")
         else:
             if entrada_select(session['factura_id']):
@@ -50,8 +51,9 @@ def entrada():
                         
     
     list_productos = get_productos()
+    list_proveedores = proveedor_list()
     return render_template('entrada.html', dic_productos = session['dic_productos'], proveedor_id = session.get('proveedor_id', ''), 
-                           factura_id = session.get('factura_id', ''), list_productos = list_productos)
+                           factura_id = session.get('factura_id', ''), list_productos = list_productos, list_proveedores = list_proveedores)
 
             
 @entrada_scope.route('/entrada_send', methods = ['POST', 'GET'])

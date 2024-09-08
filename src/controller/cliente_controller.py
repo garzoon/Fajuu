@@ -68,13 +68,7 @@ def cliente_update(cliente : Cliente) -> Cliente:
     execute_commit(query, parameters)
     return cliente
 
-    
 def get_cliente_documento(clien_document) -> Cliente:
     query = "SELECT * FROM clientes WHERE clien_documento = %s ORDER BY clien_id DESC"
     parameters = (clien_document, )
-    return fetch_one(query, parameters)
-
-def get_cliente_estado(prov_id):
-    query = "SELECT * FROM clientes WHERE clien_id = %s ORDER BY clien_id DESC"
-    parameters = (prov_id, )
     return fetch_one(query, parameters)

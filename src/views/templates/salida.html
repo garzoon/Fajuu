@@ -11,16 +11,22 @@
                 <!-- datos de facturacion  -->
                 <div class="col-12 row m-0 p-0 align-items-center">
                     <h1 class="col-12 col-md-3 p-0">Datos de Factura</h1>
-                    <input class="input-first col-12 col-md-3 m-0 mb-2 m-md-3" id="cliente_id" name="cliente_id"
-                        type="number" value="{{ cliente_id }}" required placeholder="Id Cliente" autocomplete="off">
+                    <div class="col-12 col-md-3 m-0 mb-2 m-md-3 p-0 d-flex justify-content-between">
+                        <input class="input-first col-11" id="cliente_id" name="cliente_id" type="number" value="{{ cliente_id }}"
+                            required placeholder="Id Cliente" autocomplete="off">
 
+                        <button class="btn_table col-1" onclick="users_modal()" type="button">
+                            <img src="{{ url_for('static', filename='img/item_user_list.png') }}" width="25rem">
+                        </button>
+                        {% include 'includes/modal_salida.html' %}
+                    </div>
                 </div>
 
                 <!-- datos de producto  -->
                 <div class="col-12 row m-0 p-0 align-items-center">
                     <h1 class="col-12 col-md-3 p-0">Productos</h1>
                     <select class="input-first col-12 col-md-3 m-0 mb-2 m-md-3" name="producto_id" id="producto_id">
-                        <option value="" selected>Selecione un producto</option>
+                        <option value="" selected>Selecione un Producto</option>
                         {% if list_productos %}
                         {% for producto in list_productos%}
                         <option value="{{ producto[0] }}">{{ producto[0] }} - {{ producto[1] }}</option>
@@ -34,7 +40,7 @@
                     <button class="button-action col-12 col-md-2" type="submit">Cargar</button>
                 </div>
             </form>
-<!-- 
+            <!-- 
             <div>
                 <p>Valor Total: {{ factura_valor_total }}</p>
 
@@ -63,7 +69,8 @@
                         <td>
                             <form action="{{ url_for('salida_scope.delete_salida', id=key) }}" method="POST">
                                 <button class="btn_table" type="submit">
-                                    <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
+                                    <img src="{{ url_for('static', filename='img/table_item_delete.png') }}"
+                                        width="25rem">
                                 </button>
                             </form>
                         </td>
@@ -79,8 +86,10 @@
         </div>
 
         <div class="row slc-container justify-content-between">
-            <button class="col-5 col-md-2 button-action-second" type="button" onclick="redirectPague('salida_clear')">Descartar</button>
-            <button class="col-5 col-md-2 button-action" type="button" onclick="redirectPague('salida_send')">Enviar</button>
+            <button class="col-5 col-md-2 button-action-second" type="button"
+                onclick="redirectPague('salida_clear')">Descartar</button>
+            <button class="col-5 col-md-2 button-action" type="button"
+                onclick="redirectPague('salida_send')">Enviar</button>
         </div>
     </section>
 </main>

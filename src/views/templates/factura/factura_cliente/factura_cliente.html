@@ -9,18 +9,18 @@
         <div class="row slc-container">
             <form class="frm-search row col-12 p-0" action="{{ url_for('factura_cliente_scope.factura') }}"
                 method="POST">
-                <h1 class="col-12 col-md-2 p-0">Facturas de Cliente</h1>
+                <h1 class="col-12 col-lg-2 p-0 mb-2">Facturas de Cliente</h1>
 
-                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="factura_id" name="factura_id"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="factura_id" name="factura_id"
                     type="number" placeholder="Id Factura" autocomplete="off">
 
-                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="cliente_id" name="cliente_id"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="cliente_id" name="cliente_id"
                     type="number" placeholder="Id Cliente" autocomplete="off">
 
-                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="factura_fecha" name="factura_fecha"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="factura_fecha" name="factura_fecha"
                     type="date">
 
-                <button class="button-action-second col-12 col-md-2 m-0 mb-2 m-md-3" type="submit">Filtrar</button>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-lg-3" type="submit">Filtrar</button>
             </form>
         </div>
 
@@ -28,10 +28,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Id factura</th>
-                        <th>Id cliente</th>
+                        <th>Id Factura</th>
+                        <th>Id Cliente</th>
                         <th>Cliente</th>
-                        <th>Fecha de emision</th>
+                        <th>Fecha de Emisión</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -82,6 +82,7 @@
                         <button class="btn_table" onclick="mostrarProducto('{{ factura[0] }}')">
                             <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
                         </button>
+                        {% include 'factura/factura_cliente/factura_cliente_view.html' %}
                     </td>
                 </tr>
                 {% endfor %}

@@ -22,13 +22,16 @@ def salida():
 
     if request.method == 'POST':
 
+
         session['cliente_id'] = request.form.get('cliente_id')
         producto_id = request.form.get('producto_id')
         producto_cantidad = request.form.get('producto_cantidad')  
+        
+        cliente = cliente_select(session['cliente_id'])
 
-        if not cliente_select(session['cliente_id']):
+        if not cliente:
             flash("Cliente no encontrado", "error")
-        elif get_cliente_estado(session['cliente_id']) == 'inactivo':
+        elif cliente.clien_estado == 'inactivo':
             flash("Cliente inactivo", "error")
         else:
             if not producto_select(producto_id):

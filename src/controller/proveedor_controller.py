@@ -64,8 +64,4 @@ def get_proveedor_nit(prov_nit):
     parameters = (prov_nit, )
     return fetch_one(query, parameters)
 
-def get_proveedor_estado(prov_id):
-    query = "SELECT prov_estado FROM proveedor WHERE prov_id = %s ORDER BY prov_id DESC"
-    parameters = (prov_id, )
-    return fetch_one(query, parameters)
     

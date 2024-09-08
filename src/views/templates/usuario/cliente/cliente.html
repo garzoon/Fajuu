@@ -12,24 +12,24 @@
                 method="POST">
                 <h1 class="col-12 col-lg-2 p-0">Clientes</h1>
 
-                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_id" name="cliente_id" type="text"
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="cliente_id" name="cliente_id" type="text"
                     placeholder="Id Cliente" autocomplete="off">
 
-                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_identificacion"
-                    name="cliente_identificacion" type="number" placeholder="Identificacion" autocomplete="off">
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="cliente_identificacion"
+                    name="cliente_identificacion" type="number" placeholder="Identificación" autocomplete="off">
 
-                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_nombre" name="cliente_nombre"
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="cliente_nombre" name="cliente_nombre"
                     type="text" placeholder="Nombre(s)" autocomplete="off">
 
-                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_ciudad" name="cliente_ciudad"
+                <input class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="cliente_ciudad" name="cliente_ciudad"
                     type="text" placeholder="Ciudad" autocomplete="off">
 
-                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="cliente_estado" name="cliente_estado">
+                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="cliente_estado" name="cliente_estado">
                     <option value="" selected>Estado</option>
                     <option value="activo">Activo</option>
-                    <option value="innactivo">Innactivo</option>
+                    <option value="inactivo">Inactivo</option>
                 </select>
-                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-md-3" type="submit">Filtra</button>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-lg-3" type="submit">Filtra</button>
             </form>
 
             <button class="item_form button-action col-12 col-lg-2" onclick="redirectPague('cliente_create')">Nuevo
@@ -57,7 +57,11 @@
                         <td>{{ cliente[1] }}</td>
                         <td>{{ cliente[2] }}</td>
                         <td>{{ cliente[3] }}</td>
-                        <td>{{ cliente[4] }}</td>
+                        {% if cliente[4] == 'activo' %}
+                        <td style="color: var(--color-blue); font-weight: 600;">{{ cliente[4] }}</td>
+                        {% else %}
+                        <td style="color: var(--color-red); font-weight: 600;">{{ cliente[4] }}</td>
+                        {% endif %}
                         <td>
                             <button class="btn_table" onclick="mostrarProducto('{{ cliente[0] }}')">
                                 <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">

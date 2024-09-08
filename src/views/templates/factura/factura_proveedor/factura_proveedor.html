@@ -9,18 +9,18 @@
         <div class="row slc-container">
             <form class="frm-search row col-12 p-0" action="{{ url_for('factura_proveedor_scope.factura') }}"
                 method="POST">
-                <h1 class="col-12 col-md-2 p-0">Facturas de Proveedor</h1>
+                <h1 class="col-12 col-lg-2 p-0 mb-2">Facturas de Proveedor</h1>
 
-                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="entrada_id" name="entrada_id"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="entrada_id" name="entrada_id"
                     type="number" placeholder="Id Entrada" autocomplete="off">
 
-                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="proveedor_id" name="proveedor_id"
-                    type="number" placeholder="Id Pntrada" autocomplete="off">
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="proveedor_id" name="proveedor_id"
+                    type="number" placeholder="Id Entrada" autocomplete="off">
 
-                <input class="input-first col-12 col-md-2 m-0 mb-2 m-md-3" id="entrada_fecha" name="entrada_fecha"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="entrada_fecha" name="entrada_fecha"
                     type="date" placeholder="IFecha de Entrada" autocomplete="off">
 
-                <button class="button-action-second col-12 col-md-2 m-0 mb-2 m-md-3" type="submit">Filtrar</button>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-lg-3" type="submit">Filtrar</button>
             </form>
         </div>
 
@@ -28,10 +28,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Id entrada</th>
-                        <th>Id proveedor</th>
+                        <th>Id Entrada</th>
+                        <th>Id Proveedor</th>
                         <th>Proveedor</th>
-                        <th>Fecha de entrada</th>
+                        <th>Fecha de Entrada</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

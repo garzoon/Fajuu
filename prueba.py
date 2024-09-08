@@ -4,8 +4,5 @@ from src.controller import *
 from src.models import *
 import json
 
-num = 0
-
-dic = {1 : ["pan", 12]}
-
-print(dic[1][-1])
+list_proveedores = proveedor_list()
+print(list_proveedores)

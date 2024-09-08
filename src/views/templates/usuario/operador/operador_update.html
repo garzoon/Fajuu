@@ -22,7 +22,7 @@
                 <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_email" name="operador_email"
                     type="email" value="{{ operador.user_email }}" required required autocomplete="off">
 
-                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_telefono">Número de Telefono</label>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="operador_telefono">Número de Teléfono</label>
                 <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_telefono"
                     name="operador_telefono" type="number" value="{{ operador.user_telefono }}" required required autocomplete="off">
 
@@ -30,7 +30,7 @@
                 <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="operador_estado" name="operador_estado"
                     required>
                     <option {% if operador.user_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
-                    <option {% if operador.user_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
+                    <option {% if operador.user_estado=='inactivo' %} selected {% endif %} value="inactivo">Inactivo
                     </option>
                 </select>
 

@@ -31,7 +31,7 @@
                 <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_email" name="cliente_email"
                     type="email" required required autocomplete="off" value="{{ cliente.clien_email }}">
 
-                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_telefono">Número de Telefono</label>
+                <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="cliente_telefono">Número de Teléfono</label>
                 <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_telefono" name="cliente_telefono"
                     type="number" required required autocomplete="off" value="{{ cliente.clien_telefono }}">
 
@@ -39,7 +39,7 @@
                 <select class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="cliente_estado" name="cliente_estado"
                     required required autocomplete="off">
                     <option {% if cliente.clien_estado=='activo' %} selected {% endif %} value="activo">Activo</option>
-                    <option {% if cliente.clien_estado=='innactivo' %} selected {% endif %} value="innactivo">Innactivo
+                    <option {% if cliente.clien_estado=='inactivo' %} selected {% endif %} value="inactivo">Inactivo
                     </option>
                 </select>
 

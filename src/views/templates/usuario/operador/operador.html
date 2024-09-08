@@ -9,29 +9,30 @@
         <div class="row slc-container">
             <form class="frm-search row col-12 col-lg-10 p-0" action="{{ url_for('operador_scope.operador') }}"
                 method="POST">
-                <h1 class="col-12 col-lg-2 p-0">Operadores</h1>
+                <h1 class="col-12 col-lg-2 p-0 mb-2">Operadores</h1>
 
-                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id="operador_nombre" name="operador_nombre"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="operador_nombre" name="operador_nombre"
                     type="text" placeholder="Nombre" autocomplete="off">
 
-                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id="operador_identificacion"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="operador_identificacion"
                     name="operador_identificacion" placeholder="Identificación" type="number" autocomplete="off">
 
-                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="operador_rol" name="operador_rol">
+                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="operador_rol" name="operador_rol">
                     <option value="" selected>Rol</option>
                     <option value="1">Administrador</option>
                     <option value="2">Usuario</option>
                 </select>
 
-                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-md-3" id="operador_estado" name="operador_estado">
+                <select class="input-first col-12 col-lg-1 m-0 mb-2 m-lg-3" id="operador_estado" name="operador_estado">
                     <option value="" selected>Estado</option>
                     <option value="activo">Activo</option>
-                    <option value="innactivo">Innactivo</option>
+                    <option value="inactivo">Inactivo</option>
                 </select>
-                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-md-3" type="submit">Filtra</button>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-lg-3" type="submit">Filtra</button>
             </form>
 
-            <button class="item_form button-action col-12 col-lg-2" onclick="redirectPague('operador_create')">Nuevo Usuario</button>
+            <button class="item_form button-action col-12 col-lg-2" onclick="redirectPague('operador_create')">Nuevo
+                Usuario</button>
         </div>
 
 
@@ -57,7 +58,11 @@
                         <td>{{ operador[1] }}</td>
                         <td>{{ operador[2] }}</td>
                         <td>{{ operador[3] }}</td>
-                        <td>{{ operador[4] }}</td>
+                        {% if operador[4] == 'activo' %}
+                        <td style="color: var(--color-blue); font-weight: 600;">{{ operador[4] }}</td>
+                        {% else %}
+                        <td style="color: var(--color-red); font-weight: 600;">{{ operador[4] }}</td>
+                        {% endif %}
                         <td>
                             <button class="btn_table" onclick="mostrarProducto('{{ operador[0] }}')">
                                 <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
@@ -65,14 +70,18 @@
                             {% include 'usuario/operador/operador_view.html' %}
                         </td>
                     </tr>
-                    
+
                     {% else %}
                     <tr>
                         <td>{{ operador[0] }}</td>
                         <td>{{ operador[1] }}</td>
                         <td>{{ operador[2] }}</td>
                         <td>{{ operador[3] }}</td>
-                        <td>{{ operador[4] }}</td>
+                        {% if operador[4] == 'activo' %}
+                        <td style="color: var(--color-blue); font-weight: 600;">{{ operador[4] }}</td>
+                        {% else %}
+                        <td style="color: var(--color-red); font-weight: 600;">{{ operador[4] }}</td>
+                        {% endif %}
                         <td>
                             <button class="btn_table" onclick="mostrarProducto('{{ operador[0] }}')">
                                 <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">
@@ -86,7 +95,8 @@
                             </button>
                             {% include 'includes/modal_close.html' %}
                             <button class="btn_table" onclick="redirect('operador_password', '{{ operador[0] }}')">
-                                <img src="{{ url_for('static', filename='img/table_item_password.png') }}" width="25rem">
+                                <img src="{{ url_for('static', filename='img/table_item_password.png') }}"
+                                    width="25rem">
                             </button>
                         </td>
                     </tr>

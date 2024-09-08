@@ -1,9 +1,15 @@
 
 <header class="header d-none d-md-flex container-fluid">
     <div class="header_title col-md-6 col-xxl-8">
+        {% if session.get('user_rol') == 1 %}
         <a class="header-titles" href="{{ url_for('auth_scope.admin_home') }}">
             <strong>Fajuu</strong>
         </a>
+        {% else %}
+        <a class="header-titles" href="{{ url_for('auth_scope.user_home') }}">
+            <strong>Fajuu</strong>
+        </a>
+        {% endif %}
     </div>
     <div class="header_links col-md-6 col-xxl-4 row">
         <button onclick="redirectPague('/ayuda')" class="button-second col-md-2 col-lg-3">Ayuda</button>

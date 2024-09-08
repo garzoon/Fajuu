@@ -36,3 +36,8 @@ def helps():
 
 if __name__ == "__main__":
     app.run()
+    
+    
+# Cuando escribí este código, sólo Dios y yo
+# sabiamos cómo funcionaba.
+# Ahora, ¡soló Dios lo sabe! 

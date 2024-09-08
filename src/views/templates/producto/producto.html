@@ -12,10 +12,10 @@
                 method="POST">
                 <h1 class="col-12 col-lg-2 p-0 mb-2">Productos</h1>
 
-                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id="producto_id" name="producto_id"
+                <input class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id="producto_id" name="producto_id"
                     type="text" placeholder="Id producto" autocomplete="off">
 
-                <select class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id=" producto_categoria"
+                <select class="input-first col-12 col-lg-2 m-0 mb-2 m-lg-3" id=" producto_categoria"
                     name="producto_categoria">
                     <option value="" selected>Categoria</option>
                     <option value="1">Refrigerado</option>
@@ -23,14 +23,14 @@
                     <option value="3">Seco</option>
                 </select>
 
-                <select class="input-first col-12 col-lg-2 m-0 mb-2 m-md-3" id=" producto_estado"
+                <select class="input-first col-12 col-lg-2 m-0 p-0 mb-2 m-lg-3" id=" producto_estado"
                     name="producto_estado">
                     <option value="" selected>Estado</option>
                     <option value="disponible">Disponible</option>
                     <option value="agotado">Agotado</option>
                 </select>
 
-                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-md-3" type="submit">Filtra</button>
+                <button class="button-action-second col-12 col-lg-2 m-0 mb-2 m-lg-3" type="submit">Filtra</button>
             </form>
 
 
@@ -108,7 +108,11 @@
                         <td>{{ producto[2] }}</td>
                         <td>{{ producto[3] }}</td>
                         <td>{{ producto[4] }}</td>
-                        <td>{{ producto[5] }}</td>
+                        {% if producto[5] == 'disponible' %}
+                        <td style="color: var(--color-blue); font-weight: 600;">{{ producto[5] }}</td>
+                        {% else %}
+                        <td style="color: var(--color-red); font-weight: 600;">{{ producto[5] }}</td>
+                        {% endif %}
                         <td>
                             <button class="btn_table" onclick="mostrarProducto('{{ producto[0] }}')">
                                 <img src="{{ url_for('static', filename='img/table_item_view.png') }}" width="25rem">

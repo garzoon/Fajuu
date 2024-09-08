@@ -10,7 +10,7 @@
 <main class="p-1 p-md-3">
     <section class="section p-3">
         <div class="row slc-container"></div>
-        <h1>Editar proovedor - ({{ proveedor.prov_id }}) {{ proveedor.prov_razonsocial }}</h1>
+        <h1>Editar Proovedor - ({{ proveedor.prov_id }}) {{ proveedor.prov_razonsocial }}</h1>
         <form class="col-12 d-block" action="{{ url_for('proveedor_scope.update_proveedor', id=proveedor.prov_id) }}"
             method="post">
 
@@ -18,15 +18,15 @@
             <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_nit" name="proveedor_nit" type="text"
                 value="{{ proveedor.prov_nit }}" required required autocomplete="off">
 
-            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_razonSocial">Razon social</label>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_razonSocial">Razón Social</label>
             <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_razonSocial" name="proveedor_razonSocial" type="text"
                 value="{{ proveedor.prov_razonsocial }}" required required autocomplete="off">
 
-            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_email">Correo electronico</label>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_email">Correo Electrónico</label>
             <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_email" name="proveedor_email" type="email"
                 value="{{ proveedor.prov_email }}" required required autocomplete="off">
 
-            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_telefono">Numero de telefono</label>
+            <label class="col-12 col-md-4 m-0 mb-2 m-md-3" for="proveedor_telefono">Número de Teléfono</label>
             <input class="input-first col-12 col-md-4 m-0 mb-2 m-md-3" id="proveedor_telefono" name="proveedor_telefono" type="number"
                 value="{{ proveedor.prov_telefono }}" required required autocomplete="off">
 

@@ -1,0 +1,32 @@
+<div id="genericModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+<div id="infoModal" class="modal">
+    <div class="modal-content col-5">
+        <span class="close">&times;</span>
+        <h2 id="modal-title">Lista Clientes</h2>
+        <div id="modal-body">
+
+            <ul class="table-wrapper col-12">
+                {% if list_clientes %}
+                {% for cliente in list_clientes %}
+
+                {% if cliente[-1] == 'activo'%}
+
+                <li class="col-12 row d-flex justify-content-center"></li>
+                    <button id="button_list_users" class="button-action-second m-1 col-11" type="button" value="{{ cliente[0] }}"
+                        onclick="setClienteId(this.value)">{{ cliente[0] }} - {{ cliente[2] }}</button>
+                </li>
+
+                
+                
+                {% endif %}
+
+                {% endfor %}
+
+                {% else %}
+                <p>No hay clientes D:</p>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</div>

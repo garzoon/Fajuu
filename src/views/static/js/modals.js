@@ -42,4 +42,39 @@ function delete_modal(redirect, id) {
     } 
 }
 
+function users_modal() {
+    
+    const modal = document.getElementById('infoModal');
+    const span = document.getElementsByClassName('close')[0];
+
+    modal.style.display = 'block'
+
+    span.onclick = function() {
+        modal.style.display = 'none'
+    }
+    
+    window.onclick = function(event) {
+        if(event.target == modal) {
+            modal.style.display = 'none'
+        }
+    } 
+}
+
+function setClienteId(value) {
+    const modal = document.getElementById('infoModal');
+    const input = document.getElementById('cliente_id')
+
+    input.value = value;
+    modal.style.display = 'none'
+}
+
+function setProveedorId(value) {
+    const modal = document.getElementById('infoModal');
+    const input = document.getElementById('proveedor_id')
+    
+    input.value = value;
+    modal.style.display = 'none'
+
+}
+
 
