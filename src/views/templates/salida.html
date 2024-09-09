@@ -40,11 +40,6 @@
                     <button class="button-action col-12 col-md-2" type="submit">Cargar</button>
                 </div>
             </form>
-            <!-- 
-            <div>
-                <p>Valor Total: {{ factura_valor_total }}</p>
-
-            </div> -->
         </div>
 
         <div class="table-wrapper">
@@ -65,7 +60,7 @@
                         <td>{{ key }}</td>
                         <td>{{ producto[0] }}</td>
                         <td>{{ producto[1] }} {{ producto[2] }}</td>
-                        <td>$ {{ producto[3] }}</td>
+                        <td>${{ "{:,.2f}".format(producto[3]).replace(",", ".") }}</td>
                         <td>
                             <form action="{{ url_for('salida_scope.delete_salida', id=key) }}" method="POST">
                                 <button class="btn_table" type="submit">
@@ -82,7 +77,7 @@
         </div>
 
         <div>
-            <p><strong>Valor Total:</strong> ${{ total_factura }}</p>
+            <p><strong>Valor Total:</strong> ${{ "{:,.2f}".format(total_factura).replace(",", ".") }}</p>
         </div>
 
         <div class="row slc-container justify-content-between">
