@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, send_file
 import json
 
 from ...controller import *
 from ...models import Cliente, Factura
+import openpyxl
+import io
 
 # Decoradores
 from ...utils.user_decorators import role_requiered
@@ -88,3 +90,63 @@ def details_factura_cliente(id):
         })
     else:
         return jsonify({'Error' : "factura no encontrada"}), 404
+    
+    
+@factura_cliente_scope.route('/factura_cliente_save/<int:id>', methods = ['GET', 'POST'])
+@role_requiered([1, 2])
+def save_factura_cliente(id):
+    factura = factura_select(id)
+    cliente = cliente_select(factura.clien_copiaid)
+    productos = json.loads(factura.fact_detalle_productos)
+    
+    list_products = []
+    
+    for key, producto in productos.items():
+        info_producto = producto_select(key)
+        info_categoria = get_producto_categoria(info_producto.cate_copiaid)
+        list_products.append((
+            info_producto.prod_id, 
+            info_producto.prod_descripcion, 
+            info_categoria.cate_descripcion, 
+            producto[1],
+            producto[2],
+            producto[3]
+            ))
+    
+    libro = openpyxl.Workbook()
+    hoja = libro.active
+    
+    hoja.cell(row=1, column=1, value="Id de Factura")
+    hoja.cell(row=1, column=2, value=factura.fact_id)
+    
+    hoja.cell(row=2, column=1, value="Identificacion de cliente")
+    hoja.cell(row=2, column=2, value=cliente.clien_documento)
+    
+    hoja.cell(row=3, column=1, value="Cliente")
+    hoja.cell(row=3, column=2, value=cliente.clien_nombre)
+    
+    hoja.cell(row=4, column=1, value="Direccion")
+    hoja.cell(row=4, column=2, value=f"{cliente.clien_ciudad} - {cliente.clien_direccion}")
+    
+    hoja.cell(row=5, column=1, value="Correo Electronico")
+    hoja.cell(row=5, column=2, value=cliente.clien_email)
+    
+    hoja.cell(row=6, column=1, value="Numero Telefonico")
+    hoja.cell(row=6, column=2, value=cliente.clien_telefono)
+    
+    hoja.append(("Id producto", "Descripcion", "Categoria", "Cantidad", "Unidad de medida", "Valor"))
+    
+    for producto in list_products:
+        hoja.append(producto)
+        
+    hoja.append(("Total de Factura", factura.fact_valor_total))
+        
+    output = io.BytesIO()
+    libro.save(output)
+    output.seek(0)  # Posicionar el puntero al inicio del archivo
+
+    # Enviar el archivo al cliente
+    return send_file(output, as_attachment=True, download_name=f"Factura_{factura.fact_id}.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    
+    
