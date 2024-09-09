@@ -4,5 +4,7 @@ from src.controller import *
 from src.models import *
 import json
 
-list_proveedores = proveedor_list()
-print(list_proveedores)
+factura = factura_select(1)
+productos = json.loads(factura.fact_detalle_productos)
+
+print(productos)

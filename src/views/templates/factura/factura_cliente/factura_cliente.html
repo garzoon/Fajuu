@@ -57,6 +57,9 @@
                                 <img src="{{ url_for('static', filename='img/table_item_delete.png') }}" width="25rem">
                             </button>
                             {% include 'includes/modal_close.html' %}
+                            <button class="btn_table" onclick="redirect('factura_cliente_save', '{{ factura[0] }}')">
+                                <img src="{{ url_for('static', filename='img/table_item_save.png') }}" width="25rem">
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
