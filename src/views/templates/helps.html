@@ -17,17 +17,16 @@
 </head>
 
 <body class=" d-flex justify-content-center">
-    <main class="col-5">
+    <main class=" col-12 col-lg-5 p-3">
 
-        <h1>Ayudas Fajuu</h1>
-
-
+        <h1 class="mb-5 mt-5">Ayudas Fajuu</h1>
+        <p>Esta seccion busca ayudar a los nuevos usuarios o usuario recurrentes los cuales deseen refrescar sus conocimientos con respecto al funcionanamiento del sistema de gestion <strong>Fajuu</strong>, aparte de brindar una ayuda pasa a paso de como es el manejo de todos los modulos.</p>
         <div class="accordion accordion-flush col-12" id="accordionFlushExample">
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button id="modulo_entrada" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        Modulo Entrada
+                        Módulo Entrada
                     </button>
                 </h2>
                 <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -66,14 +65,14 @@
                         <p>Si presenta un inconveniente y desea descartar el registro de Entrada actual, dar click en <strong>"Descartar"</strong></p>
 
                     </div>
-
                 </div>
             </div>
+            
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    <button id="modulo_salida" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Modulo Salida
+                        Módulo Salida
                     </button>
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -111,26 +110,293 @@
                     </div>
                 </div>
             </div>
+            
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                        Accordion Item #3
+                        Módulo Productos
                     </button>
                 </h2>
-                <div id="flush-collapseThree" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate
-                        the
-                        <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more
-                        exciting
-                        happening here in terms of content, but just filling up the space to make it look, at least at
-                        first
-                        glance, a bit more representative of how this would look in a real-world application.
+                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo productos nos permite gestionar nuestros productos de forma eficiente, teniendo una mejor trazabilidad del stock actual.</p>
+
+                        <p>Para acceder, en la barra de navegación ubicamos el título “Productos”, como primer vistazo encontraremos un filtro de búsqueda el cual nos permitirá realizar búsquedas eficientes de uno o varios productos, en la parte inferior se mostrarán todos los productos creados con anterioridad y su respectiva información.</p>
+                        
+                        <p>El ingreso y salida de stock del producto se llevan a cabo en los módulos: <a href="#modulo_entrada">Modulo Entrada</a>  y <a href="#modulo_salida">Modulo Salida</a>.</p>
+
+
+                        <h2>¿Cómo crear un producto?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón nombrado <strong>“Nuevo Producto”</strong>.</li>
+                            <li>Rellenar el formulario con la información correspondiente, todos los campos son de carácter obligatorio.</li>
+                            <li>Dar click al botón <strong>“Crear”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la creación de un nuevo producto.</li>
+                        </ul>
+                        <p>Todo producto creado iniciara con un stock en 0 y estado <strong>“agotado”</strong></p>
+
+                        <h2>¿Cómo editar un producto?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_edit.png" width="25rem"></li>
+                            <li>Se mostrará un formulario con la información actual del producto seleccionado, donde se puede realizar los cambios deseados al producto seleccionado.</li>
+                            <li>Dar click al botón <strong>“Editar”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la modificación del producto.</li>
+                        </ul>
+
+                        <h2>¿Cómo ver un producto?</h2>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_view.png" width="25rem"></li>
+                            <li>Se mostrará la información actual del producto seleccionado.</li>
+                        </ul>
+
+                        <h2>¿Cómo eliminar un producto?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_delete.png" width="25rem"></li>
+                            <li>Se mostrará una alerta donde debemos confirmar la eliminación del producto.</li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la eliminación del producto.</li>
+                        </ul>
+                        <p>La eliminación de un producto no afecta los registros de entrada o salida realizados hasta el momento.</p>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        Módulo Facturas
+                    </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo Facturas funciona como un registro de las entradas y salidas llevadas en el sistema, para acceder ubicar en la barra de navegación el título <strong>“Facturas”</strong>, este nos desplegara un seleccionador donde seleccionaremos el tipo de futuras que queremos visualizar:</p>
+                        <ul>
+                            <li>Facturas Proveedor (Entrada)</li>
+                            <li>Facturas de Cliente (Salida)</li>
+                        </ul>
+
+                        <p>Una vez ubicados, en ambas opciones encontraremos una sección para realizar la búsqueda según los filtros que agreguemos.</p>
+
+                        <h2>¿Cómo ver una factura?</h2>
+                        <p>Esta opción es la misma en ambos casos de tipo de factura.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_view.png" width="25rem"></li>
+                            <li>Se nos mostrara la información de la factura con los productos ingresados y la información de estos.</li>
+                        </ul>
+
+                        <h2>¿Cómo eliminar una factura?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <p>Esta opción es la misma en ambos casos de tipo de factura, y se recomienda solo realizar esta acción en casos donde sea realmente necesario la eliminación de un registro de factura.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_delete.png" width="25rem"></li>
+                            <li>Se mostrará una alerta donde debemos confirmar la eliminación de la factura.</li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la eliminación de la factura.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                        Módulo Proveedores
+                    </button>
+                </h2>
+                <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo proveedores cumple la función de ser un registro de todos los proveedores, los cuales van a afectar en el módulo Entradas.</p>
+
+                        <p>Para acceder, ubicamos en la barra de navegación el titulo nombrado Usuario, al dar click en este se nos desplegara un seleccionador, donde se debe seleccionar <strong>“Proveedor”</strong>.</p>
+                        
+                        <p>Como primer vistazo encontraremos un filtro de búsqueda el cual nos permitirá realizar búsquedas eficientes de uno o varios proveedores, en la parte inferior se mostrarán todos los proveedores creados con anterioridad y su respectiva información.</p>
+
+                        <h2>¿Cómo crear un proveedor?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón nombrado <strong>“Nuevo Proveedor”</strong></li>
+                            <li>Rellenar el formulario con la información correspondiente, todos los campos son de carácter obligatorio.</li>
+                            <li>Dar click al botón <strong>“Crear”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la creación de un nuevo proveedor.</li>
+                        </ul>
+                        <p>Todo proveedor creado iniciara con un estado <strong>“activo”</strong></p>
+
+                        <h2>¿Cómo editar un proveedor?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_edit.png" width="25rem"></li>
+                            <li>Se mostrará un formulario con la información actual del proveedor seleccionado, donde se puede realizar los cambios deseados al proveedor seleccionado.</li>
+                            <li>Dar click al botón <strong>“Editar”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la modificación del proveedor.</li>
+                        </ul>
+                        <p>Un proveedor con estado inactivo no podrá ser usado para realizar el ingreso de productos en el <a href="#modulo_entrada">Módulo Entrada</a></p>
+
+                        <h2>¿Cómo ver un proveedor?</h2>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_view.png" width="25rem"></li>
+                            <li>Se mostrará la información actual del proveedor seleccionado.</li>
+                        </ul>
+
+                        <h2>¿Cómo eliminar un proveedor?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador</p>
+                        <p>Esta acción no podrá llevarse a cabo en tal caso que un proveedor tenga uno o varios registros de entrada enlazados a su Id.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_delete.png" width="25rem"></li>
+                            <li>Se mostrará una alerta donde debemos confirmar la eliminación del proveedor.</li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la eliminación del proveedor.</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseFive">
+                        Módulo Clientes
+                    </button>
+                </h2>
+                <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo clientes cumple la función de ser un registro de todos los clientes, los cuales van a afectar en el módulo Salidas.</p>
+
+                        <p>Para acceder, ubicamos en la barra de navegación el titulo nombrado Usuario, al dar click en este se nos desplegara un seleccionador, donde se debe seleccionar <strong>“Cliente”</strong>.</p>
+                        
+                        <p>Como primer vistazo encontraremos un filtro de búsqueda el cual nos permitirá realizar búsquedas eficientes de uno o varios clientes, en la parte inferior se mostrarán todos los clientes creados con anterioridad y su respectiva información.</p>
+
+                        <h2>¿Cómo crear un cliente?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón nombrado <strong>“Nuevo Cliente”</strong></li>
+                            <li>Rellenar el formulario con la información correspondiente, todos los campos son de carácter obligatorio.</li>
+                            <li>Dar click al botón <strong>“Crear”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la creación de un nuevo cliente.</li>
+                        </ul>
+                        <p>Todo cliente creado iniciara con un estado <strong>“activo”</strong></p>
+
+                        <h2>¿Cómo editar un cliente?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_edit.png" width="25rem"></li>
+                            <li>Se mostrará un formulario con la información actual del cliente seleccionado, donde se puede realizar los cambios deseados al cliente seleccionado.</li>
+                            <li>Dar click al botón <strong>“Editar”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la modificación del cliente.</li>
+                        </ul>
+                        <p>Un cliente con estado inactivo no podrá ser usado para realizar la salida de productos en el <a href="#modulo_salida">Módulo Salida</a></p>
+
+                        <h2>¿Cómo ver un cliente?</h2>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_view.png" width="25rem"></li>
+                            <li>Se mostrará la información actual del cliente seleccionado.</li>
+                        </ul>
+
+                        <h2>¿Cómo eliminar un cliente?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <p>Esta acción no podrá llevarse a cabo, en tal caso que un cliente tenga uno o varios registros de entrada enlazados a su Id.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_delete.png" width="25rem"></li>
+                            <li>Se mostrará una alerta donde debemos confirmar la eliminación del cliente.</li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la eliminación del cliente.</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseFive">
+                        Módulo Operadores
+                    </button>
+                </h2>
+                <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>El módulo operadores es una función importante ya que este se encargará de realizar la gestión y la asignación de roles de todos los usuarios que interactuaran con el sistema.</p>
+
+                        <p>Para acceder, ubicamos en la barra de navegación el titulo nombrado Usuario, al dar click en este se nos desplegara un seleccionador, donde se debe seleccionar <strong>“Operador”</strong>.</p>
+                        
+                        <p>Como primer vistazo encontraremos un filtro de búsqueda el cual nos permitirá realizar búsquedas eficientes de uno o varios operadores, en la parte inferior se mostrarán todos los operadores creados con anterioridad y su respectiva información.</p>
+
+                        <h2>¿Cómo crear un operadore?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón nombrado <strong>“Nuevo Operador”</strong></li>
+                            <li>Rellenar el formulario con la información correspondiente, todos los campos son de carácter obligatorio.</li>
+                            <p>Es importante tener claro la identificación y contraseña que se le asigna al usuario ya que estos funcionaran como pase al sistema.</p>
+                            <p>Se debe asignar un rol, según el nivel de permisos que se le quiera brindar al operador</p>
+                            <li>Dar click al botón <strong>“Crear”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la creación de un nuevo operador.</li>
+                        </ul>
+                        <p>Todo operador creado iniciara con un estado <strong>“activo”</strong></p>
+
+                        <h2>¿Cómo editar un operador?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_edit.png" width="25rem"></li>
+                            <li>Se mostrará un formulario con la información actual del operador seleccionado a excepción de la contraseña, donde se puede realizar los cambios deseados al operador seleccionado.</li>
+                            <li>Dar click al botón <strong>“Editar”</strong></li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la modificación del operador.</li>
+                        </ul>
+                        <p>Un operador con estado inactivo no podrá acceder al sistema.</p>
+
+                        <h2>¿Cómo ver un operador?</h2>
+                            <li>Ubicar el botón <img src="../static/img/table_item_view.png" width="25rem"></li>
+                            <li>Se mostrará la información actual del operador seleccionado.</li>
+                        </ul>
+
+                        <h2>¿Cómo eliminar un operador?</h2>
+                        <p>Esta acción solo puede ser realizada por un usuario con rol de administrador.</p>
+                        <ul>
+                            <li>Ubicar el botón <img src="../static/img/table_item_delete.png" width="25rem"></li>
+                            <li>Se mostrará una alerta donde debemos confirmar la eliminación del operador.</li>
+                            <li>Se nos mostrara un mensaje, el cual confirme la eliminación del operador.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseFive">
+                        ¿Cómo cambiar la contraseña de un usuario?
+                    </button>
+                </h2>
+                <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <p>Existen dos formas de realizar el cambio de contraseña:</p>
+
+                        <p><strong>1. </strong>Si usted cuenta con rol <strong>Administrador</strong>.</p>
+                        
+                        <ul>
+                            <li>Diríjase al módulo <strong>“Usuario”</strong>, <strong>“Operador”</strong></li>
+                            <li>Ubique al usuario al cual quiere efectuar el cambio de contraseña.</li>
+                            <li>Ubique el botón <img src="../static/img/table_item_password.png" width="25rem"></li>
+                            <li>Al dar click, se nos mostrara un formulario donde se debe ingresar la nueva contraseña además de confirmar la contraseña, Si las contraseñas no coinciden el sistema no permitirá continuar con el proceso.</li>
+                            <li>Dar click al botón <strong>“Editar”</strong></li>
+                        </ul>
+
+                        <p><strong>2. </strong> Si usted es el propietario de la cuenta a la cual desea realizar el cambio de contraseña.</p>
+                        
+                        <ul>
+                            <li>Ubique el botón <strong>“Perfil”</strong></li>
+                            <li>Al dar click se nos desplegara una pantalla con la información de nuestro usuario.</li>
+                            <li>Ubicar el botón <strong>“Cambiar contraseña”</strong></li>
+                            <li>Al dar click, se nos mostrara un formulario donde se debe ingresar la nueva contraseña además de confirmar la contraseña, Si las contraseñas no coinciden el sistema no permitirá continuar con el proceso.</li>
+                            <li>Dar click al botón <strong>“Editar”</strong></li>
+                        </ul>
+                        
                     </div>
                 </div>
             </div>
         </div>
+        
     </main>
     <!-- Scripts bootstrap -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
